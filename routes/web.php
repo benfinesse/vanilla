@@ -14,9 +14,12 @@
 
 Auth::routes();
 
-Route::group(['middleware'=>['auth']], function (){
-    Route::prefix('dashboard')->group(function () {
-        Route::get('/', 'HomeController@index')->name('dashboard');
-    });
+Route::group(['middleware'=>['auth','access']], function (){
+    Route::get('dashboard', 'Admin\DashboardController@index')->name('dashboard');
+    Route::resource('record', 'Record\RecordController');
+    Route::resource('process', 'Admin\OfficeProcessController');
+
+//    Route::prefix('dashboard')->group(function () { });
 });
+Route::get('/', 'HomeController@index')->name('home');
 

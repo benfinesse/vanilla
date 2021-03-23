@@ -9,14 +9,14 @@
                 <p>Enter credentials to continue.</p>
             </div>
         </div>
-    </div><!-- .nk-block-head -->
+    </div>
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-group">
             <div class="form-label-group">
                 <label class="form-label" for="default-01">Email</label>
             </div>
-            <input type="text" class="form-control form-control-lg  @error('email') is-invalid @enderror" id="default-01" placeholder="Enter your email address">
+            <input type="text" class="form-control form-control-lg  @error('email') is-invalid @enderror" id="default-01" placeholder="Enter your email address" value="{{ old('email') }}" name="email">
 
             @error('email')
             <span class="invalid-feedback" role="alert">
@@ -27,7 +27,7 @@
         <div class="form-group">
             <div class="form-label-group">
                 <label class="form-label" for="password">Password</label>
-                <a class="link link-primary link-sm" tabindex="-1" href="{{ "#" }}">Forgot password?</a>
+                <a class="link link-primary link-sm" tabindex="-1" href="{{ route('password.request') }}">Forgot password?</a>
             </div>
             <div class="form-control-wrap">
                 <a tabindex="-1" href="#" class="form-icon form-icon-right passcode-switch" data-target="password">
@@ -45,6 +45,6 @@
         <div class="form-group">
             <button class="btn btn-lg btn-primary btn-block">Sign in</button>
         </div>
-    </form><!-- form -->
+    </form>
 
 @endsection
