@@ -22,7 +22,43 @@
             </div>
         @else
             <div class="nk-block">
-                @include('pages.records.create_body')
+                <div class="card card-bordered">
+                    <div class="card-inner">
+                        <div class="card-head">
+                            <h5 class="card-title">Begin New Record</h5>
+                        </div>
+                        <form action="{{ route('record.store') }}" method="post">
+                            @csrf
+                            <p class="text-left">Select a process to begin.</p>
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="process">Select Process</label>
+                                        <div class="form-control-wrap ">
+                                            <div class="form-control-select">
+                                                <select name="process_id" class="form-control" id="process" required="required">
+                                                    <option selected disabled value="">Select Option</option>
+                                                    @foreach($processes as $process)
+                                                        <option value="{{ $process->uuid }}">{{ $process->name }}</option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="process">Begin Process</label>
+                                        <div class="form-control-wrap ">
+                                            <button type="submit" class="btn btn-primary">Begin Process</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         @endif
 

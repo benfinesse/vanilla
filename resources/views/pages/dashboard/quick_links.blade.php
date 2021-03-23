@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="nk-wg1-action">
-                        <a href="#" class="link"><span>All Records</span> <em class="icon ni ni-chevron-right"></em></a>
+                        <a href="{{ route('record.index') }}" class="link"><span>All Records</span> <em class="icon ni ni-chevron-right"></em></a>
                     </div>
                 </div>
             </div>

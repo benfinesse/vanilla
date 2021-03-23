@@ -18,8 +18,9 @@ class MeasuresTableSeeder extends Seeder
             "carton",
             "crate",
         ];
+        $user = \App\User::first();
         foreach ($measures as $measure){
-            factory(Measure::class, 1)->create(['name' => $measure,]);
+            factory(Measure::class, 1)->create(['name' => $measure,'user_id'=>$user->uuid]);
         }
     }
 }

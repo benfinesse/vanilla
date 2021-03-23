@@ -42,13 +42,13 @@
                 </a>
             </li>
             <li class="nk-menu-item">
-                <a href="#" class="nk-menu-link">
+                <a href="{{ route('measure.index') }}" class="nk-menu-link">
                     <span class="nk-menu-icon"><em class="icon ni ni-list-check"></em></span>
                     <span class="nk-menu-text">Measure</span>
                 </a>
             </li>
             <li class="nk-menu-item">
-                <a href="#" class="nk-menu-link">
+                <a href="{{ route('group.index') }}" class="nk-menu-link">
                     <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
                     <span class="nk-menu-text">Department</span>
                 </a>

@@ -12,6 +12,7 @@
                 </ul>
             </div>
         </div>
+        @include('layouts.notice')
     </div>
     <div class="nk-content-wrap">
 

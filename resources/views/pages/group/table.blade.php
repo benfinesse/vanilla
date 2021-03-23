@@ -2,7 +2,6 @@
     <thead>
     <tr class="tb-tnx-head">
         <th><span class="d-md-inline-block">Name</span></th>
-        <th><span class="d-md-inline-block">Office Stage</span></th>
         <th><span class="d-md-inline-block">Created By</span></th>
         <th><span class="d-md-inline-block">Created At</span></th>
         <th><span class="d-md-inline-block">Action</span></th>
@@ -12,15 +11,11 @@
     @forelse($data as $item)
         <tr class="tb-tnx-item">
             <td>{{ $item->name  }}</td>
-            <td>{{ $item->stages->count() }}</td>
             <td>{{ $item->user->names }}</td>
             <td>{{ $item->created_at->diffForHumans() }}</td>
             <td>
                 <a href="#">
-                    <em class="icon ni ni-edit mr-2" style="font-size: 20px"></em>
-                </a>
-                <a href="{{ route('process.list', $item->uuid) }}">
-                    <em class="icon ni ni-setting-alt" style="font-size: 20px"></em>
+                    <em class="icon ni ni-edit"></em>
                 </a>
             </td>
         </tr>

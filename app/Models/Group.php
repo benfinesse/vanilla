@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
@@ -12,4 +13,8 @@ class Group extends Model
         'name',
         'active',
     ];
+
+    public function user(){
+        return $this->hasOne(User::class, 'uuid', 'user_id');
+    }
 }

@@ -18,6 +18,7 @@ class CreateRecordsTable extends Migration
             $table->uuid('uuid')->unique();
             $table->uuid('user_id')->nullable();
             $table->uuid('office_id')->nullable();//current office submitted to
+            $table->uuid('process_id')->nullable();//current process running
             $table->integer('stage')->nullable(); //1 , 2 , 3 , 4
             $table->boolean('completed')->nullable();
             $table->boolean('active')->nullable();
@@ -26,6 +27,7 @@ class CreateRecordsTable extends Migration
 
             $table->foreign('user_id')->references('uuid')->on('users');
             $table->foreign('office_id')->references('uuid')->on('offices');
+            $table->foreign('process_id')->references('uuid')->on('office_processes');
         });
     }
 

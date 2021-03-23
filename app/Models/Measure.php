@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Measure extends Model
@@ -12,4 +13,8 @@ class Measure extends Model
         'name',
         'active',
     ];
+
+    public function user(){
+        return $this->hasOne(User::class, 'uuid', 'user_id');
+    }
 }

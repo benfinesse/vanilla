@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Office;
 use App\Models\OfficeProcess;
 use Illuminate\Http\Request;
 
@@ -85,5 +86,17 @@ class OfficeProcessController extends Controller
     public function destroy(OfficeProcess $officeProcess)
     {
         //
+    }
+
+    public function listItems($uuid){
+        $process = OfficeProcess::whereUuid($uuid)->first();
+        if(!empty($process)){
+            $data = Office::where('process_id', $process->uuid)->get();
+            return view('pages.process.list')->with([
+                'data'=>$data,
+                'process'=>$process
+            ]);
+        }
+        return redirect()->route('process.index')->withErrors(['Resource not found']);
     }
 }

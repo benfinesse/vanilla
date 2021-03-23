@@ -8,7 +8,7 @@
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
-                    <li><a href="{{ route('record.create') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-file-plus"></em><span><span class="d-none d-sm-inline-block">New</span> Record</span></a></li>
+                    <li><a href="{{ route('record.list', $record->uuid) }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-arrow-left"></em><span><span class="d-none d-sm-inline-block">Back</span> </span></a></li>
                 </ul>
             </div>
         </div>
@@ -16,9 +16,7 @@
     </div>
     <div class="nk-content-wrap">
         <div class="nk-block">
-            <div class="card card-bordered">
-                @include('pages.records.table')
-            </div>
+            @include('pages.records.manage.create_body')
         </div>
     </div>
 

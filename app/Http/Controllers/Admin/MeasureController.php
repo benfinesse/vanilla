@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Group;
+use App\Http\Controllers\Controller;
+use App\Models\Measure;
 use Illuminate\Http\Request;
 
-class GroupController extends Controller
+class MeasureController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+//     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $measures = Measure::get();
+        return view('pages.measure.index')->with([
+            'data'=>$measures
+        ]);
     }
 
     /**
@@ -41,10 +45,10 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Group  $group
+     * @param  \App\Models\Measure  $measure
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(Measure $measure)
     {
         //
     }
@@ -52,10 +56,10 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Group  $group
+     * @param  \App\Models\Measure  $measure
      * @return \Illuminate\Http\Response
      */
-    public function edit(Group $group)
+    public function edit(Measure $measure)
     {
         //
     }
@@ -64,10 +68,10 @@ class GroupController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Group  $group
+     * @param  \App\Models\Measure  $measure
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, Measure $measure)
     {
         //
     }
@@ -75,10 +79,10 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Group  $group
+     * @param  \App\Models\Measure  $measure
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(Measure $measure)
     {
         //
     }
