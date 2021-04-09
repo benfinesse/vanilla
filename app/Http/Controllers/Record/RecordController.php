@@ -23,6 +23,7 @@ class RecordController extends Controller
     public function index()
     {
         $records = Record::where('active', true)->orderBy('id', 'desc')->paginate(30);
+
         return view('pages.records.index')->with([
             'records'=>$records
         ]);
@@ -63,21 +64,24 @@ class RecordController extends Controller
             $record = Record::create($data);
             DB::commit();
 
-            return redirect()->route('record.manage', $record->uuid)->withMessage("Record created. Enter details of records.");
+            return redirect()->route('record.list', $record->uuid)->withMessage("Record created. Enter details of records.");
         }
         return redirect()->route('record.index')->withErrors(['Resource not found']);
     }
 
-    public function manage($uuid){
+    //Group ID as $gid
+    public function manage($uuid, $gid){
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
-            $groups = Group::get();
-            $measure = Measure::get();
-            return view('pages.records.manage.record')->with([
-                'measures'=>$measure,
-                'depts'=>$groups,
-                'record'=>$record
-            ]);
+            $group = Group::whereUuid($gid)->first();
+            if(!empty($group)){
+                $measure = Measure::get();
+                return view('pages.records.manage.record')->with([
+                    'measures'=>$measure,
+                    'dept'=>$group,
+                    'record'=>$record
+                ]);
+            }
         }
         return redirect()->route('record.index')->withErrors(['Resource not found']);
     }
@@ -87,10 +91,12 @@ class RecordController extends Controller
 
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
+            $groups = Group::get();
             $data = RecordGroup::where('record_id', $record->uuid)->get();
             return view('pages.records.manage.list')->with([
                 'data'=>$data,
-                'record'=>$record
+                'record'=>$record,
+                'groups'=>$groups
             ]);
         }
         return redirect()->route('record.index')->withErrors(['Resource not found']);
@@ -139,5 +145,18 @@ class RecordController extends Controller
     public function destroy(Record $record)
     {
         //
+    }
+
+    public function pop($uuid){
+        $record = Record::whereUuid($uuid)->first();
+        if(!empty($record)){
+            if(!$record->completed){
+                $record->delete();
+                return back()->withMessage("One item deleted");
+            }else{
+                return back()->withErrors(['Cannot modify a completed record.']);
+            }
+        }
+        return back()->withErrors(['Resource not found']);
     }
 }

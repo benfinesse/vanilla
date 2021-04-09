@@ -10,7 +10,8 @@ class RecordItem extends Model
         'uuid',
         'user_id',
         'record_id',
-        'measure_id',
+        'record_group_id',
+        'measure',
         'type',
         'name',
         'qty',
@@ -19,4 +20,8 @@ class RecordItem extends Model
         'true_qty',
         'true_price',
     ];
+
+    public function getTotalAttribute(){
+        return floatval($this->qty)*floatval($this->price);
+    }
 }

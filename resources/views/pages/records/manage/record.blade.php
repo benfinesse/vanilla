@@ -21,3 +21,7 @@
     </div>
 
 @endsection
+
+@section('custom_js')
+    @yield('manage_logic')
+@endsection

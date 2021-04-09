@@ -17,64 +17,79 @@
     <div class="nk-content-wrap">
         <div class="nk-block">
             <p>Record submission on process: <b>{{ $record->process->name }}</b></p>
-            <div class="card card-bordered">
-                <div class="card-inner">
-                    <div class="card-head">
-                        <h5 class="card-title">Department Records</h5>
-                        @if($record->ready)
-                            <a href="{{ route('record.manage', $record->uuid) }}" class="btn btn-primary">
-                                <em class="icon ni ni-send mr-2" style="font-size: 15px" ></em>
-                                Submit Record
-                            </a>
-                        @endif
 
-                        <a href="{{ route('record.manage', $record->uuid) }}" class="btn btn-primary">New Record</a>
-                    </div>
-                    <table class="table table-tranx table-billing">
-                        <thead>
-                        <tr class="tb-tnx-head">
-                            <th><span class="d-md-inline-block">Department</span></th>
-                            <th><span class="d-md-inline-block">Created</span></th>
-                            <th><span class="d-md-inline-block">Total</span></th>
-                            <th><span class="d-md-inline-block">Action</span></th>
-                        </tr><!-- .tb-tnx-head -->
-                        </thead>
-                        <tbody>
-                        @forelse($data as $record_group)
-                            <tr class="tb-tnx-item">
-                                <td>{{ $record_group->group->name }}</td>
-                                <td>{{ date('F d, Y', strtotime($record_group->created_at)) }}</td>
-                                <td>{{ $record_group->total }}</td>
-                                <td>
-
-                                    @if($record->status==="edited")
-                                        <a href="#" title="List Records">
-                                            <em class="icon ni ni-edit-alt" style="font-size: 20px"></em>
-                                        </a>
-                                        <a href="#" title="Add Department Records">
-                                            <em class="icon ni ni-trash-alt" style="font-size: 20px"></em>
-                                        </a>
-                                    @else
-                                        @if($record->status==="completed")
-                                            <b> Closed </b>
-                                        @else
-                                            <b> Pending Response </b>
-                                        @endif
-                                    @endif
-
-                                </td>
-                            </tr>
-                        @empty
-                            <tr class="tb-tnx-item">
-                                <td colspan="4" class="text-center">
-                                    <b>No Data Yet.</b>
-                                </td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <p>Create Record for available groups.</p>
                 </div>
+                @foreach($groups as $group)
+                    <?php $group_rec =  $group->hasRecord($record->uuid);?>
+                    @if($group_rec)
+                        <div class="col-md-12 mb-4 mt-4">
+                            <div class="card card-bordered">
+                                <div class="card-inner">
+                                    <h6 class="text-right">
+                                        {{ $group->name }} Record
+                                    </h6>
+                                    <p class="text-right">
+                                        {{ $group_rec->created_at->diffForHumans() }}
+                                    </p>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Item Name</th>
+                                                <th scope="col">Measure</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="card_table_content">
+                                            <?php $total = 0; ?>
+                                                @foreach($group_rec->recordItems as $item)
+                                                    <tr>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td>{{ $item->measure }}</td>
+                                                        <td>{{ $item->qty }}</td>
+                                                        <td>{{ number_format($item->price) }}</td>
+                                                        <td>{{ number_format($item->total) }}</td>
+                                                        <?php $total+=$item->total; ?>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr>
+                                    <h5 class="text-right">
+                                        Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-md-6 mb-4 mt-4">
+                            <div class="card card-bordered">
+                                <div class="card-inner text-center">
+                                    <h4 class="">{{ $group->name }}</h4>
+                                    <a href="{{ route('record.manage', ['uuid'=>$record->uuid, 'gid'=>$group->uuid]) }}" class="btn btn-primary">Create {{ $group->name }} Record</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                @endforeach
+
             </div>
+
+            <br>
+            @if($record->ready)
+                <a href="#" class="btn btn-primary">
+                    <em class="icon ni ni-send mr-2" style="font-size: 15px" ></em>
+                    Submit Record
+                </a>
+            @endif
+
         </div>
     </div>
 

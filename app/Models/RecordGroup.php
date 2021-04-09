@@ -21,6 +21,10 @@ class RecordGroup extends Model
 
     }
 
+    public function getRecordItemsAttribute(){
+        return RecordItem::where('record_id', $this->record_id)->where('record_group_id', $this->uuid)->get();
+    }
+
     public function getTotalAttribute(){
 
     }

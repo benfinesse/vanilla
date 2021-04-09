@@ -19,7 +19,7 @@ class CreateRecordItemsTable extends Migration
             $table->uuid('user_id')->nullable();
             $table->uuid('record_id')->nullable();
             $table->uuid('record_group_id')->nullable();
-            $table->uuid('measure_id')->nullable();
+            $table->uuid('measure')->nullable();
             $table->string('type')->nullable(); //credit //cash
             $table->string('name')->nullable();
             $table->float('qty', 10, 2)->nullable();
@@ -30,7 +30,6 @@ class CreateRecordItemsTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('uuid')->on('users');
-            $table->foreign('measure_id')->references('uuid')->on('measures');
             $table->foreign('record_group_id')->references('uuid')->on('record_groups');
             $table->foreign('record_id')
                 ->references('uuid')

@@ -8,7 +8,7 @@
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
-                    <li><a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-plus-c"></em><span><span class="d-none d-sm-inline-block">New</span> Dept.</span></a></li>
+                    <li><a href="{{ route('group.index') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-plus-c"></em><span><span class="d-none d-sm-inline-block">New</span> Dept.</span></a></li>
                     <li><a href="{{ route('record.index') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-arrow-left"></em><span><span class="d-none d-sm-inline-block">Back</span> </span></a></li>
                 </ul>
             </div>

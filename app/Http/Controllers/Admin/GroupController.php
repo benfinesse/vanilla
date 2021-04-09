@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Traits\General\Utility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
+    use Utility;
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +31,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.group.create');
     }
 
     /**
@@ -39,7 +42,22 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $name = $request->input('name');
+        $exist = Group::where('name', $name)->first();
+        if(empty($exist)){
+            $data['uuid'] = $this->makeUuid();
+            $data['user_id'] = $request->user()->uuid;
+            $data['name'] = $name;
+            $data['active'] = true;
+            DB::beginTransaction();
+            Group::create($data);
+            DB::commit();
+            return redirect()->route('group.index')->withMessage("New Department added.");
+        }
+        return back()->withErrors(["The name already exist. If not, contact support"])->withInput();
+
+
     }
 
     /**

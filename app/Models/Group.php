@@ -17,4 +17,9 @@ class Group extends Model
     public function user(){
         return $this->hasOne(User::class, 'uuid', 'user_id');
     }
+
+    public function hasRecord($uuid){
+        $item = RecordGroup::where('record_id', $uuid)->where('group_id', $this->uuid)->first();
+        return $item;
+    }
 }
