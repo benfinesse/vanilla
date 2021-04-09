@@ -4,11 +4,11 @@
     <div class="nk-block-head nk-block-head-lg">
         <div class="nk-block-between-md g-4">
             <div class="nk-block-head-content">
-                <h4 class="nk-block-title fw-normal">Records</h4>
+                <h4 class="nk-block-title fw-normal">Department Records</h4>
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
-                    <li><a href="{{ route('record.index') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-arrow-left"></em><span><span class="d-none d-sm-inline-block">Back</span> </span></a></li>
+                    <li><a href="{{ route('record.index') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-arrow-left"></em><span class="d-none d-sm-inline-block">Back</span></a></li>
                 </ul>
             </div>
         </div>
@@ -20,20 +20,29 @@
 
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    <p>Create Record for available groups.</p>
+                    <p>Create Record for at least one available departments.</p>
                 </div>
+                <?php $grand_total = 0; ?>
                 @foreach($groups as $group)
-                    <?php $group_rec =  $group->hasRecord($record->uuid);?>
+                    <?php $group_rec =  $group->hasRecord($record->uuid); ?>
                     @if($group_rec)
                         <div class="col-md-12 mb-4 mt-4">
                             <div class="card card-bordered">
                                 <div class="card-inner">
-                                    <h6 class="text-right">
-                                        {{ $group->name }} Record
-                                    </h6>
-                                    <p class="text-right">
-                                        {{ $group_rec->created_at->diffForHumans() }}
-                                    </p>
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-edit-alt"></em><span class="d-none d-sm-inline-block">Edit</span></a>
+                                            <a href="#" class="btn btn-white btn-dim btn-danger"><em class="icon ni ni-trash-alt"></em></a>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6 class="text-right">
+                                                {{ $group->name }} Record
+                                            </h6>
+                                            <p class="text-right">
+                                                {{ $group_rec->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead class="thead-dark">
@@ -62,6 +71,7 @@
                                     </div>
                                     <hr>
                                     <h5 class="text-right">
+                                        <?php $grand_total+= $total; ?>
                                         Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
                                     </h5>
                                 </div>
@@ -79,6 +89,20 @@
                     @endif
 
                 @endforeach
+
+                @if($grand_total>0)
+                    <div class="col-md-6 mb-4 mt-4">
+                        <div class="card card-bordered">
+                            <div class="card-inner text-center">
+                                <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
+                                <a href="#" class="btn btn-outline-primary">Submit to {{ $record->process->name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4 mt-4">
+                        <p class="">Click the <b>submit button</b> above when required department records are entered to start.</p>
+                    </div>
+                @endif
 
             </div>
 
