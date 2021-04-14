@@ -4,7 +4,7 @@
     <div class="nk-block-head nk-block-head-lg">
         <div class="nk-block-between-md g-4">
             <div class="nk-block-head-content">
-                <h4 class="nk-block-title fw-normal">New Process</h4>
+                <h4 class="nk-block-title fw-normal">New Process Office</h4>
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
@@ -19,15 +19,15 @@
             <div class="card card-bordered">
                 <div class="card-inner">
                     <div class="card-head">
-                        <h5 class="card-title">Create New Process</h5>
+                        <h5 class="card-title">Create New Office for '{{ $process->name }}'</h5>
                     </div>
-                    <form action="{{ route('process.store') }}" method="post">
+                    <form action="{{ route('process.stage.store', $process->uuid) }}" method="post">
                         @csrf
                         <p class="text-left">Enter a name to complete.</p>
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="process">Enter Process Name</label>
+                                    <label class="form-label" for="process">Enter Office Name</label>
                                     <input id="process" class="form-control" name="name" value="{{ old('name') }}" required autofocus autocomplete="off" />
                                 </div>
                             </div>

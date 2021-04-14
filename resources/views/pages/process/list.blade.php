@@ -8,7 +8,18 @@
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
-                    <li><a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-file-plus"></em><span><span class="d-none d-sm-inline-block">New</span> Office Stage</span></a></li>
+                    <li>
+                        <a href="{{ route('process.index') }}" class="btn btn-white btn-dim btn-outline-primary">
+                            <em class="icon ni ni-arrow-left"></em>
+                            <span class="d-none d-sm-inline-block">Back</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('process.stage.create', $process->uuid) }}" class="btn btn-white btn-dim btn-outline-primary">
+                            <em class="icon ni ni-plus"></em>
+                            <span class="d-none d-sm-inline-block">New Office</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -27,18 +38,26 @@
                         <th><span class="d-md-inline-block">Action</span></th>
                     </tr><!-- .tb-tnx-head -->
                     </thead>
-                    <tbody>
+                    <tbody class="list_items">
                     @forelse($data as $item)
                         <tr class="tb-tnx-item">
                             <td>{{ $item->name  }}</td>
                             <td>{{ $item->members->count() }}</td>
                             <td>{{ $item->created_at->diffForHumans() }}</td>
                             <td>
-                                <a href="#">
-                                    <em class="icon ni ni-edit mr-2" style="font-size: 20px"></em>
+                                <a href="{{ route('process.item.manage', $item->uuid) }}" class="" title="Manage">
+                                    <em class="icon ni ni-account-setting" style="font-size: 20px"></em>
                                 </a>
-                                <a href="#">
-                                    <em class="icon ni ni-setting-alt" style="font-size: 20px"></em>
+
+                                <a href="{{ route('process.item.direction',['uuid'=>$item->uuid, 'dir'=>'down']) }}" class="ml-4" title="Move Down">
+                                    <em class="icon ni ni-arrow-down" style="font-size: 20px"></em>
+                                </a>
+                                <a href="{{ route('process.item.direction',['uuid'=>$item->uuid, 'dir'=>'up']) }}" title="Move Up">
+                                    <em class="icon ni ni-arrow-up" style="font-size: 20px"></em>
+                                </a>
+
+                                <a href="#" onclick="event.preventDefault(); deleteItem('{{ route('office.pop', $item->uuid) }}')" class="ml-4 text-danger">
+                                    <em class="icon ni ni-trash-alt" style="font-size: 20px"></em>
                                 </a>
                             </td>
                         </tr>
@@ -54,5 +73,13 @@
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('vendor_js')
+
+@endsection
+
+@section('custom_js')
 
 @endsection

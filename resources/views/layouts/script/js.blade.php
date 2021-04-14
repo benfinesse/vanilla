@@ -1,7 +1,7 @@
 <script src="{{ asset('app/assets/js/bundle.js') }}"></script>
 <script src="{{ asset('app/assets/js/scripts.js') }}"></script>
 
-@yield('custom_js')
+@yield('vendor_js')
 
 <script>
     function deleteItem(url) {
@@ -14,3 +14,5 @@
         }
     }
 </script>
+
+@yield('custom_js')

@@ -19,7 +19,7 @@ class CreateRecordsTable extends Migration
             $table->uuid('user_id')->nullable();
             $table->uuid('office_id')->nullable();//current office submitted to
             $table->uuid('process_id')->nullable();//current process running
-            $table->integer('stage')->nullable(); //1 , 2 , 3 , 4
+            $table->integer('stage')->nullable(); //1 , 2 , 3 , 4 i.e Stage ID
             $table->boolean('completed')->nullable();
             $table->boolean('active')->nullable();
             $table->string('title')->nullable();

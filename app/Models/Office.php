@@ -26,4 +26,8 @@ class Office extends Model
                     ->where('office_members.office_id', $uuid);
             })->get();
     }
+
+    public function process(){
+        return $this->belongsTo(OfficeProcess::class, 'process_id', 'uuid');
+    }
 }

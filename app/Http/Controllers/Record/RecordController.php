@@ -59,7 +59,7 @@ class RecordController extends Controller
             $data['user_id'] = $user->uuid;
             $data['process_id'] = $process_id;
             $data['active'] = true;
-            $data['title'] = $user->names. " created record on ". date("M d, Y");
+            $data['title'] = $user->names. " started ". $process->name." on ". date("M d, Y");
             DB::beginTransaction();
             $record = Record::create($data);
             DB::commit();

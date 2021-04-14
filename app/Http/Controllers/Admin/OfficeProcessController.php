@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Office;
 use App\Models\OfficeProcess;
+use App\Traits\General\Utility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OfficeProcessController extends Controller
 {
+    use Utility;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +19,7 @@ class OfficeProcessController extends Controller
      */
     public function index()
     {
-        $process = OfficeProcess::get();
+        $process = OfficeProcess::orderBy('id','desc')->get();
         return view('pages.process.index')->with([
             'data'=>$process
         ]);
@@ -29,7 +32,7 @@ class OfficeProcessController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.process.create');
     }
 
     /**
@@ -40,7 +43,23 @@ class OfficeProcessController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = $request->input('name');
+        if(!empty($name)){
+            $exist = OfficeProcess::where('name', $name)->first();
+            if(empty($exist)){
+                $data['uuid'] = $this->makeUuid();
+                $data['user_id'] = $request->user()->uuid;
+                $data['name'] = $name;
+                $data['active'] = true;
+                DB::beginTransaction();
+                OfficeProcess::create($data);
+                DB::commit();
+                return redirect()->route('process.index')->withMessage("New Office Process Created.");
+            }
+
+            return back()->withErrors(['Name already in use. Select another name.'])->withInput();
+        }
+        return back()->withErrors(['Name filed is empty.'])->withInput();
     }
 
     /**
@@ -91,12 +110,16 @@ class OfficeProcessController extends Controller
     public function listItems($uuid){
         $process = OfficeProcess::whereUuid($uuid)->first();
         if(!empty($process)){
-            $data = Office::where('process_id', $process->uuid)->get();
+            $data = Office::where('process_id', $process->uuid)->orderBy('position','asc')->get();
             return view('pages.process.list')->with([
                 'data'=>$data,
                 'process'=>$process
             ]);
         }
         return redirect()->route('process.index')->withErrors(['Resource not found']);
+    }
+
+    public function addItemToList(Request $request){
+
     }
 }

@@ -19,7 +19,9 @@ class CreateOfficeSlipsTable extends Migration
             $table->uuid('user_id')->nullable();
             $table->uuid('record_id')->nullable();//current record uuid - reflecting pending action for record
             $table->uuid('office_id')->nullable();
+            $table->string('status'); //pending, responded
             $table->boolean('approved')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('uuid')->on('users');

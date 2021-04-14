@@ -95,12 +95,12 @@
                         <div class="card card-bordered">
                             <div class="card-inner text-center">
                                 <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
-                                <a href="#" class="btn btn-outline-primary">Submit to {{ $record->process->name }}</a>
+                                <a href="{{ route('record.process.start', $record->uuid) }}" class="btn btn-outline-primary">Submit to {{ $record->process->name }}</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 mb-4 mt-4">
-                        <p class="">Click the <b>submit button</b> above when required department records are entered to start.</p>
+                        <p class="">Click the <b>submit to ... button</b> above when required department records are entered to start.</p>
                     </div>
                 @endif
 
