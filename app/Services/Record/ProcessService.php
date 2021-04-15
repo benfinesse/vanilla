@@ -49,6 +49,7 @@ class ProcessService
         $slip_data['record_id'] = $record->uuid;
         $slip_data['office_id'] = $office->uuid;
         $slip_data['status'] = 'pending';
+        $slip_data['current'] = true;
         $slip_data['approved'] = false;
 
         DB::beginTransaction();
@@ -58,10 +59,10 @@ class ProcessService
         $record_data['office_id'] = $office->uuid;
         $record_data['stage'] = $office->position;
         $record->update($record_data);
-        DB::commit();
         $dname = $record->process->name;
         $title = "One new item submitted for {$dname}.";
-        $url = route('', $record->uuid);
+        $url = route('record.audit', $record->uuid);
+        DB::commit();
         $this->sendOfficeNotice($office, $url, $record->uuid, $title);
 
 

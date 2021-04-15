@@ -24,6 +24,10 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('record/list/{uuid}', 'Record\RecordController@listItems')->name('record.list');
     Route::post('form/record/store/{uuid}','Record\FormController@store')->name('form.store');
 
+
+    //AUDIT ROUTES
+    Route::get('record/audit/{uuid}', 'Record\AuditProcessController@show')->name('record.audit');
+
     Route::resource('process', 'Admin\OfficeProcessController');
     Route::get('process/list/{uuid}', 'Admin\OfficeProcessController@listItems')->name('process.list');
     Route::get('process/item/move/{uuid}/{dir}', 'Process\PositionController@tryPositionMove')->name('process.item.direction');
@@ -38,6 +42,15 @@ Route::group(['middleware'=>['auth','access']], function (){
 
     //RECORD PROCESS
     Route::get('record/process/action/start/{record_id}','Record\ProcessController@start')->name('record.process.start');
+    Route::get('record/process/action/next/{record_id}/{dir}','Record\ProcessController@moveOffice')->name('record.process.next_office');
+
+    Route::get('record/process/action/close/{record_id}','Record\ProcessController@close')->name('record.close');
+
+
+    //NOTIFICATION LIST
+    Route::get('notifications','Admin\NotificationController@index')->name('notice.index');
+    Route::get('notifications/preview/{uuid}','Admin\NotificationController@preview')->name('open.notice');
+
 
 
 //    Route::prefix('dashboard')->group(function () { });

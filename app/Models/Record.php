@@ -53,4 +53,30 @@ class Record extends Model
     public function office(){
         return $this->hasOne(Office::class, 'uuid', 'office_id');
     }
+
+    public function groups(){
+        return $this->hasMany(RecordGroup::class, 'record_id', 'uuid');
+    }
+
+    public function getNextOfficeAttribute(){
+        $office = Office::where('uuid', $this->office_id)->where('process_id', $this->process_id)->first();
+        if(!empty($office)){
+            $next = Office::where('process_id', $this->process_id)->where('position','>',$office->position)->orderBy('position','asc')->first();
+            if(!empty($next)){
+                return $next;
+            }
+        }
+        return null;
+    }
+
+    public function getPrevOfficeAttribute(){
+        $office = Office::where('uuid', $this->office_id)->where('process_id', $this->process_id)->first();
+        if(!empty($office)){
+            $prev = Office::where('process_id', $this->process_id)->where('position','<',$office->position)->orderBy('position','asc')->first();
+            if(!empty($prev)){
+                return $prev;
+            }
+        }
+        return null;
+    }
 }

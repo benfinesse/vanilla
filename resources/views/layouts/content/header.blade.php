@@ -59,7 +59,7 @@
                     </li><!-- .dropdown -->
                     <li class="dropdown notification-dropdown">
                         <a href="#" class="dropdown-toggle nk-quick-nav-icon mr-lg-n1" data-toggle="dropdown">
-                            <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
+                            <div class="{{ $notices->count()>0?'icon-status icon-status-info':'' }}"><em class="icon ni ni-bell"></em></div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                             <div class="dropdown-head">
@@ -67,21 +67,33 @@
                             </div>
                             <div class="dropdown-body">
                                 <div class="nk-notification">
-                                    @foreach($notices as $notice)
+                                    @forelse($notices as $notice)
                                         <div class="nk-notification-item dropdown-inner">
                                             <div class="nk-notification-icon">
-                                                <em class="icon icon-circle bg-warning-dim ni ni-alert"></em>
+                                                <a href="{{ $notice->url }}">
+                                                    <em class="icon icon-circle bg-warning-dim ni ni-alert"></em>
+                                                </a>
                                             </div>
                                             <div class="nk-notification-content">
-                                                <div class="nk-notification-text">{{ $notice->message }}</div>
+                                                <a href="{{ $notice->url }}">
+                                                    <div class="nk-notification-text">{{ $notice->title }}</div>
+                                                </a>
                                                 <div class="nk-notification-time">{{ $notice->created_at->diffForHumans() }}</div>
                                             </div>
                                         </div>
-                                    @endforeach
+
+                                    @empty
+                                        <div class="nk-notification-item dropdown-inner">
+                                            <div class="nk-notification-content">
+                                                <div class="nk-notification-text">Nothing to show</div>
+                                            </div>
+                                        </div>
+                                    @endforelse
+
                                 </div><!-- .nk-notification -->
                             </div><!-- .nk-dropdown-body -->
                             <div class="dropdown-foot center">
-                                <a href="#">View All</a>
+                                <a href="{{ route('notice.index',['type'=>'all']) }}">View More</a>
                             </div>
                         </div>
                     </li><!-- .dropdown -->

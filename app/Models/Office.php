@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Auth\AuthTrait;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 
 class Office extends Model
 {
+    use AuthTrait;
     protected $fillable = [
         'uuid',
         'user_id',
@@ -29,5 +31,11 @@ class Office extends Model
 
     public function process(){
         return $this->belongsTo(OfficeProcess::class, 'process_id', 'uuid');
+    }
+
+    public function getIsMemberAttribute(){
+        $user = $this->loggedInUser();
+        $member = OfficeMember::where('user_id', $user->uuid)->where('office_id', $this->uuid)->first();
+        return !empty($member)?true:false;
     }
 }

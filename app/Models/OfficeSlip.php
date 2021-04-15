@@ -14,5 +14,6 @@ class OfficeSlip extends Model
         'status',
         'approved',
         'comment',
+        'current'
     ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\Auth;
 
+use App\Models\Notice;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -19,8 +20,10 @@ class Access
     {
         if(Auth::check()){
 
-            View::share('person', Auth::user());
-            View::share('notices', []);
+            $user = Auth::user();
+            $notice = Notice::where('user_id', $user->uuid)->where('seen', false)->select(['title','url','user_id','created_at'])->get();
+            View::share('person', $user);
+            View::share('notices', $notice);
             return $next($request);
         }
         return redirect()->route('login');

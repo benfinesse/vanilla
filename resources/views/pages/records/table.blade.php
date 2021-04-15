@@ -22,13 +22,14 @@
                 </div>
             </td>
             <td>
-                <a href="{{ route('record.list', $record->uuid) }}" title="List Records" class="mr-2">
-                    <em class="icon ni ni-setting-alt" style="font-size: 20px"></em>
-                </a>
-                <a href="#" title="Delete Records" class="mr-2 text-danger" onclick="deleteItem('{{ route('record.pop', $record->uuid) }}')">
-                    <em class="icon ni ni-trash-alt" style="font-size: 20px"></em>
-                </a>
                 @if($record->status==="edited")
+
+                    <a href="{{ route('record.list', $record->uuid) }}" title="List Records" class="mr-2">
+                        <em class="icon ni ni-setting-alt" style="font-size: 20px"></em>
+                    </a>
+                    <a href="#" title="Delete Records" class="mr-2 text-danger" onclick="deleteItem('{{ route('record.pop', $record->uuid) }}')">
+                        <em class="icon ni ni-trash-alt" style="font-size: 20px"></em>
+                    </a>
 
                     @if($record->ready)
                         <a href="#" title="Start Process">
