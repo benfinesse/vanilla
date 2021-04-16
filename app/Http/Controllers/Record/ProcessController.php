@@ -53,7 +53,21 @@ class ProcessController extends Controller
         if(!empty($record)){
             $office = $record->office;
             if(!empty($office)){
-//                dd($office);
+                if($dir==='next'){
+                    $nextOffice = $record->nextOffice;
+                    if(!empty($nextOffice)){
+                        $res = $this->service->nextOffice($office, $record);
+                        if($res[0]){
+                            return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
+                        }else{
+                            return back()->withErrors($res[1]);
+                        }
+                    }
+                }elseif ($dir==='prev'){
+                    // todo - handle moving to previous office
+                }else{
+                    return back()->withErrors(['Could not complete request. refresh and try again']);
+                }
             }
         }
     }

@@ -12,20 +12,20 @@ class NotificationController extends Controller
     public function index(Request $request){
         $type = $request->input('type');
         $user = $request->user();
-        $query = Notice::query()->where('user_id', $user->uuid);
+        $query = Notice::query()
+            ->orderBy('id', 'desc')
+            ->where('user_id', $user->uuid);
         $data = [];
         if(empty($type)){
-            $type = 'Unseen';
+            $type = 'unread';
             $data = $query->where('seen', false)->paginate(20);
         }else{
             if($type==='seen'){
-                $type = 'Seen';
                 $data = $query->where('seen', true)->paginate(20);
             }elseif($type==='all'){
-                $type = 'All';
                 $data = $query->paginate(20);
             }else{
-                $type = 'Unseen';
+                $type = 'unread';
                 $data = $query->where('seen', false)->paginate(20);
             }
         }

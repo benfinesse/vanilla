@@ -79,4 +79,11 @@ class Record extends Model
         }
         return null;
     }
+
+    public function getCurrentOfficeSlipAttribute(){
+        return OfficeSlip::where('record_id', $this->uuid)
+            ->where('office_id', $this->office_id)
+            ->where('current', true)
+            ->first();
+    }
 }

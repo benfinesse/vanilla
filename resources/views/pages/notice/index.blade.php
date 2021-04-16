@@ -5,22 +5,22 @@
         <div class="nk-block-between-md g-4">
             <div class="nk-block-head-content">
                 <h4 class="nk-block-title fw-normal">Notifications</h4>
-                <p>{{ $type }}</p>
+                <p>{{ ucfirst($type) }}</p>
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
                     <li>
-                        <a href="{{ route('notice.index', ['type'=>'seen']) }}" class="btn btn-white btn-dim btn-outline-primary">
+                        <a href="{{ route('notice.index', ['type'=>'seen']) }}" class="btn btn-white btn-dim btn-outline-primary {{ $type==='seen'?'active':'' }}">
                             <span>Seen</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('notice.index', ['type'=>'unseen']) }}" class="btn btn-white btn-dim btn-outline-primary">
-                            <span>Unseen</span>
+                        <a href="{{ route('notice.index', ['type'=>'unread']) }}" class="btn btn-white btn-dim btn-outline-primary {{ $type==='unread'?'active':'' }}">
+                            <span>Unread</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('notice.index', ['type'=>'all']) }}" class="btn btn-white btn-dim btn-outline-primary">
+                        <a href="{{ route('notice.index', ['type'=>'all']) }}" class="btn btn-white btn-dim btn-outline-primary {{ $type==='all'?'active':'' }}">
                             <span>All</span>
                         </a>
                     </li>
@@ -45,7 +45,13 @@
                     <tbody>
                     @forelse($data as $item)
                         <tr class="tb-tnx-item">
-                            <td>{{ $item->title  }}</td>
+                            <td>
+                                <p class="mb-0">
+                                    {{ $item->title  }}
+                                </p>
+                                <p class="text-gray"><small>{{ $item->message }}</small></p>
+
+                            </td>
                             <td>{{ $item->created_at->diffForHumans() }}</td>
                             <td>{{ $item->seen?'Seen':'Not Seen' }}</td>
                             <td>

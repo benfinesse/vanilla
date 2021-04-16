@@ -18,6 +18,7 @@ class CreateNoticesTable extends Migration
             $table->uuid('uuid')->unique();
             $table->uuid('user_id')->nullable();
             $table->string('title')->nullable();
+            $table->longText('message')->nullable();
             $table->longText('url')->nullable();
             $table->string('icon')->nullable();
             $table->boolean('seen')->nullable();

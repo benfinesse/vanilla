@@ -10,6 +10,7 @@ class Notice extends Model
         'uuid',
         'user_id',
         'title',
+        'message',
         'url',
         'icon',
         'seen',
