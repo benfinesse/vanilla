@@ -51,6 +51,14 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('notifications','Admin\NotificationController@index')->name('notice.index');
     Route::get('notifications/preview/{uuid}','Admin\NotificationController@preview')->name('open.notice');
 
+    //USER ROUTES
+    Route::resource('account','Admin\AccountController');
+
+    //ROLE ROUTES
+    Route::resource('role','Admin\RoleController');
+    Route::get('account/role/manage/{uuid}','Admin\RoleController@manage')->name('role.manage');
+    Route::get('role/action/add/member', 'Admin\RoleController@addMember')->name('role.add.member');
+    Route::get('role/action/remove/member', 'Admin\RoleController@removeMember')->name('role.remove.member');
 
 
 //    Route::prefix('dashboard')->group(function () { });

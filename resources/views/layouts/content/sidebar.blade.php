@@ -58,13 +58,13 @@
                 <h6 class="overline-title">Settings</h6>
             </li>
             <li class="nk-menu-item">
-                <a href="#" class="nk-menu-link">
+                <a href="{{ route('account.index') }}" class="nk-menu-link">
                     <span class="nk-menu-icon"><em class="icon ni ni-user"></em></span>
                     <span class="nk-menu-text">Users</span>
                 </a>
             </li>
             <li class="nk-menu-item">
-                <a href="#" class="nk-menu-link">
+                <a href="{{ route('role.index') }}" class="nk-menu-link">
                     <span class="nk-menu-icon"><em class="icon ni ni-shield-alert"></em></span>
                     <span class="nk-menu-text">User Role</span>
                 </a>
