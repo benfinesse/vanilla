@@ -46,6 +46,8 @@ trait Mailer{
                 });
             }catch (\Exception $e){
 
+                dd($e->getMessage());
+
                 try{
                     $body = view($view)->with($data);
                     if(count($attachment)>0){
