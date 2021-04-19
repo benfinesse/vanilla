@@ -92,7 +92,7 @@ class AccountController extends Controller
 
             $this->sendMail('', "Vanilla Account Invite", $user->email, "Your new account with Vanilla", $user->names, $rdata, 'emails.new_account');
 
-            return redirect()->route('account.index')->withMessage("New account setup");
+            return redirect()->route('account.index')->withMessage("New account setup completed. Email sent to {$user->email}.");
 
         }
         return back()->withErrors(['Could not complete. Resource not found']);
