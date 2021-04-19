@@ -80,6 +80,7 @@ class AccountController extends Controller
             $data['last_name'] = $request->input('last_name');
             $data['email'] = $request->input('email');
             $data['token'] = $this->randomName(35);
+            $data['active'] = false;
             DB::beginTransaction();
             $user = User::create($data);
             DB::commit();
