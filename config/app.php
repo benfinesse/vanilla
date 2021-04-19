@@ -39,6 +39,8 @@ return [
     |
     */
 
+    'is_live'=> env('APP_STATE', false),
+
     'debug' => (bool) env('APP_DEBUG', false),
 
     /*

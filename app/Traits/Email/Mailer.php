@@ -26,7 +26,8 @@ trait Mailer{
     }
 
     public function sendMail($from, $title, $to, $subject, $names, $data, $view, array $attachment=[]){
-        $live = env('APP_STATE', false);
+        $live = config('app.is_live');
+        dd($live);
         if($live){
             dd("mail is live");
             try{
