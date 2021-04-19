@@ -28,6 +28,7 @@ trait Mailer{
     public function sendMail($from, $title, $to, $subject, $names, $data, $view, array $attachment=[]){
         $live = env('APP_STATE', false);
         if($live){
+            dd("mail is live");
             try{
                 $from = env('FROM_ADDRESS', 'abc@mail.com');
 //            dd($from, $title, $to, $subject, $names, $data, $view,$attachment);
