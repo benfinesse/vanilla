@@ -63,6 +63,7 @@
                                     <li class="mb-5">
                                         <div class="ml-5">
                                             <b>{{ $slip->office->name }}</b>
+                                            <p title="{{ date('F d, Y', strtotime($slip->created_at)) }}">{{ $slip->created_at->diffForHumans() }}</p>
                                             <p>{{ $slip->comment }}</p>
                                         </div>
                                     </li>
@@ -82,8 +83,7 @@
                             <div class="card-inner">
                                 <div class="row mb-3">
                                     <div class="col-6">
-                                        <a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-edit-alt"></em><span class="d-none d-sm-inline-block">Edit</span></a>
-                                        <a href="#" class="btn btn-white btn-dim btn-danger"><em class="icon ni ni-trash-alt"></em></a>
+
                                     </div>
                                     <div class="col-6">
                                         <h6 class="text-right">
