@@ -40,7 +40,9 @@
 
                     @else
                         @if($record->status==="completed")
-                            <b> - </b>
+                            <a href="{{ route('record.history', $record->uuid) }}" title="List Records" class="mr-2">
+                                <em class="icon ni ni-histroy" style="font-size: 20px"></em>
+                            </a>
                         @else
                             <b> Pending Response </b>
                         @endif

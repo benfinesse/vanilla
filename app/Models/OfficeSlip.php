@@ -16,4 +16,8 @@ class OfficeSlip extends Model
         'comment',
         'current'
     ];
+
+    public function office(){
+        return $this->hasOne(Office::class, 'uuid', 'office_id');
+    }
 }

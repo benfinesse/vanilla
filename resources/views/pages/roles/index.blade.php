@@ -42,7 +42,7 @@
                                 <td>{{ $item->userCount }}</td>
                                 <td>{{ $item->active?'Active':'Inactive' }}</td>
                                 <td>
-                                    <a href="{{ route('role.edit', $item->uuid) }}" class="mr-4" title="Edit"><em class="icon ni ni-edit-alt mr-2"></em> </a>
+                                    <a href="{{ route('role.show', $item->uuid) }}" class="mr-4" title="Edit"><em class="icon ni ni-edit-alt mr-2"></em> </a>
                                     <a href="{{ route('role.manage', $item->uuid) }}" class="mr-4" title="Manage"><em class="icon ni ni-account-setting-alt"></em></a>
                                 </td>
                             </tr>

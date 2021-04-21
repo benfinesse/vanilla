@@ -79,7 +79,8 @@ class RoleController extends Controller
     {
         $role = Role::whereUuid($uuid)->first();
         if (!empty($role)){
-            return view('pages.roles.edit')->with(['role'=>$role]);
+            $roles = $this->permissions();
+            return view('pages.roles.edit')->with(['role'=>$role, 'roles'=>$roles]);
         }
         return back()->withErrors(['Resource not found']);
 
@@ -92,7 +93,7 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit($role)
     {
         //
     }
@@ -104,9 +105,30 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $uuid)
     {
-        //
+        $role = Role::whereUuid($uuid)->first();
+        if (!empty($role)){
+
+            $request->validate([
+                'title'=>'required'
+            ]);
+
+            $fields = $this->permissions();
+            $data['title'] = $request->input('title');
+            foreach ($fields as $field){
+                $data[$field] = $request->input($field)==='on'?true:false;
+            }
+
+            DB::beginTransaction();
+            $role->update($data);
+            DB::commit();
+
+            return redirect()->route('role.index')->withMessage("Role Updated.");
+
+        }
+        return back()->withErrors(['Resource not found']);
+
     }
 
     /**

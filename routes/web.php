@@ -45,6 +45,7 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('record/process/action/next/{record_id}/{dir}','Record\ProcessController@moveOffice')->name('record.process.next_office');
 
     Route::get('record/process/action/close/{record_id}','Record\ProcessController@close')->name('record.close');
+    Route::get('record/action/show/history/{record_id}','Record\ProcessController@history')->name('record.history');
 
 
     //NOTIFICATION LIST

@@ -54,6 +54,10 @@ class Record extends Model
         return $this->hasOne(Office::class, 'uuid', 'office_id');
     }
 
+    public function slips(){
+        return $this->hasMany(OfficeSlip::class, 'record_id', 'uuid');
+    }
+
     public function groups(){
         return $this->hasMany(RecordGroup::class, 'record_id', 'uuid');
     }

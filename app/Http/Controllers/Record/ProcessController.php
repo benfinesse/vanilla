@@ -10,6 +10,7 @@ use App\Services\Record\ProcessService;
 use App\Traits\Auth\AuthTrait;
 use App\Traits\General\Utility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProcessController extends Controller
 {
@@ -73,6 +74,30 @@ class ProcessController extends Controller
     }
 
     public function close($uuid){
+        $record = Record::whereUuid($uuid)->first();
+        if(!empty($record)){
+            $record_data['completed'] = true;
+            DB::beginTransaction();
+            $record->update($record_data);
+            DB::commit();
+            // $this->service->sendOfficeNotice()
 
+            return redirect()->route('record.history', $record->uuid)->withMessage("One record completed successfully.");
+        }
+
+        return back()->withErrors(['Could not complete request. refresh and try again']);
+    }
+
+    public function history(Request $request, $record_id){
+        $record = Record::whereUuid($record_id)
+            ->with([
+                'slips'
+            ])
+            ->first();
+        if(!empty($record)){
+            return view('pages.records.history.index')->with(['record'=>$record]);
+        }
+
+        return back()->withErrors(['Could not complete request. refresh and try again']);
     }
 }
