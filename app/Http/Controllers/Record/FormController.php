@@ -66,4 +66,63 @@ class FormController extends Controller
         }
         return response()->json(['message'=>'Could not complete request. Refresh page and try again.']);
     }
+
+
+    public function update(Request $request, $uuid){
+
+        $record = Record::whereUuid($uuid)->first();
+        if(!empty($record)){
+            $dept_id = $request->input('dept_id');
+            $group = Group::whereUuid($dept_id)->first();
+            if(!empty($group)){
+                $group_record_id = $request->input('group_record_id');
+                $group_record = RecordGroup::whereUuid($group_record_id)->first();
+
+                if(!empty($group_record)){
+                    if($group_record->recordItems->count() > 0){
+                        //delete old record
+                        foreach ($group_record->recordItems as $item){
+                            $item->delete();
+                        }
+                    }
+                }
+
+                $user = $this->loggedInUser();
+
+                $items = $request->input('items');
+
+                if(count($items)>0){
+
+                    //create group
+                    DB::beginTransaction();
+
+                    $rg_id = $group_record->uuid;
+
+                    foreach ($items as $item){
+                        $data['uuid'] = $this->makeUuid();
+                        $data['user_id'] = $user->uuid;
+                        $data['record_id'] = $record->uuid;
+                        $data['record_group_id'] = $rg_id;
+                        $data['measure'] = $item['measure'];
+                        $data['name'] = $item['name'];
+                        $data['qty'] = intval($item['qty']);
+                        $data['price'] = floatval($item['price']);
+                        RecordItem::create($data);
+                    }
+
+                    DB::commit();
+
+                    return response()->json([
+                        'success'=>true,
+                        'message'=>'record updated',
+                        'redirect'=>'back'
+                    ]);
+
+                }
+
+                return response()->json(['message'=>'Items might be empty, double check or refresh page.']);
+            }
+        }
+        return response()->json(['message'=>'Could not complete request. Refresh page and try again.']);
+    }
 }

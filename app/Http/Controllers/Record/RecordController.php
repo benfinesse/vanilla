@@ -43,12 +43,6 @@ class RecordController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-//     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $user = $request->user();
@@ -86,8 +80,9 @@ class RecordController extends Controller
         return redirect()->route('record.index')->withErrors(['Resource not found']);
     }
 
-    public function listItems($uuid){
+    public function listItems(Request $request, $uuid){
 
+        $message = $request->input('message');
 
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
@@ -96,52 +91,66 @@ class RecordController extends Controller
             return view('pages.records.manage.list')->with([
                 'data'=>$data,
                 'record'=>$record,
-                'groups'=>$groups
+                'groups'=>$groups,
+                'message'=>$message
             ]);
         }
         return redirect()->route('record.index')->withErrors(['Resource not found']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Record  $record
-     * @return \Illuminate\Http\Response
-     */
+    public function load(Request $request, $record_id, $group_id){
+        $record = Record::whereUuid($record_id)->first();
+        if(!empty($record)){
+            $group = RecordGroup::where('group_id', $group_id)->where('record_id', $record_id)->first();
+            if(!empty($group)){
+                $data['record'] = $record;
+                $data['group'] = $group;
+                $data['group_items'] = $group->RecordItems;
+                return response()->json(['success'=>true, 'data'=>$data]);
+            }
+
+        }
+        return response()->json(['success'=>false]);
+    }
+
+    public function editGroupRecord(Request $request, $uuid){
+
+        $refer = $request->header('referer');
+
+
+        $groupRec = RecordGroup::whereUuid($uuid)->with(['record','group'])->first();
+        if(!empty($groupRec)){
+            $measures = Measure::get();
+            return view('pages.records.manage.edit_record')->with(
+                [
+                    'groupRecord'=>$groupRec,
+                    'record'=>$groupRec->record,
+                    'dept'=>$groupRec->group,
+                    'measures'=>$measures,
+                    'referer'=>$refer
+                ]
+            );
+        }
+
+        return back()->withErrors(["Resource not found"]);
+    }
+
     public function show(Record $record)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Record  $record
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Record $record)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Record  $record
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Record $record)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Record  $record
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Record $record)
     {
         //

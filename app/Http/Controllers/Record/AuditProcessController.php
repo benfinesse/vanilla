@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class AuditProcessController extends Controller
 {
     public function show(Request $request, $uuid){
+        $msg = $request->input('message');
         $user = $request->user();
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
@@ -25,7 +26,8 @@ class AuditProcessController extends Controller
                     //ensure only office members can view
                     if($office->isMember){
                         return view('pages.audit.preview')->with([
-                            'record'=>$record
+                            'record'=>$record,
+                            'message'=>$msg
                         ]);
                     }else{
                         return redirect()->route('notice.index', ['type'=>'all'])->withErrors(['You do not have valid access to the resource.']);

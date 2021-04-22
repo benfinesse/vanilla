@@ -13,6 +13,12 @@
             </div>
         </div>
         @include('layouts.notice')
+        @if(!empty($message))
+            <div class="alert alert-info" >
+                {{ $message }}
+                <a href="#" class="close pull-right" data-dismiss="alert" aria-label="close" >&times;</a>
+            </div>
+        @endif
     </div>
     <div class="nk-content-wrap">
         <div class="nk-block">
@@ -28,7 +34,7 @@
                             <div class="card-inner">
                                 <div class="row mb-3">
                                     <div class="col-6">
-                                        <a href="#" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-edit-alt"></em><span class="d-none d-sm-inline-block">Edit</span></a>
+                                        <a href="{{ route('record.group.edit', $group_rec->uuid) }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-edit-alt"></em><span class="d-none d-sm-inline-block">Edit</span></a>
                                         <a href="#" class="btn btn-white btn-dim btn-danger"><em class="icon ni ni-trash-alt"></em></a>
                                     </div>
                                     <div class="col-6">
@@ -113,7 +119,10 @@
                                     <div class="col-md-6 mb-4 mt-4">
                                         <div class="card card-bordered">
                                             <div class="card-inner">
-
+                                                <div class="form-group">
+                                                    <label class="form-label" for="first_name">Comment (optional)</label>
+                                                    <input id="first_name" class="form-control" name="comment" value="{{ old('comment') }}" autocomplete="off" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

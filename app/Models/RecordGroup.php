@@ -17,8 +17,8 @@ class RecordGroup extends Model
         return $this->hasOne(Group::class, 'uuid', 'group_id');
     }
 
-    public function records(){
-
+    public function record(){
+        return $this->belongsTo(Record::class, 'record_id', 'uuid');
     }
 
     public function getRecordItemsAttribute(){

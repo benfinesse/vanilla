@@ -18,11 +18,13 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('dashboard', 'Admin\DashboardController@index')->name('dashboard');
     Route::resource('record', 'Record\RecordController');
     Route::get('record/pop/{uuid}', 'Record\RecordController@pop')->name('record.pop');
+    Route::get('group/record/edit/{uuid}', 'Record\RecordController@editGroupRecord')->name('record.group.edit');
     Route::resource('measure', 'Admin\MeasureController');
     Route::resource('group', 'Admin\GroupController');
     Route::get('record/manage/{uuid}/{gid}', 'Record\RecordController@manage')->name('record.manage');
     Route::get('record/list/{uuid}', 'Record\RecordController@listItems')->name('record.list');
     Route::post('form/record/store/{uuid}','Record\FormController@store')->name('form.store');
+    Route::post('form/record/update/{uuid}','Record\FormController@update')->name('form.update');
 
 
     //AUDIT ROUTES
@@ -47,6 +49,7 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('record/process/action/close/{record_id}','Record\ProcessController@close')->name('record.close');
     Route::get('record/action/show/history/{record_id}','Record\ProcessController@history')->name('record.history');
 
+    Route::post('record/process/action/load/{record_id}/{group_id}','Record\RecordController@load')->name('record.load');
 
     //NOTIFICATION LIST
     Route::get('notifications','Admin\NotificationController@index')->name('notice.index');

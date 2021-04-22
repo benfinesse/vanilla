@@ -14,7 +14,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label class="form-label" for="dept"> Date</label>
-                        <input type="date" class="form-control date_field input_sync" name="date" value="{{ date('Y-m-d') }}" required />
+                        <input type="date" class="form-control date_field input_sync" name="date" value="{{ date('Y-m-d', strtotime($groupRecord->created_at)) }}" required />
                     </div>
                 </div>
 
@@ -113,7 +113,7 @@
                     </div>
                     <div class="form-group">
                         <button type="submit" onclick="event.preventDefault(); submitForm()" class="btn btn-lg btn-primary btn_sync">
-                            <span class="process_text">Save Record</span>
+                            <span class="process_text">Update Record</span>
                             <div class="spinner-border process_loader" role="status" style="display: none; width: 1.4em; height: 1.4em;">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -300,13 +300,15 @@
             let slip_custom_id = $('.slip_custom_id').val();
             let invoice_date = $('.invoice_date').val();
             let dept_id = "{{ $dept->uuid }}";
+            let group_record_id = "{{ $groupRecord->uuid }}";
             $.ajax({
-                url: "{{ route('form.store', $record->uuid) }}",
+                url: "{{ route('form.update', $record->uuid) }}",
                 type:"POST",
                 data:{
                     _token: _token,
                     items: items,
                     dept_id:dept_id,
+                    group_record_id:group_record_id,
                     date:date
                 },
                 success: function (res) {
@@ -316,9 +318,10 @@
 
                     if(res.success){
                         //empty deck
-                        toast('success', '', `${res.message}`)
+
+                        toast('success', '', `${res.message}`);
                         setTimeout(()=>{
-                            window.location = res.redirect;
+                            window.location = "{{ $referer }}?message=Record Updated Successfully'";
                         }, 2000)
                     }else{
                         processLoader('hide');
@@ -364,6 +367,67 @@
                 inputs.prop("disabled",true);
                 btn.prop("disabled",true);
             }
+        }
+
+        function loadTable() {
+            resetDeck();
+
+            processLoader('show');
+
+            let _token = $('meta[name="csrf-token"]').attr('content');
+            let record_id = "{{ $record->uuid }}";
+
+            $.ajax({
+                url: "{{ route('record.load', ['record_id'=>$record->uuid, 'group_id'=>$dept->uuid]) }}",
+                type:"POST",
+                data:{
+                    _token: _token,
+                    record_id :record_id
+                },
+                success: function (res) {
+//                    console.log(res);
+                    //hide loader
+
+
+                    if(res.success){
+                        //empty deck
+//                        console.log(res.data.group_items);
+                        res.data.group_items.forEach( async (item, pos)=> {
+                            await loadList(item);
+                        });
+                        reloadTable();
+                        toast('success', '', `${res.message}`)
+                        processLoader('hide');
+                        toggleFields(true);
+                    }else{
+                        processLoader('hide');
+                        toggleFields(true);
+                        toast('error', `server response: ${res.message}`, 7000)
+                    }
+
+                    // You will get response from your PHP page (what you echo or print)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    processLoader('hide');
+                    toggleFields(true);
+                    toast('error', 'Unable to complete. Try again later.')
+                    console.log(textStatus, errorThrown);
+                }
+            });
+        }
+
+        loadTable();
+
+        async function loadList(item) {
+            await items.push({
+                name:item.name,
+                qty:item.qty,
+                price:parseFloat(item.price),
+                measure:item.measure,
+                amount:parseFloat(item.price*item.qty)
+            });
+
+            console.log(item);
         }
     </script>
 @endsection
