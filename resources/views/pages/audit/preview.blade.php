@@ -77,18 +77,64 @@
                 @endforeach
 
                 @if($grand_total>0)
-                    <div class="col-md-6 mb-4 mt-4">
-                        <div class="card card-bordered">
-                            <div class="card-inner text-center">
-                                <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
-                                @if(!empty($record->nextOffice))
-                                    <a href="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next']) }}" class="btn btn-outline-primary">Submit to {{ $record->nextOffice->name }}</a>
-                                @else
-                                    <a href="{{ route('record.close', $record->uuid) }}" class="btn btn-outline-primary">Complete and Close Record</a>
-                                @endif
-                            </div>
+                    @if(!empty($record->nextOffice))
+                        <div class="col-12">
+                            <form action="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next']) }}" method="get">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4 mt-4">
+                                        <div class="card card-bordered">
+                                            <div class="card-inner">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="first_name">Comment (optional)</label>
+                                                    <input id="first_name" class="form-control" name="comment" value="{{ old('comment') }}" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4 mt-4">
+                                        <div class="card card-bordered">
+                                            <div class="card-inner text-center">
+                                                <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
+                                                @if(!empty($record->nextOffice))
+                                                    <button class="btn btn-outline-primary">Submit to {{ $record->nextOffice->name }}</button>
+                                                @else
+                                                    <button class="btn btn-outline-primary">Complete and Close Record</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
+                    @else
+                        <div class="col-12">
+                            <form action="{{ route('record.close', $record->uuid) }}" method="get">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4 mt-4">
+                                        <div class="card card-bordered">
+                                            <div class="card-inner">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4 mt-4">
+                                        <div class="card card-bordered">
+                                            <div class="card-inner text-center">
+                                                <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
+                                                @if(!empty($record->nextOffice))
+                                                    <button class="btn btn-outline-primary">Submit to {{ $record->nextOffice->name }}</button>
+                                                @else
+                                                    <button class="btn btn-outline-primary">Complete and Close Record</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    @endif
+
                     <div class="col-12 mb-4 mt-4">
                         <p class="">Click the <b>submit to ... button</b> above when audit is completed to move audit to the next office. or send it back for review.</p>
                     </div>

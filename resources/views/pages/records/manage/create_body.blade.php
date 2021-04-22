@@ -65,7 +65,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="item_qty">Price</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control p_control item_price item_val input_sync" id="item_price">
+                                    <input type="text" onkeypress="return numbersOnly(event)" class="form-control p_control item_price item_val input_sync" id="item_price">
                                 </div>
                             </div>
                         </div>
@@ -202,7 +202,7 @@
                 return false;
             }
             if(k==="."){
-                return false;
+                return true;
             }
             if(isNaN(k)){
                 return false;
@@ -312,18 +312,20 @@
                 success: function (res) {
                     console.log(res);
                     //hide loader
-                    processLoader('hide');
-                    toggleFields(true);
+
 
                     if(res.success){
                         //empty deck
                         resetDeck();
-
                         toast('success', '', `${res.message}`)
                         setTimeout(()=>{
+                            processLoader('hide');
+                            toggleFields(true);
                             window.location = res.redirect;
                         }, 2000)
                     }else{
+                        processLoader('hide');
+                        toggleFields(true);
                         toast('error', `server response: ${res.message}`, 7000)
                     }
 

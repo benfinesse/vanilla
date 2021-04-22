@@ -45,6 +45,9 @@
                             </a>
                         @else
                             <b> Pending Response </b>
+                            <a href="{{ route('record.history', $record->uuid) }}" title="List Records" class="ml-4">
+                                <em class="icon ni ni-histroy" style="font-size: 20px"></em>
+                            </a>
                         @endif
                     @endif
 

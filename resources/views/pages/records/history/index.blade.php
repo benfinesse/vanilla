@@ -57,13 +57,13 @@
                 <div class="col-12">
                     <div class="card card-bordered">
                         <div class="card-inner">
-                            <p class=""><b>Record Trail</b></p>
+                            <p class=""><b>Office Record Trail</b></p>
                             <ul class="timeline">
                                 @foreach($record->slips as $slip)
                                     <li class="mb-5">
                                         <div class="ml-5">
-                                            <b>{{ $slip->office->name }}</b>
-                                            <p title="{{ date('F d, Y', strtotime($slip->created_at)) }}">{{ $slip->created_at->diffForHumans() }}</p>
+                                            <b>{{ $slip->office->name }} Office</b> <small class="ml-3" title="{{ date('F d, Y | h:i', strtotime($slip->created_at)) }}">{{ $slip->created_at->diffForHumans() }}</small>
+                                            <p class="mb-0">{{ !empty($slip->lastUser)?$slip->lastUser->names:"pending" }} <small class="ml-3" title="{{ date('F d, Y | h:i', strtotime($slip->updated_at)) }}">{{ $slip->updated_at->diffForHumans() }}</small></p>
                                             <p>{{ $slip->comment }}</p>
                                         </div>
                                     </li>

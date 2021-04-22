@@ -71,7 +71,7 @@ class ProcessService
         $this->sendOfficeNotice($office, $url, $message, $title);
     }
 
-    public function nextOffice(Office $office, Record $record){
+    public function nextOffice(Office $office, Record $record, $comment){
 
         if(!empty($office)){
             $currentSlip = $record->currentOfficeSlip;
@@ -79,7 +79,7 @@ class ProcessService
                 $nextOffice = $record->nextOffice;
                 if(!empty($nextOffice)){
                     $user = $this->loggedInUser();
-                    $this->buildStage($record, $nextOffice, $user, $currentSlip);
+                    $this->buildStage($record, $nextOffice, $user, $currentSlip, $comment);
                     return [1, "Completed"];
                 }
                 //else proceed to completion
@@ -92,7 +92,7 @@ class ProcessService
         return [0, "No office instance"];
     }
 
-    public function buildStage(Record $record, Office $office, User $user, OfficeSlip $oldSlip){
+    public function buildStage(Record $record, Office $office, User $user, OfficeSlip $oldSlip, $comment=null){
         $slip_data['uuid'] = $this->makeUuid();
         $slip_data['user_id'] = $user->uuid;
         $slip_data['record_id'] = $record->uuid;
@@ -104,6 +104,8 @@ class ProcessService
         DB::beginTransaction();
         OfficeSlip::create($slip_data);
         $os['current'] = false;
+        $os['comment'] = empty($comment)?"Approved by {$user->names}":$comment;
+        $os['user_id_2'] = $user->uuid;
         $oldSlip->update($os);
 
         //update record

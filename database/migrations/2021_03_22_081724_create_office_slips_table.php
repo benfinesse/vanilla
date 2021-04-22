@@ -17,11 +17,13 @@ class CreateOfficeSlipsTable extends Migration
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique();
             $table->uuid('user_id')->nullable();
+            $table->uuid('user_id_2')->nullable(); // last update user id
             $table->uuid('record_id')->nullable();//current record uuid - reflecting pending action for record
             $table->uuid('office_id')->nullable();
             $table->string('status'); //pending, responded
             $table->boolean('approved')->nullable();
             $table->text('comment')->nullable();
+            $table->boolean('current')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('uuid')->on('users');

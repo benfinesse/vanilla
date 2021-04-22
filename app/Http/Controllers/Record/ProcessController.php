@@ -50,6 +50,7 @@ class ProcessController extends Controller
      * @param $dir - direction i.e next || prev
      */
     public function moveOffice(Request $request, $record_id, $dir){
+        $comment = $request->input('comment');
         $record = Record::whereUuid($record_id)->first();
         if(!empty($record)){
             $office = $record->office;
@@ -57,7 +58,7 @@ class ProcessController extends Controller
                 if($dir==='next'){
                     $nextOffice = $record->nextOffice;
                     if(!empty($nextOffice)){
-                        $res = $this->service->nextOffice($office, $record);
+                        $res = $this->service->nextOffice($office, $record, $comment);
                         if($res[0]){
                             return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
                         }else{
@@ -73,11 +74,21 @@ class ProcessController extends Controller
         }
     }
 
-    public function close($uuid){
+    public function close(Request $request, $uuid){
+        $user = $this->loggedInUser();
+        $comment = $request->input('comment');
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
             $record_data['completed'] = true;
+            $currentOfficeSlip = $record->currentOfficeSlip;
+
             DB::beginTransaction();
+            //update current slip
+            if(!empty($currentOfficeSlip)){
+                $os['comment'] = empty($comment)?"Approved by {$user->names}":$comment;
+                $os['user_id_2'] = $user->uuid;
+                $currentOfficeSlip->update($os);
+            }
             $record->update($record_data);
             DB::commit();
             // $this->service->sendOfficeNotice()

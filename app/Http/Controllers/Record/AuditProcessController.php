@@ -14,6 +14,9 @@ class AuditProcessController extends Controller
         $user = $request->user();
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
+            if($record->completed){
+                return redirect()->route('record.history', $record->uuid)->withMessage("Record completed already.");
+            }
             //ensure that only the record has not moved to another office
             $office_slip = OfficeSlip::where('record_id', $record->uuid)->where('office_id', $record->office_id)->where('current', true)->first();
             if(!empty($office_slip)){
@@ -28,7 +31,7 @@ class AuditProcessController extends Controller
                         return redirect()->route('notice.index', ['type'=>'all'])->withErrors(['You do not have valid access to the resource.']);
                     }
                 }
-                return redirect()->route('notice.index', ['type'=>'all'])->withErrors(['Sorry. The file has been moved.']);
+                return redirect()->route('record.history', $record->uuid)->withMessage('Sorry. The file has been moved.');
             }
         }
         return back()->withErrors(['Resource not found.']);
