@@ -46,7 +46,7 @@ trait Mailer{
                 });
             }catch (\Exception $e){
 
-//                dd($e->getMessage());
+                dd($e->getMessage());
 
                 try{
                     $body = view($view)->with($data);
