@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Services\Account\AccountService;
 use App\Traits\Email\Mailer;
 use App\Traits\General\Utility;
 use App\User;
@@ -13,11 +14,14 @@ use Illuminate\Support\Facades\DB;
 class AccountController extends Controller
 {
     use Utility, Mailer;
-    /**
-     * Display a listing of the resource.
-     *
-//     * @return \Illuminate\Http\Response
-     */
+
+    protected $service;
+
+    public function __construct(AccountService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index(Request $request)
     {
         $type = $request->input('type');
@@ -70,31 +74,42 @@ class AccountController extends Controller
             'role_id'=>'required',
             'first_name'=>'required',
             'last_name'=>'required',
-            'email'=>'required|unique:users',
+            'email'=>'required',
         ]);
 
         $role = Role::whereUuid($request->input('role_id'))->first();
         if(!empty($role)){
-            $data['uuid'] = $this->makeUuid();
-            $data['first_name'] = $request->input('first_name');
-            $data['last_name'] = $request->input('last_name');
-            $data['email'] = $request->input('email');
-            $data['token'] = $this->randomName(35);
-            $data['active'] = false;
-            DB::beginTransaction();
-            $user = User::create($data);
-            DB::commit();
+            $email = $request->input('email');
+            $user = User::where('email', $email)->first();
+            if(empty($user)){
+                $data['uuid'] = $this->makeUuid();
+                $data['first_name'] = $request->input('first_name');
+                $data['last_name'] = $request->input('last_name');
+                $data['email'] = $email;
+                $data['token'] = $this->randomName(35);
+                $data['active'] = false;
+                DB::beginTransaction();
+                $user = User::create($data);
+                DB::commit();
 
-            //send email to user with access to new role
-            $rdata = [
-                'user'=>$user,
-                'role'=>$role
-            ];
+                $this->sendMail('', "Vanilla Account Invite", $user->email, "Your new account with Vanilla", $user->names, $rdata, 'emails.new_account');
 
-            $this->sendMail('', "Vanilla Account Invite", $user->email, "Your new account with Vanilla", $user->names, $rdata, 'emails.new_account');
+                return redirect()->route('account.index')->withMessage("New account setup completed. Email sent to {$user->email}.");
 
-            return redirect()->route('account.index')->withMessage("New account setup completed. Email sent to {$user->email}.");
+            }else{
+                if(!$user->active){
+                    //send email to user with access to new role
+                    $rdata = [
+                        'user'=>$user,
+                        'role'=>$role
+                    ];
 
+                    $this->sendMail('', "Vanilla Account Invite", $user->email, "Your new account with Vanilla", $user->names, $rdata, 'emails.new_account');
+
+                    return redirect()->route('account.index')->withMessage("New account setup completed. Email sent to {$user->email}.");
+                }
+            }
+            return back()->withErrors(['Account is already existing and is active.'])->withInput();
         }
         return back()->withErrors(['Could not complete. Resource not found']);
     }
@@ -110,15 +125,15 @@ class AccountController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+        $user = User::whereUuid($id)->first();
+        if(!empty($user)){
+            return view('pages.users.edit')->with(['user'=>$user]);
+        }
+
+        return back()->withErrors(['Resource not found']);
     }
 
     /**
@@ -130,7 +145,23 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+//            'email'=>'required',
+        ]);
+
+        $user = User::whereUuid($id)->first();
+        if(!empty($user)){
+            $dt['first_name'] = $request->input('first_name');
+            $dt['last_name'] = $request->input('last_name');
+            DB::beginTransaction();
+            $user->update($dt);
+            DB::commit();
+            return back()->withMessage("Account updated successfully.");
+        }
+
+        return back()->withErrors(['Resource not found']);
     }
 
     /**
@@ -142,5 +173,56 @@ class AccountController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function complete($t, $r){
+        $user = User::where('token', $t)->where('active',false)->first();
+        if(!empty($user)){
+            $role = Role::where('uuid', $r)->first();
+            if(!empty($role)){
+                return view('auth.account')->with([
+                    'user'=>$user,
+                    'role'=>$role
+                ]);
+            }
+        }
+
+        return redirect()->route('login')->withMessage("Failed to process request. Retry from admin.");
+    }
+
+    public function completeAccount(Request $request, $t, $r){
+        $request->validate([
+            'password'=>'required',
+            'confirm_password'=>'required',
+        ]);
+
+        $user = User::where('token', $t)->first();
+        if(!empty($user)){
+            $role = Role::where('uuid', $r)->first();
+            if(!empty($role)){
+
+                $pass1 = $request->input('password');
+                $pass2 = $request->input('confirm_password');
+                if($pass1!==$pass2){
+                    return back()->withErrors(['Password does not match. Try again.'])->withInput();
+                }
+
+                $data['password'] = bcrypt($pass1);
+                $data['active'] = true;
+                $data['email_verified_at'] = now();
+                $res = $this->service->addToRole($user->uuid, $role->uuid);
+                if($res[0]){
+                    DB::beginTransaction();
+                    $user->update($data);
+                    DB::commit();
+
+                    return redirect()->route('login')->withMessage($res[1]);
+                }else{
+                    return redirect()->route('login')->withErrors([$res[1]]);
+                }
+            }
+        }
+
+        return redirect()->route('login')->withMessage("Failed to process request. Retry from admin.");
     }
 }

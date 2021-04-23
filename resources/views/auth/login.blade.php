@@ -8,6 +8,7 @@
             <div class="nk-block-des">
                 <p>Enter credentials to continue.</p>
             </div>
+            @include('layouts.notice')
         </div>
     </div>
     <form method="POST" action="{{ route('login') }}">

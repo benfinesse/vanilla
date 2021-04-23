@@ -2,13 +2,16 @@
 
 namespace App;
 
+use App\Models\Role;
+use App\Models\RoleMember;
+use App\Traits\Auth\Permission;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Permission;
 
     /**
      * The attributes that are mass assignable.
@@ -56,5 +59,9 @@ class User extends Authenticatable
 
     public function getNamesAttribute(){
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function roles(){
+        return $this->hasManyThrough(Role::class, RoleMember::class, 'user_id', 'uuid', 'uuid', 'role_id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\RoleMember;
+use App\Services\Account\AccountService;
 use App\Traits\General\RoleList;
 use App\Traits\General\Utility;
 use App\User;
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\DB;
 class RoleController extends Controller
 {
     use RoleList, Utility;
+
+    protected $service;
+
+    public function __construct(AccountService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -161,19 +170,14 @@ class RoleController extends Controller
 
             $user = User::whereUuid($member_id)->first();
             if(!empty($user)){
-                //check of member is already in office
-                $exist = RoleMember::where('user_id', $member_id)->where('role_id', $role_id)->first();
-                if(empty($exist)){
-                    // add member
-                    $data['uuid'] = $this->makeUuid();
-                    $data['user_id'] = $member_id;
-                    $data['role_id'] = $role_id;
-                    DB::beginTransaction();
-                    RoleMember::create($data);
-                    DB::commit();
-                    return back()->withMessage("New member added to group.");
+
+                $res = $this->service->addToRole($member_id, $role_id);
+                if($res[0]){
+                    return back()->withMessage($res[1]);
+                }else{
+                    return back()->withErrors([$res[1]]);
                 }
-                return back()->withErrors(['Member already in group']);
+
             }
         }
         return back()->withErrors(['Could not complete request.']);
@@ -184,12 +188,12 @@ class RoleController extends Controller
         $role_id = $request->input('role_id');
         $role = Role::whereUuid($role_id)->first();
         if(!empty($role)) {
-            $exist = RoleMember::where('user_id', $member_id)->where('role_id', $role_id)->first();
-            if(!empty($exist)){
-                $exist->delete();
-                return back()->withMessage("Member removed from group");
+            $res = $this->service->removeFromRole($member_id, $role_id);
+            if($res[0]){
+                return back()->withMessage($res[1]);
+            }else{
+                return back()->withErrors([$res[1]]);
             }
-            return back()->withErrors(['Member not in group']);
         }
         return back()->withErrors(['Could not complete request.']);
     }

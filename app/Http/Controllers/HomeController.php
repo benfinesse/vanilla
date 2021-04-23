@@ -25,4 +25,8 @@ class HomeController extends Controller
     {
         return redirect()->route('dashboard');
     }
+
+    public function register(){
+        return redirect()->route('login');
+    }
 }

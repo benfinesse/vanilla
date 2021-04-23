@@ -45,6 +45,8 @@ class CreateRolesTable extends Migration
             $table->boolean('view_measure')->nullable();
             $table->boolean('view_users')->nullable();
             $table->boolean('view_roles')->nullable();
+            $table->boolean('administration')->nullable();
+            $table->boolean('settings')->nullable();
             $table->boolean('active')->nullable();
             $table->timestamps();
 

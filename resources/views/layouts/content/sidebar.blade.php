@@ -32,43 +32,47 @@
                 </a>
             </li>
 
-            <li class="nk-menu-heading">
-                <h6 class="overline-title">Administration</h6>
-            </li>
-            <li class="nk-menu-item">
-                <a href="{{ route('process.index') }}" class="nk-menu-link">
-                    <span class="nk-menu-icon"><em class="icon ni ni-send-alt"></em></span>
-                    <span class="nk-menu-text">Processes</span>
-                </a>
-            </li>
-            <li class="nk-menu-item">
-                <a href="{{ route('measure.index') }}" class="nk-menu-link">
-                    <span class="nk-menu-icon"><em class="icon ni ni-list-check"></em></span>
-                    <span class="nk-menu-text">Measure</span>
-                </a>
-            </li>
-            <li class="nk-menu-item">
-                <a href="{{ route('group.index') }}" class="nk-menu-link">
-                    <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
-                    <span class="nk-menu-text">Department</span>
-                </a>
-            </li>
+            @if($person->hasAccess('admin'))
+                <li class="nk-menu-heading">
+                    <h6 class="overline-title">Administration</h6>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="{{ route('process.index') }}" class="nk-menu-link">
+                        <span class="nk-menu-icon"><em class="icon ni ni-send-alt"></em></span>
+                        <span class="nk-menu-text">Processes</span>
+                    </a>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="{{ route('measure.index') }}" class="nk-menu-link">
+                        <span class="nk-menu-icon"><em class="icon ni ni-list-check"></em></span>
+                        <span class="nk-menu-text">Measure</span>
+                    </a>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="{{ route('group.index') }}" class="nk-menu-link">
+                        <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
+                        <span class="nk-menu-text">Department</span>
+                    </a>
+                </li>
+            @endif
 
-            <li class="nk-menu-heading">
-                <h6 class="overline-title">Settings</h6>
-            </li>
-            <li class="nk-menu-item">
-                <a href="{{ route('account.index') }}" class="nk-menu-link">
-                    <span class="nk-menu-icon"><em class="icon ni ni-user"></em></span>
-                    <span class="nk-menu-text">Users</span>
-                </a>
-            </li>
-            <li class="nk-menu-item">
-                <a href="{{ route('role.index') }}" class="nk-menu-link">
-                    <span class="nk-menu-icon"><em class="icon ni ni-shield-alert"></em></span>
-                    <span class="nk-menu-text">User Role</span>
-                </a>
-            </li>
+            @if($person->hasAccess('admin'))
+                <li class="nk-menu-heading">
+                    <h6 class="overline-title">Settings</h6>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="{{ route('account.index') }}" class="nk-menu-link">
+                        <span class="nk-menu-icon"><em class="icon ni ni-user"></em></span>
+                        <span class="nk-menu-text">Users</span>
+                    </a>
+                </li>
+                <li class="nk-menu-item">
+                    <a href="{{ route('role.index') }}" class="nk-menu-link">
+                        <span class="nk-menu-icon"><em class="icon ni ni-shield-alert"></em></span>
+                        <span class="nk-menu-text">User Role</span>
+                    </a>
+                </li>
+            @endif
         </ul>
         <!-- Menu -->
 

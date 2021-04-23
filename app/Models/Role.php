@@ -38,6 +38,8 @@ class Role extends Model
         'view_measure',
         'view_users',
         'view_roles',
+        'administration',
+        'settings',
         'active',
     ];
 

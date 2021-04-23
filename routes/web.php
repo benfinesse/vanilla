@@ -68,5 +68,8 @@ Route::group(['middleware'=>['auth','access']], function (){
 //    Route::prefix('dashboard')->group(function () { });
 });
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('register', 'HomeController@register')->name('home');
 Route::get('dev/test/email/{email}', 'Developer\TestController@email');
 
+Route::get('account/{t}/co/{r}', 'Admin\AccountController@complete')->name('account.complete');
+Route::post('account/finish/{t}/user/{r}', 'Admin\AccountController@completeAccount')->name('complete.account');

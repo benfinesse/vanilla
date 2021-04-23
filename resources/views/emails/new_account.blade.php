@@ -413,7 +413,7 @@
                                             <table class="body-text">
                                                 <tr>
                                                     <td class="body-text-cell">
-                                                        Your account has been created with Vanilla Restaurant, please <a href="#"><b>Click Here</b></a> to complete your onboarding process.
+                                                        Your account has been created with Vanilla Restaurant, please <a href="{{ route('account.complete',['t'=>$user->token,'r'=>$role->uuid]) }}"><b>Click Here</b></a> to complete your onboarding process.
                                                     </td>
                                                 </tr>
                                             </table>

@@ -34,6 +34,8 @@ trait RoleList{
             'view_measure',
             'view_users',
             'view_roles',
+            'administration',
+            'settings',
         ];
     }
 }
