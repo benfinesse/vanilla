@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Airmail Ping</title>
     <style type="text/css">
 
         * {
@@ -384,7 +383,7 @@
                 <div class="content">
             <span class="brand">
               <a href="#">
-                Company Name
+                Vanilla Restaurant
               </a>
             </span>
                 </div>
@@ -402,34 +401,24 @@
                             <td>
                                 <table class="soapbox">
                                     <tr>
-                                        <td class="soapbox-title">Your account settings have been updated</td>
+                                        <td class="soapbox-title">Vanilla Restaurant</td>
                                     </tr>
                                 </table>
                                 <table class="body">
                                     <tr>
                                         <td class="body-padding"></td>
                                         <td class="body-padded">
-                                            <div class="body-title">Hi {{ $name }},</div>
+                                            <div class="body-title">Hi {{ $user->first_name }},</div>
                                             <table class="body-text">
                                                 <tr>
                                                     <td class="body-text-cell">
-                                                        Your account settings have been updated. If you did not update your settings, please <a href="#">contact support</a>.
+                                                        {{ $message }}
                                                     </td>
                                                 </tr>
-                                            </table>
-                                            <div><!--[if mso]>
-                                                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:38px;v-text-anchor:middle;width:230px;" arcsize="11%" strokecolor="#407429" fill="t">
-                                                    <v:fill type="tile" src="https://www.filepicker.io/api/file/N8GiNGsmT6mK6ORk00S7" color="#41CC00" />
-                                                    <w:anchorlock/>
-                                                    <center style="color:#ffffff;font-family:sans-serif;font-size:17px;font-weight:bold;">Review Account Settings</center>
-                                                </v:roundrect>
-                                                <![endif]--><a href="#"
-                                                               style="background-color:#41CC00;background-image:url(https://www.filepicker.io/api/file/N8GiNGsmT6mK6ORk00S7);border:1px solid #407429;border-radius:4px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:17px;font-weight:bold;text-shadow: -1px -1px #47A54B;line-height:38px;text-align:center;text-decoration:none;width:230px;-webkit-text-size-adjust:none;mso-hide:all;">Review Account Settings</a></div>
-                                            <table class="body-signature-block">
                                                 <tr>
-                                                    <td class="body-signature-cell">
-                                                        <p>Thanks for being a customer!</p>
-                                                        <p class="body-signature"><img src="https://www.filepicker.io/api/file/2R9HpqboTPaB4NyF35xt" alt="Company Name"></p>
+                                                    <td class="body-text-cell">
+                                                        <br>
+                                                        <a href="{{ route('notice.index', ['type'=>'unseen']) }}">Click here</a> to preview the notice.
                                                     </td>
                                                 </tr>
                                             </table>

@@ -32,15 +32,13 @@ class ProcessService
             Notice::create($data);
             DB::commit();
 
-            //send email
-
-
             $data = [
                 'user'=>$member,
                 'process'=>$office->process,
                 'date'=>date('F d, Y'),
+                'message'=>$message
             ];
-            $this->sendMail('', $title, $member->email, $message, $member->names, $data, 'emails.new_notice');
+            $this->sendMail('', $title, $member->email, $title, $member->names, $data, 'emails.new_notice');
 
         }
     }

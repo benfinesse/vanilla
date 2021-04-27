@@ -51,7 +51,7 @@ class FormController extends Controller
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $item['measure'];
                         $data['name'] = $name;
-                        $data['qty'] = intval($item['qty']);
+                        $data['qty'] = floatval($item['qty']);
                         $data['price'] = floatval($item['price']);
                         RecordItem::create($data);
                     }
@@ -114,7 +114,7 @@ class FormController extends Controller
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $item['measure'];
                         $data['name'] = $name;
-                        $data['qty'] = intval($item['qty']);
+                        $data['qty'] = floatval($item['qty']);
                         $data['price'] = floatval($item['price']);
                         RecordItem::create($data);
                     }

@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Airmail Ping</title>
     <style type="text/css">
 
         * {
