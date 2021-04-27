@@ -7,7 +7,7 @@
             <th><span class="d-md-inline-block">Created</span></th>
             <th><span class="d-md-inline-block">Last Update</span></th>
             <th><span class="d-md-inline-block">Status</span></th>
-            <th><span class="d-md-inline-block">Action</span></th>
+            <th style="min-width: 300px"><span class="d-md-inline-block">Action</span></th>
         </tr><!-- .tb-tnx-head -->
         </thead>
         <tbody>
@@ -39,16 +39,19 @@
                         @endif
 
                     @else
-                        @if($record->status==="completed")
-                            <a href="{{ route('record.history', $record->uuid) }}" title="List Records" class="mr-2">
-                                <em class="icon ni ni-histroy" style="font-size: 20px"></em>
-                            </a>
-                        @else
+                        @if($record->status!=="completed")
                             <b> Pending Response </b>
+                            @if($person->isSuperAdmin)
+                                <a href="{{ route('resend.notice', $record->uuid) }}" title="Resend Notice" class="ml-4">
+                                    <em class="icon ni ni-send-alt" style="font-size: 20px"></em>
+                                </a>
+                            @endif
+                        @endif
                             <a href="{{ route('record.history', $record->uuid) }}" title="List Records" class="ml-4">
                                 <em class="icon ni ni-histroy" style="font-size: 20px"></em>
                             </a>
-                        @endif
+
+
                     @endif
 
                 </td>

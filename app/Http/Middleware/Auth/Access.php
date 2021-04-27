@@ -21,7 +21,7 @@ class Access
         if(Auth::check()){
 
             $user = Auth::user();
-            $notice = Notice::where('user_id', $user->uuid)->where('seen', false)->select(['title','url','user_id','created_at'])->get();
+            $notice = Notice::where('user_id', $user->uuid)->where('seen', false)->select(['title','url','user_id','created_at','uuid'])->get();
             View::share('person', $user);
             View::share('notices', $notice);
             return $next($request);

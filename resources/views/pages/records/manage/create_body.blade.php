@@ -49,7 +49,13 @@
                             <div class="form-group">
                                 <label class="form-label" for="item_name ">Item Name</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control item_name item_val input_sync" id="item_name" name="item_name">
+                                    <input type="text" class="form-control item_name item_val input_sync" id="item_name" name="item_name" list="products" autocomplete="off">
+                                    <datalist id="products">
+                                        @foreach($products as $product)
+                                            <option>{{ $product->name }}</option>
+                                        @endforeach
+                                    </datalist>
+
                                 </div>
                             </div>
                         </div>
@@ -246,7 +252,11 @@
                             <td>${doPrint(item.amount)}</td>
 
                             <td>
-                                <button class="btn btn-warning btn-sm" onclick="removeItem(${i})">
+                                <button class="btn btn-primary btn-sm" onclick="event.preventDefault(); editItem(${i})">
+                                    <em class="icon ni ni-edit-alt"></em>
+                                </button>
+
+                                <button class="btn btn-danger btn-sm" onclick="removeItem(${i})">
                                     <em class="icon ni ni-trash-alt"></em>
                                 </button>
                             </td>
@@ -269,6 +279,21 @@
             await items.splice(pos, 1);
             toast('info', "One item removed from list.")
             await reloadTable()
+
+        }
+
+        async function editItem(pos) {
+            let editable = items[pos];
+
+            await items.splice(pos, 1);
+
+            await reloadTable();
+
+            $('.item_name').val(editable.name);
+            $('.item_qty').val(editable.qty);
+            $('.item_price').val(editable.price);
+            $('.item_measure').val(editable.measure);
+            $('.item_amount').val(editable.amount);
 
         }
 

@@ -18,8 +18,12 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('dashboard', 'Admin\DashboardController@index')->name('dashboard');
     Route::resource('record', 'Record\RecordController');
     Route::get('record/pop/{uuid}', 'Record\RecordController@pop')->name('record.pop');
+    Route::get('record/resend/notice/{uuid}', 'Record\RecordController@resendNotice')->name('resend.notice');
     Route::get('group/record/edit/{uuid}', 'Record\RecordController@editGroupRecord')->name('record.group.edit');
     Route::resource('measure', 'Admin\MeasureController');
+    Route::get('measure/action/delete/{uuid}', 'Admin\MeasureController@delete')->name('measure.delete');
+    Route::resource('product', 'Admin\ProductController');
+    Route::get('product/action/delete/{uuid}', 'Admin\ProductController@delete')->name('product.delete');
     Route::resource('group', 'Admin\GroupController');
     Route::get('record/manage/{uuid}/{gid}', 'Record\RecordController@manage')->name('record.manage');
     Route::get('record/list/{uuid}', 'Record\RecordController@listItems')->name('record.list');

@@ -70,12 +70,12 @@
                                     @forelse($notices as $notice)
                                         <div class="nk-notification-item dropdown-inner">
                                             <div class="nk-notification-icon">
-                                                <a href="{{ $notice->url }}">
+                                                <a href="{{ route('open.notice', $notice->uuid) }}">
                                                     <em class="icon icon-circle bg-warning-dim ni ni-alert"></em>
                                                 </a>
                                             </div>
                                             <div class="nk-notification-content">
-                                                <a href="{{ $notice->url }}">
+                                                <a href="{{ route('open.notice', $notice->uuid) }}">
                                                     <div class="nk-notification-text">{{ $notice->title }}</div>
                                                 </a>
                                                 <div class="nk-notification-time">{{ $notice->created_at->diffForHumans() }}</div>

@@ -49,6 +49,12 @@
                     </a>
                 </li>
                 <li class="nk-menu-item">
+                    <a href="{{ route('product.index') }}" class="nk-menu-link">
+                        <span class="nk-menu-icon"><em class="icon ni ni-box"></em></span>
+                        <span class="nk-menu-text">Product</span>
+                    </a>
+                </li>
+                <li class="nk-menu-item">
                     <a href="{{ route('group.index') }}" class="nk-menu-link">
                         <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
                         <span class="nk-menu-text">Department</span>

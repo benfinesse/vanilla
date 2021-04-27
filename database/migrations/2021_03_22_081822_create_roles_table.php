@@ -36,6 +36,9 @@ class CreateRolesTable extends Migration
             $table->boolean('create_measure')->nullable();
             $table->boolean('edit_measure')->nullable();
             $table->boolean('delete_measure')->nullable();
+            $table->boolean('create_product')->nullable();
+            $table->boolean('edit_product')->nullable();
+            $table->boolean('delete_product')->nullable();
             $table->boolean('create_office')->nullable();
             $table->boolean('edit_office')->nullable();
             $table->boolean('delete_office')->nullable();
@@ -47,6 +50,7 @@ class CreateRolesTable extends Migration
             $table->boolean('view_roles')->nullable();
             $table->boolean('administration')->nullable();
             $table->boolean('settings')->nullable();
+            $table->boolean('procurement')->nullable();
             $table->boolean('active')->nullable();
             $table->timestamps();
 

@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Measure;
 use App\Models\OfficeProcess;
+use App\Models\OfficeSlip;
+use App\Models\Product;
 use App\Models\Record;
 use App\Models\RecordGroup;
 use App\Models\RecordItem;
+use App\Services\Record\ProcessService;
 use App\Traits\General\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +19,14 @@ use Illuminate\Support\Facades\DB;
 class RecordController extends Controller
 {
     use Utility;
+
+    protected $processService;
+
+    public function __construct(ProcessService $processService)
+    {
+        $this->processService = $processService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -70,10 +81,12 @@ class RecordController extends Controller
             $group = Group::whereUuid($gid)->first();
             if(!empty($group)){
                 $measure = Measure::get();
+                $products = Product::where('group_id', $group->uuid)->get();
                 return view('pages.records.manage.record')->with([
                     'measures'=>$measure,
                     'dept'=>$group,
-                    'record'=>$record
+                    'record'=>$record,
+                    'products'=>$products
                 ]);
             }
         }
@@ -121,13 +134,16 @@ class RecordController extends Controller
         $groupRec = RecordGroup::whereUuid($uuid)->with(['record','group'])->first();
         if(!empty($groupRec)){
             $measures = Measure::get();
+            $group = $groupRec->group;
+            $products = Product::where('group_id', $group->uuid)->get();
             return view('pages.records.manage.edit_record')->with(
                 [
                     'groupRecord'=>$groupRec,
                     'record'=>$groupRec->record,
-                    'dept'=>$groupRec->group,
+                    'dept'=>$group,
                     'measures'=>$measures,
-                    'referer'=>$refer
+                    'referer'=>$refer,
+                    'products'=>$products
                 ]
             );
         }
@@ -167,5 +183,25 @@ class RecordController extends Controller
             }
         }
         return back()->withErrors(['Resource not found']);
+    }
+
+    public function resendNotice($uuid){
+        $record = Record::whereUuid($uuid)->first();
+        if(!empty($record)){
+            $officeSlip = OfficeSlip::where('record_id', $record->uuid)->where('current', true)->first();
+            if(!empty($officeSlip)){
+                $office = $officeSlip->office;
+                if(!empty($office)){
+                    $dname = $record->process->name;
+                    $title = "One new item submitted for {$dname}.";
+                    $url = route('record.audit', $record->uuid);
+                    $message = "One new item submitted to {$office->name} for the process : ".$office->process->name;
+                    $this->processService->sendOfficeNotice($office, $url, $message, $title);
+
+                    return back()->withMessage("Office notice resent");
+                }
+            }
+        }
+        return back()->withErrors(['Could not complete request. Resource not found']);
     }
 }

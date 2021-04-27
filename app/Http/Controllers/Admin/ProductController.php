@@ -3,23 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Measure;
+use App\Models\Group;
+use App\Models\Product;
 use App\Traits\General\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class MeasureController extends Controller
+class ProductController extends Controller
 {
     use Utility;
-    /**
-     * Display a listing of the resource.
-     *
-//     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $measures = Measure::get();
-        return view('pages.measure.index')->with([
+        $measures = Product::get();
+        return view('pages.product.index')->with([
             'data'=>$measures
         ]);
     }
@@ -31,7 +27,10 @@ class MeasureController extends Controller
      */
     public function create()
     {
-        return view('pages.measure.create');
+        $groups = Group::get();
+        return view('pages.product.create')->with([
+            'groups'=>$groups
+        ]);
     }
 
     /**
@@ -42,29 +41,38 @@ class MeasureController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['name'=>'required']);
+        $request->validate(
+            [
+                'name'=>'required',
+                'group_id'=>'required',
+            ]
+        );
+
         $name = $request->input('name');
-        $exist = Measure::where('name', $name)->first();
+        $group_id = $request->input('group_id');
+
+        $exist = Product::where('name', $name)->where('group_id', $group_id)->first();
         if(empty($exist)){
+
             $data['uuid'] = $this->makeUuid();
             $data['user_id'] = $request->user()->uuid;
+            $data['group_id'] = $group_id;
             $data['name'] = $name;
-            $data['active'] = true;
             DB::beginTransaction();
-            Measure::create($data);
+            Product::create($data);
             DB::commit();
-            return redirect()->route('measure.index')->withMessage('New measure added.');
+            return redirect()->route('product.index')->withMessage("One new product added successfully");
         }
-        return back()->withErrors(["A measure with the name '{$name}' already exist."])->withInput();
+        return back()->withErrors(["Product with {$name} already exist with selected group."]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Measure  $measure
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Measure $measure)
+    public function show($id)
     {
         //
     }
@@ -72,10 +80,10 @@ class MeasureController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Measure  $measure
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Measure $measure)
+    public function edit($id)
     {
         //
     }
@@ -84,10 +92,10 @@ class MeasureController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Measure  $measure
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Measure $measure)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -95,24 +103,22 @@ class MeasureController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Measure  $measure
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Measure $measure)
+    public function destroy($id)
     {
         //
     }
 
     public function delete($uuid)
     {
-        $mea = Measure::whereUuid($uuid)->first();
-        if(!empty($mea)){
-            $mea->delete();
-            return redirect()->route('measure.index')->withMessage("One item deleted");
+        $prod = Product::whereUuid($uuid)->first();
+        if(!empty($prod)){
+            $prod->delete();
+            return redirect()->route('product.index')->withMessage("One item deleted");
         }
         return back()->withErrors(["Resource not found. Could not complete."]);
         //
     }
-
-
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Record;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\Product;
 use App\Models\Record;
 use App\Models\RecordGroup;
 use App\Models\RecordItem;
@@ -40,12 +41,16 @@ class FormController extends Controller
                     RecordGroup::create($r_group);
 
                     foreach ($items as $item){
+                        $name = $item['name'];
+                        //store name if not existing
+                        $this->attemptNewProduct($name, $group->uuid);
+
                         $data['uuid'] = $this->makeUuid();
                         $data['user_id'] = $user->uuid;
                         $data['record_id'] = $record->uuid;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $item['measure'];
-                        $data['name'] = $item['name'];
+                        $data['name'] = $name;
                         $data['qty'] = intval($item['qty']);
                         $data['price'] = floatval($item['price']);
                         RecordItem::create($data);
@@ -99,12 +104,16 @@ class FormController extends Controller
                     $rg_id = $group_record->uuid;
 
                     foreach ($items as $item){
+                        $name = $item['name'];
+                        //store name if not existing
+                        $this->attemptNewProduct($name, $group->uuid);
+
                         $data['uuid'] = $this->makeUuid();
                         $data['user_id'] = $user->uuid;
                         $data['record_id'] = $record->uuid;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $item['measure'];
-                        $data['name'] = $item['name'];
+                        $data['name'] = $name;
                         $data['qty'] = intval($item['qty']);
                         $data['price'] = floatval($item['price']);
                         RecordItem::create($data);
@@ -124,5 +133,17 @@ class FormController extends Controller
             }
         }
         return response()->json(['message'=>'Could not complete request. Refresh page and try again.']);
+    }
+
+    function attemptNewProduct($name, $group_id){
+        $user = $this->loggedInUser();
+        $exist = Product::where('name', $name)->where('group_id', $group_id)->first();
+        if(empty($exist)){
+            $data['uuid'] = $this->makeUuid();
+            $data['user_id'] = $user->uuid;
+            $data['group_id'] = $group_id;
+            $data['name'] = $name;
+            Product::create($data);
+        }
     }
 }

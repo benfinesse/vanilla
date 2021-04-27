@@ -8,7 +8,7 @@
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
-                    <li><a href="{{ route('measure.index') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-arrow-left"></em><span><span class="d-none d-sm-inline-block">Back</span> </span></a></li>
+                    <li><a href="{{ route('product.index') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-arrow-left"></em><span><span class="d-none d-sm-inline-block">Back</span> </span></a></li>
                 </ul>
             </div>
         </div>
@@ -21,19 +21,29 @@
                     <div class="card-head">
                         <h5 class="card-title">Create New Department</h5>
                     </div>
-                    <form action="{{ route('measure.store') }}" method="post">
+                    <form action="{{ route('product.store') }}" method="post">
                         @csrf
-                        <p class="text-left">Enter a measure name to complete.</p>
+                        <p class="text-left">Enter a product name to complete.</p>
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="process">Enter Measure Name</label>
+                                    <label class="form-label" for="process">Enter Product Name</label>
                                     <input id="process" class="form-control" name="name" value="{{ old('name') }}" required autofocus autocomplete="off" />
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="process">Create Measure</label>
+                                    <label class="form-label" for="process">Groups</label>
+                                    <select name="group_id" id="" class="form-control">
+                                        @foreach($groups as $group)
+                                            <option value="{{ $group->uuid }}" {{ old('group_id')===$group->uuid?'selected':'' }}>{{ $group->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="process">Create Product</label>
                                     <div class="form-control-wrap ">
                                         <button type="submit" class="btn btn-primary">Create</button>
                                     </div>

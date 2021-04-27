@@ -25,6 +25,9 @@ trait RoleList{
             'create_measure',
             'edit_measure',
             'delete_measure',
+            'create_product',
+            'edit_product',
+            'delete_product',
             'create_office',
             'edit_office',
             'delete_office',
@@ -36,6 +39,7 @@ trait RoleList{
             'view_roles',
             'administration',
             'settings',
+            'procurement',
         ];
     }
 }
