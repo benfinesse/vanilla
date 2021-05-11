@@ -42,6 +42,13 @@
                             </span>
                 @enderror
             </div>
+            <div class="form-group mt-4">
+                <input class=custom-control-input"" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <label class="form-label ml-2" for="remember">Remember me</label>
+
+
+            </div>
+
         </div><!-- .foem-group -->
         <div class="form-group">
             <button class="btn btn-lg btn-primary btn-block">Sign in</button>
