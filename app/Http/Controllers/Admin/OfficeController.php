@@ -163,7 +163,7 @@ class OfficeController extends Controller
                     DB::beginTransaction();
                     OfficeMember::create($data);
                     DB::commit();
-                    return back()->withMessage("New member added to office");
+                    return back()->withMessage("New member added to office ({$office->name})");
                 }
                 return back()->withErrors(['Member already in group']);
             }
@@ -179,7 +179,7 @@ class OfficeController extends Controller
             $exist = OfficeMember::where('user_id', $member_id)->where('office_id', $office_id)->first();
             if(!empty($exist)){
                 $exist->delete();
-                return back()->withMessage("Member removed from group");
+                return back()->withMessage("Member removed from office members group ({$office->name})");
             }
             return back()->withErrors(['Member not in group']);
         }

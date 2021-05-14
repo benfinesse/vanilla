@@ -412,13 +412,12 @@
                                             <table class="body-text">
                                                 <tr>
                                                     <td class="body-text-cell">
-                                                        {{ $message }}
+                                                        {{ $body_message }}
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="body-text-cell">
-                                                        <br>
-                                                        <a href="{{ route('notice.index', ['type'=>'unseen']) }}">Click here</a> to preview the notice.
+                                                        <a style="font-weight: 700; font-size: 16px"  href="{{ route('notice.index', ['type'=>'unseen']) }}">Click here</a> to preview the notice.
                                                     </td>
                                                 </tr>
                                             </table>

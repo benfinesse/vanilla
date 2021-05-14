@@ -26,14 +26,15 @@ trait Mailer{
     }
 
     public function sendMail($from, $title, $to, $subject, $names, $data, $view, array $attachment=[]){
+        // dd($from, $title, $to, $subject, $names, $data, $view,$attachment);
         $live = config('app.is_live');
+
         if($live){
             try{
-                $from = env('FROM_ADDRESS', 'abc@mail.com');
-//            dd($from, $title, $to, $subject, $names, $data, $view,$attachment);
-                Mail::send($view, $data, function ($mail) use ($from, $to, $title,$subject, $names, $attachment) {
+                $from = env('FROM_ADDRESS', '');
+                Mail::send($view, $data, function ($mail) use ($from, $to, $title,$subject, $attachment) {
                     $mail->from($from, $title);
-                    $mail->to($to, $names)->subject($subject);
+                    $mail->to($to)->subject($subject);
                     if(count($attachment) > 0){
                         foreach ($attachment as $file){
                             try{
@@ -45,27 +46,7 @@ trait Mailer{
                     }
                 });
             }catch (\Exception $e){
-
-//                dd($e->getMessage());
-
-                try{
-                    $body = view($view)->with($data);
-                    if(count($attachment)>0){
-                        foreach ($attachment as $file){
-                            try{
-                                $body = $body->attach($file);
-                            }catch (\Exception $e){
-
-                            }
-                        }
-                    }
-                    $this->sendEmail($to, $subject, $body, $from, $title);
-                }catch (\Exception $er){
-//                    dd($er->getMessage(), $e->getMessage());
-                    if(env('LHOST')){
-//                    dd($er->getMessage());
-                    }
-                }
+                //                dd($e->getMessage());
             }
         }else{
             //@mock send

@@ -36,9 +36,9 @@ class ProcessService
                 'user'=>$member,
                 'process'=>$office->process,
                 'date'=>date('F d, Y'),
-                'message'=>$message
+                'body_message'=>$message
             ];
-            $this->sendMail('', $title, $member->email, $title, $member->names, $data, 'emails.new_notice');
+            $this->sendMail('', "Vanilla Restaurant", $member->email, $title, $member->names, $data, 'emails.new_notice');
 
         }
     }
@@ -61,7 +61,7 @@ class ProcessService
         $record_data['stage'] = $office->position;
         $record->update($record_data);
         $dname = $record->process->name;
-        $title = "One new item submitted for {$dname}.";
+        $title = "New request for {$dname}.";
         $url = route('record.audit', $record->uuid);
         DB::commit();
 
@@ -111,7 +111,7 @@ class ProcessService
         $record_data['stage'] = $office->position;
         $record->update($record_data);
         $dname = $record->process->name;
-        $title = "One new item submitted for {$dname}.";
+        $title = "New request for {$dname}.";
         $url = route('record.audit', $record->uuid);
         $message = "One new item submitted to {$office->name} for the process : ".$office->process->name;
 
