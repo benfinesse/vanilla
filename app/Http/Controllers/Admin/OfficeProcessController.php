@@ -79,9 +79,13 @@ class OfficeProcessController extends Controller
      * @param  \App\Models\OfficeProcess  $officeProcess
      * @return \Illuminate\Http\Response
      */
-    public function edit(OfficeProcess $officeProcess)
+    public function edit($uuid)
     {
-        //
+        $process = OfficeProcess::whereUuid($uuid)->first();
+        if(!empty($process)){
+            return view('pages.process.edit')->with(['process'=>$process]);
+        }
+        return back()->withErrors(['Resource not found']);
     }
 
     /**
@@ -91,9 +95,22 @@ class OfficeProcessController extends Controller
      * @param  \App\Models\OfficeProcess  $officeProcess
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OfficeProcess $officeProcess)
+    public function update(Request $request, $uuid)
     {
-        //
+        $process = OfficeProcess::whereUuid($uuid)->first();
+        if(!empty($process)){
+            $name = $request->input('name');
+            $exist = OfficeProcess::where('name', $name)->where('uuid', '!=', $uuid)->first();
+            if(empty($exist)){
+                $data['name'] = $name;
+                DB::beginTransaction();
+                $process->update($data);
+                DB::commit();
+                return redirect()->route('process.index')->withMessage("Process updated");
+            }
+            return back()->withErrors(["Process with the name {$name} already exist."]);
+        }
+        return back()->withErrors(['Resource not found']);
     }
 
     /**

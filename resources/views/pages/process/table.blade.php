@@ -17,7 +17,7 @@
                 <td>{{ $item->user->names }}</td>
                 <td>{{ $item->created_at->diffForHumans() }}</td>
                 <td>
-                    <a href="#">
+                    <a href="{{ route('process.edit', $item->uuid) }}">
                         <em class="icon ni ni-edit mr-2" style="font-size: 20px"></em>
                     </a>
                     <a href="{{ route('process.list', $item->uuid) }}">
