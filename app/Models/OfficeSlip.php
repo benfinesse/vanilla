@@ -24,6 +24,11 @@ class OfficeSlip extends Model
     }
 
     public function getLastUserAttribute(){
-        return User::where('uuid', $this->user_id_2)->first();
+        $a = User::where('uuid', $this->user_id_2)->first();
+        return !empty($a)?$a:User::where('uuid', $this->user_id)->first();
+    }
+
+    public function getUserAttribute(){
+        return User::where('uuid', $this->user_id)->first();
     }
 }

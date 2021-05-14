@@ -12,6 +12,7 @@
             </div>
         </div>
     </div>
+    @include('pages.dashboard.pendings')
     @include('pages.dashboard.quick_links')
     <div class="nk-content-wrap">
         <div class="nk-block-head nk-block-head-lg">

@@ -64,6 +64,7 @@ class RecordController extends Controller
             $data['user_id'] = $user->uuid;
             $data['process_id'] = $process_id;
             $data['active'] = true;
+            $data['completed'] = false;
             $data['title'] = $user->names. " started ". $process->name." on ". date("M d, Y");
             DB::beginTransaction();
             $record = Record::create($data);
@@ -193,7 +194,7 @@ class RecordController extends Controller
                 $office = $officeSlip->office;
                 if(!empty($office)){
                     $dname = $record->process->name;
-                    $title = "One new item submitted for {$dname}.";
+                    $title = "New request for {$dname}.";
                     $url = route('record.audit', $record->uuid);
                     $message = "One new item submitted to {$office->name} for the process : ".$office->process->name;
                     $this->processService->sendOfficeNotice($office, $url, $message, $title);
