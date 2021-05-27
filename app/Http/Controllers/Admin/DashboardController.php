@@ -30,6 +30,7 @@ class DashboardController extends Controller
                     ;
                 })
                 ->where('completed', '!=',true)
+                ->orderBy('id','desc')
                 ->get();
 
         return view('pages.dashboard.index')->with(
