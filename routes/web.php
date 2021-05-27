@@ -30,6 +30,9 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::post('form/record/store/{uuid}','Record\FormController@store')->name('form.store');
     Route::post('form/record/update/{uuid}','Record\FormController@update')->name('form.update');
 
+    //update items compliance
+    Route::post('update/record/item','Record\ItemController@compliance')->name('item.inject');
+
 
     //AUDIT ROUTES
     Route::get('record/audit/{uuid}', 'Record\AuditProcessController@show')->name('record.audit');
@@ -37,6 +40,7 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::resource('process', 'Admin\OfficeProcessController');
     Route::get('process/list/{uuid}', 'Admin\OfficeProcessController@listItems')->name('process.list');
     Route::get('process/item/move/{uuid}/{dir}', 'Process\PositionController@tryPositionMove')->name('process.item.direction');
+    Route::get('process/action/toggle/verification/{uuid}', 'Admin\OfficeProcessController@toggleVerification')->name('process.toggle.verification');
 
     Route::get('process/state/create/{uuid}', 'Admin\OfficeController@create')->name('process.stage.create');
     Route::post('process/state/store/{uuid}', 'Admin\OfficeController@store')->name('process.stage.store');

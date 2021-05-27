@@ -21,6 +21,7 @@ class CreateOfficesTable extends Migration
             $table->string('name')->nullable();//office name e.g : CEO
             $table->integer('position')->nullable();
             $table->boolean('active')->nullable();
+            $table->boolean('verifiable')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('uuid')->on('users');

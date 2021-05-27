@@ -35,7 +35,7 @@
                         <th><span class="d-md-inline-block">Name</span></th>
                         <th><span class="d-md-inline-block">Members</span></th>
                         <th><span class="d-md-inline-block">Created At</span></th>
-                        <th><span class="d-md-inline-block">Action</span></th>
+                        <th><span class="d-md-inline-block">Actions</span></th>
                     </tr><!-- .tb-tnx-head -->
                     </thead>
                     <tbody class="list_items">
@@ -59,6 +59,9 @@
                                 <a href="#" onclick="event.preventDefault(); deleteItem('{{ route('office.pop', $item->uuid) }}')" class="ml-4 text-danger">
                                     <em class="icon ni ni-trash-alt" style="font-size: 20px"></em>
                                 </a>
+
+                                <a href="{{ route('process.toggle.verification', $item->uuid) }}" class="ml-3 btn shadow btn-sm" title="{{ !empty($item->verifiable)?($item->verifiable?'Enable Audit':'Disable Audit'):'Enable Audit' }}">
+                                    <em class="icon ni {{ !empty($item->verifiable)?($item->verifiable?'text-danger ni-eye-off':' ni-eye-alt'):' ni-eye-alt' }} "></em> </a>
                             </td>
                         </tr>
                     @empty

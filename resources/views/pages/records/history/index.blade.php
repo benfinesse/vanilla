@@ -77,6 +77,7 @@
             <div class="row mt-1">
 
                 <?php $grand_total = 0; ?>
+                <?php $grand_true_total = 0; ?>
                 @foreach($record->groups as $group_rec)
                     <div class="col-md-12 mb-5 ">
                         <div class="card card-bordered">
@@ -107,14 +108,42 @@
                                         </thead>
                                         <tbody class="card_table_content">
                                         <?php $total = 0; ?>
+                                        <?php $true_total = 0; ?>
                                         @foreach($group_rec->recordItems as $item)
                                             <tr>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->measure }}</td>
-                                                <td>{{ $item->qty }}</td>
-                                                <td>{{ number_format($item->price) }}</td>
-                                                <td>{{ number_format($item->total) }}</td>
+                                                <td>
+                                                    <div>
+                                                        {{ $item->qty }}
+                                                        @if(!empty($item->true_qty))
+                                                            @if($item->true_qty>0)
+                                                                <span class="true_qty_{{ $item->uuid }} fs-9px text-muted"> | {{ $item->true_qty }}</span>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{ number_format($item->price) }}
+                                                        @if(!empty($item->true_price))
+                                                            @if($item->true_price>0)
+                                                                <span class="true_price_{{ $item->uuid }} fs-9px text-muted"> | {{ number_format($item->true_price) }}</span>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                <td>
+
+                                                    <div>
+                                                        {{ number_format($item->total) }}
+                                                        @if(!empty($item->true_price) && !empty($item->true_qty))
+                                                            <span class="true_total_{{ $item->uuid }} fs-9px text-muted"> | {{ number_format(floatval($item->true_price) * floatval($item->true_qty)) }}</span>
+                                                        @endif
+                                                    </div>
+                                                </td>
                                                 <?php $total+=$item->total; ?>
+                                                <?php $true_total+=!empty($item->true_qty)?$item->true_qty*$item->true_price:0; ?>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -123,7 +152,13 @@
                                 <hr>
                                 <h5 class="text-right">
                                     <?php $grand_total+= $total; ?>
+                                    <?php $grand_true_total+= $true_total; ?>
+
                                     Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
+                                    @if($true_total>0)
+                                        <br>
+                                        <small> True Total {{ number_format($true_total) }}</small>
+                                    @endif
                                 </h5>
                             </div>
                         </div>
@@ -134,7 +169,11 @@
                     <div class="col-md-6 mb-4 mt-4">
                         <div class="card card-bordered">
                             <div class="card-inner text-center">
-                                <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
+                                <h4>Grand Total: {{ number_format($grand_total) }}</h4>
+                                @if($grand_true_total>0)
+
+                                    <p class="mt-2"> Final Total {{ number_format($grand_true_total) }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>

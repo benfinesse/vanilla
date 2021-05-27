@@ -139,4 +139,25 @@ class OfficeProcessController extends Controller
     public function addItemToList(Request $request){
 
     }
+
+    public function toggleVerification(Request $request, $uuid){
+
+        $office = Office::whereUuid($uuid)->first();
+        if(!empty($office)){
+            $msg = "";
+            if($office->verifiable){
+                $data['verifiable'] = false;
+                $msg = "Audit removed from {$office->name}";
+            }else{
+                $data['verifiable'] = true;
+                $msg = "Audit added to {$office->name}";
+            }
+            DB::beginTransaction();
+            $office->update($data);
+            DB::commit();
+
+            return back()->withMessage($msg);
+        }
+        return back()->withErrors(['Resource not found']);
+    }
 }
