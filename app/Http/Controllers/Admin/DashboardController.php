@@ -22,6 +22,7 @@ class DashboardController extends Controller
                     $query->from('office_slips')
                         ->select('office_slips.record_id')
                         ->where('office_slips.status','=','pending')
+                        ->where('office_slips.current','=',true)
                         ->whereIn('office_slips.office_id', function (Builder $q) use ($user_id){
                             $q->from('office_members')
                                 ->select('office_members.office_id')

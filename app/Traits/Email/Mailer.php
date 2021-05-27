@@ -47,6 +47,7 @@ trait Mailer{
                 });
             }catch (\Exception $e){
 //                dd($e->getMessage());
+                //todo - send error to developer
             }
         }else{
             //@mock send
