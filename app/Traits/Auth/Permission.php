@@ -26,6 +26,27 @@ trait Permission{
             case 'procurement':
                 return 'procurement';
                 break;
+            case 'records':
+                return 'create_record';
+                break;
+            case 'processes':
+                return 'create_process';
+                break;
+            case 'measures':
+                return 'create_measure';
+                break;
+            case 'products':
+                return 'create_product';
+                break;
+            case 'groups':
+                return 'view_groups';
+                break;
+            case 'users':
+                return 'view_users';
+                break;
+            case 'roles':
+                return 'view_roles';
+                break;
             default:
                 return '';
         }
