@@ -17,11 +17,11 @@
 @endif
 <?php $err = session('err'); ?>
 @if(!empty($err))
-    <br>
+
     <div >
         <ul class="list-unstyled">
             <li class="alert alert-danger">
-                <i class="fa fa-warning"></i> {{ $err[1] }}
+                <i class="fa fa-warning"></i> {{ $err }}
                 <a href="#" class="close pull-right" data-dismiss="alert" aria-label="close">&times;</a>
             </li>
         </ul>
