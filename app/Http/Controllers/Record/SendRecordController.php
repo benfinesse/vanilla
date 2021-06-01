@@ -11,6 +11,7 @@ class SendRecordController extends Controller
 {
     use Mailer;
     public function sendRecord(Request $request){
+//        dd($request->all());
         $edata = $request->input('emails');
         if(!empty($edata)){
             $count = 0;
