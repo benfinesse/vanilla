@@ -31,7 +31,7 @@ trait Mailer{
 
         if($live){
             try{
-                $from = env('FROM_ADDRESS', '');
+                $from = config('app.mail.from');
                 Mail::send($view, $data, function ($mail) use ($from, $to, $title,$subject, $attachment) {
                     $mail->from($from, $title);
                     $mail->to($to)->subject($subject);
