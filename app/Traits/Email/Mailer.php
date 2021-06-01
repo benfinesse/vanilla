@@ -46,7 +46,7 @@ trait Mailer{
                     }
                 });
             }catch (\Exception $e){
-//                dd($e->getMessage());
+                session(['err'=>$e->getMessage()]);
                 //todo - send error to developer
             }
         }else{
