@@ -14,6 +14,9 @@ class SendRecordController extends Controller
         $edata = $request->input('emails');
         if(!empty($edata)){
             $count = 0;
+            if (strpos($edata, ',') !== false) {
+                $edata.=',';
+            }
             $emails = explode(",", $edata);
             $uuid = $request->input('record_id');
             $record = Record::whereUuid($uuid)->first();
@@ -21,6 +24,7 @@ class SendRecordController extends Controller
             if(!empty($record)){
 
                 foreach ($emails as $email){
+                    $email = str_replace(" ", "", $email);
                     if(!empty($email)){
                         $count++;
                         $data=[
