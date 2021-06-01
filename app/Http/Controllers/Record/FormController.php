@@ -43,16 +43,19 @@ class FormController extends Controller
                     foreach ($items as $item){
                         $name = $item['name'];
                         //store name if not existing
-                        $this->attemptNewProduct($name, $group->uuid);
+
+                        $measure = $item['measure'];
+                        $price = floatval($item['price']);
+                        $this->attemptNewProduct($name, $group->uuid, $measure, $price);
 
                         $data['uuid'] = $this->makeUuid();
                         $data['user_id'] = $user->uuid;
                         $data['record_id'] = $record->uuid;
                         $data['record_group_id'] = $rg_id;
-                        $data['measure'] = $item['measure'];
+                        $data['measure'] = $measure;
                         $data['name'] = $name;
                         $data['qty'] = floatval($item['qty']);
-                        $data['price'] = floatval($item['price']);
+                        $data['price'] = $price;
                         RecordItem::create($data);
                     }
 
@@ -106,16 +109,18 @@ class FormController extends Controller
                     foreach ($items as $item){
                         $name = $item['name'];
                         //store name if not existing
-                        $this->attemptNewProduct($name, $group->uuid);
+                        $measure = $item['measure'];
+                        $price = floatval($item['price']);
+                        $this->attemptNewProduct($name, $group->uuid, $measure, $price);
 
                         $data['uuid'] = $this->makeUuid();
                         $data['user_id'] = $user->uuid;
                         $data['record_id'] = $record->uuid;
                         $data['record_group_id'] = $rg_id;
-                        $data['measure'] = $item['measure'];
+                        $data['measure'] = $measure;
                         $data['name'] = $name;
                         $data['qty'] = floatval($item['qty']);
-                        $data['price'] = floatval($item['price']);
+                        $data['price'] = $price;
                         RecordItem::create($data);
                     }
 
@@ -135,7 +140,7 @@ class FormController extends Controller
         return response()->json(['message'=>'Could not complete request. Refresh page and try again.']);
     }
 
-    function attemptNewProduct($name, $group_id){
+    function attemptNewProduct($name, $group_id, $measure, $price){
         $user = $this->loggedInUser();
         $exist = Product::where('name', $name)->where('group_id', $group_id)->first();
         if(empty($exist)){
@@ -143,6 +148,8 @@ class FormController extends Controller
             $data['user_id'] = $user->uuid;
             $data['group_id'] = $group_id;
             $data['name'] = $name;
+            $data['price'] = $price;
+            $data['measure'] = $measure;
             Product::create($data);
         }
     }

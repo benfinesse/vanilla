@@ -16,6 +16,23 @@
     <br>
 @endif
 
+@if(!empty(session('err')))
+    <br>
+    <div >
+        <ul class="list-unstyled">
+            @foreach(session('err') as $key=>$error)
+                <li class="alert alert-danger">
+                    <i class="fa fa-warning"></i> {{ $error }}
+                    <a href="#" class="close pull-right" data-dismiss="alert" aria-label="close">&times;</a>
+                </li>
+
+            @endforeach
+        </ul>
+    </div>
+    <br>
+    <?php session()->forget('err') ?>
+@endif
+
 @if(count($errors) > 0)
     <br>
     <div >

@@ -23,6 +23,8 @@
                         <thead>
                         <tr class="tb-tnx-head">
                             <th><span class="d-md-inline-block">Name</span></th>
+                            <th><span class="d-md-inline-block">Price</span></th>
+                            <th><span class="d-md-inline-block">Measure</span></th>
                             <th><span class="d-md-inline-block">Category</span></th>
                             <th><span class="d-md-inline-block">Created At</span></th>
                             <th><span class="d-md-inline-block">Action</span></th>
@@ -32,9 +34,14 @@
                         @forelse($data as $item)
                             <tr class="tb-tnx-item">
                                 <td>{{ $item->name  }}</td>
+                                <td>{{ number_format($item->price)  }}</td>
+                                <td>{{ $item->measure  }}</td>
                                 <td>{{ $item->group->name }}</td>
                                 <td>{{ $item->created_at->diffForHumans() }}</td>
                                 <td>
+                                    <a href="{{ route('product.edit', $item->uuid) }}" class="text-info mr-3" >
+                                        <em class="icon ni ni-edit-alt"></em>
+                                    </a>
                                     <a href="#" class="text-danger" onclick="deleteItem('{{ route('product.delete', $item->uuid) }}')">
                                         <em class="icon ni ni-trash-alt"></em>
                                     </a>

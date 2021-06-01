@@ -40,7 +40,7 @@ trait Mailer{
                             try{
                                 $mail->attach($file);
                             }catch (\Exception $e){
-
+                                session(['err'=>$e->getMessage()]);
                             }
                         }
                     }

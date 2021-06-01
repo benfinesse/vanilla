@@ -73,6 +73,9 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('role/action/remove/member', 'Admin\RoleController@removeMember')->name('role.remove.member');
 
 
+    Route::get('send/record/email', 'Record\SendRecordController@sendRecord')->name('send.record.email');
+
+
 //    Route::prefix('dashboard')->group(function () { });
 });
 Route::get('/', 'HomeController@index')->name('home');

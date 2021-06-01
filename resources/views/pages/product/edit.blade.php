@@ -4,7 +4,7 @@
     <div class="nk-block-head nk-block-head-lg">
         <div class="nk-block-between-md g-4">
             <div class="nk-block-head-content">
-                <h4 class="nk-block-title fw-normal">New Department</h4>
+                <h4 class="nk-block-title fw-normal">Edit Product</h4>
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
@@ -19,16 +19,22 @@
             <div class="card card-bordered">
                 <div class="card-inner">
                     <div class="card-head">
-                        <h5 class="card-title">Create New Department</h5>
+                        <h5 class="card-title">Edit {{ $product->name }}</h5>
                     </div>
-                    <form action="{{ route('product.store') }}" method="post">
+                    <form action="{{ route('product.update', $product->uuid) }}" method="post">
                         @csrf
-                        <p class="text-left">Enter a product name to complete.</p>
+                        {{ method_field('put') }}
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="process">Enter Product Name</label>
-                                    <input id="process" class="form-control" name="name" value="{{ old('name') }}" required autofocus autocomplete="off" />
+                                    <label class="form-label" for="process">Product Name</label>
+                                    <input id="process" class="form-control" name="name" value="{{ $product->name }}" required autofocus autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="process">Product Price</label>
+                                    <input id="process" class="form-control" name="price" value="{{ $product->price }}" required autocomplete="off" onkeypress="return numbersOnly(event)" />
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -36,16 +42,26 @@
                                     <label class="form-label" for="process">Groups</label>
                                     <select name="group_id" id="" class="form-control">
                                         @foreach($groups as $group)
-                                            <option value="{{ $group->uuid }}">{{ $group->name }}</option>
+                                            <option value="{{ $group->uuid }}" {{ $product->group_id===$group->uuid?'selected':'' }}>{{ $group->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="process">Create Product</label>
+                                    <label class="form-label" for="process">Measure</label>
+                                    <select name="measure" id="" class="form-control">
+                                        @foreach($measures as $measure)
+                                            <option value="{{ $measure->name }}" {{ $product->measure===$measure->name?'selected':'' }}>{{ $measure->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="process">Update Product</label>
                                     <div class="form-control-wrap ">
-                                        <button type="submit" class="btn btn-primary">Create</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -58,4 +74,21 @@
 
     </div>
 
+@endsection
+
+@section('custom_js')
+    <script>
+        function numbersOnly(evt) {
+            let k = evt.key;
+            if(k===" "){
+                return false;
+            }
+            if(k==="."){
+                return true;
+            }
+            if(isNaN(k)){
+                return false;
+            }
+        }
+    </script>
 @endsection

@@ -11,6 +11,8 @@ class Product extends Model
         'user_id',
         'group_id',
         'name',
+        'price',
+        'measure',
     ];
 
     public function group(){

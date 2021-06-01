@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->uuid('uuid')->unique();
             $table->uuid('user_id')->nullable();
             $table->uuid('group_id')->nullable();
+            $table->string('measure')->nullable();
+            $table->float('price')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
         });

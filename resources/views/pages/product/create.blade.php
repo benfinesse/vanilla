@@ -4,7 +4,7 @@
     <div class="nk-block-head nk-block-head-lg">
         <div class="nk-block-between-md g-4">
             <div class="nk-block-head-content">
-                <h4 class="nk-block-title fw-normal">New Department</h4>
+                <h4 class="nk-block-title fw-normal">New Product</h4>
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
@@ -33,10 +33,26 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label class="form-label" for="process">Product Price</label>
+                                    <input id="process" class="form-control" name="price" value="{{ old('price') }}" required autocomplete="off" onkeypress="return numbersOnly(event)" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label class="form-label" for="process">Groups</label>
                                     <select name="group_id" id="" class="form-control">
                                         @foreach($groups as $group)
                                             <option value="{{ $group->uuid }}" {{ old('group_id')===$group->uuid?'selected':'' }}>{{ $group->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="process">Measure</label>
+                                    <select name="measure" id="" class="form-control">
+                                        @foreach($measures as $measure)
+                                            <option value="{{ $measure->name }}" {{ old('measure')===$measure->name?'selected':'' }}>{{ $measure->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -58,4 +74,21 @@
 
     </div>
 
+@endsection
+
+@section('custom_js')
+    <script>
+        function numbersOnly(evt) {
+            let k = evt.key;
+            if(k===" "){
+                return false;
+            }
+            if(k==="."){
+                return true;
+            }
+            if(isNaN(k)){
+                return false;
+            }
+        }
+    </script>
 @endsection

@@ -52,7 +52,7 @@
                                     <input type="text" class="form-control item_name item_val input_sync" id="item_name" name="item_name" list="products" autocomplete="off">
                                     <datalist id="products">
                                         @foreach($products as $product)
-                                            <option>{{ $product->name }}</option>
+                                            <option data-price="{{ $product->price }}" data-measure="{{ $product->measure }}" value="{{ $product->name }}" >{{ $product->measure }}</option>
                                         @endforeach
                                     </datalist>
 
@@ -185,6 +185,22 @@
             listObject.measure="";
             listObject.amount=0;
         }
+
+        $('.item_name').on('keyup', async function (e) {
+            var price = 0;
+            let measure = null;
+            let val = this.value;
+            let option = $(`option[value='${val}']`);
+            if(option.length>0){
+                price = option.data("price");
+                measure = option.data("measure");
+            }
+            $('.item_price').val(price)
+            if(measure!==null){
+                $('.item_measure').val(measure)
+            }
+
+        });
 
         function resetFields() {
             $('.item_val').val("");

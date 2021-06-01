@@ -102,8 +102,8 @@
                                                     </div>
                                                 </td>
                                                 @if($record->office->verifiable)
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); openModal('{{$item->name}}','{{ $item->price }}', '{{ $item->qty }}', '{{ $item->uuid }}' )">
+                                                    <td class="btn_wrapper">
+                                                        <a href="#" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); openModal('{{$item->name}}','{{ !empty($item->true_price)?$item->true_price:$item->price }}', '{{ !empty($item->true_qty)?$item->true_qty:$item->qty }}', '{{ $item->uuid }}' )">
                                                             Compliance
                                                         </a>
                                                     </td>
@@ -243,7 +243,7 @@
                                     <div class="modal-footer">
                                         <p class="text-danger float-left error_txt"></p>
                                         <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                                        <button type="button" class="btn btn-primary btn_action" onclick="complete('${uuid}')">
+                                        <button type="button" class="btn btn-primary btn_action" onclick="complete('${uuid}', '${title}','${qty}','${price}')">
                                             <span class="btn_label">Complete</span>
                                             <div class="spinner-border" role="status" style="display: none; width: 1rem;height: 1rem;">
                                               <span class="sr-only">Loading...</span>
@@ -253,13 +253,11 @@
                                 </div>
                             </div>
                         </div>`;
-
             modal_frame.append(elem);
             $('#complianceModal').modal({ show: true});
-
         }
 
-        function complete(id) {
+        function complete(id, title, qty, price) {
             let label = $('.btn_label');
             let spinner = $('.spinner-border');
             let btn = $('.btn_action');
@@ -274,7 +272,7 @@
 
                 label.hide();
                 spinner.show();
-                btn.prop('disabled', true)
+                btn.prop('disabled', true);
 
                 let _token   = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
@@ -298,18 +296,20 @@
                             btn.addClass('btn-success');
                             label.text("completed");
                             label.show();
+
                             //update fields
                             updateFields(res.item);
-                            setTimeout(()=>{
-                                $('#complianceModal .close').click()
-                            }, 2000);
 
+                            //replace button
+                            let btn_wrapper = $('.btn_wrapper');
+                            btn_wrapper.children().remove();
+                            btn_wrapper.append(`<a href="#" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); openModal('${title}','${input_price}', '${input_qty}', '${id}' )">Compliance</a>`);
+                            setTimeout(()=>{$('#complianceModal .close').click()}, 2000);
                         }else{
                             spinner.hide();
                             $('.btn_action').prop('disabled', false);
-                            err.text(res.message)
+                            err.text(res.message);
                             label.show();
-
                         }
 
                         // You will get response from your PHP page (what you echo or print)
