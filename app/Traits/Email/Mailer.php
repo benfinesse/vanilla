@@ -46,7 +46,7 @@ trait Mailer{
                     }
                 });
             }catch (\Exception $e){
-                session(['err'=>$e->getMessage()." | -{$to}-{$from}-"]);
+                session(['err'=>"Failed to send mail ->".$e->getMessage()." | -{$to}-{$from}-"]);
                 //todo - send error to developer
             }
         }else{
