@@ -15,18 +15,15 @@
     </div>
     <br>
 @endif
-
-@if(!empty(session('err')))
+<?php $err = session('err'); ?>
+@if(!empty($err))
     <br>
     <div >
         <ul class="list-unstyled">
-            @foreach(session('err') as $key=>$error)
-                <li class="alert alert-danger">
-                    <i class="fa fa-warning"></i> {{ $error }}
-                    <a href="#" class="close pull-right" data-dismiss="alert" aria-label="close">&times;</a>
-                </li>
-
-            @endforeach
+            <li class="alert alert-danger">
+                <i class="fa fa-warning"></i> {{ $err[1] }}
+                <a href="#" class="close pull-right" data-dismiss="alert" aria-label="close">&times;</a>
+            </li>
         </ul>
     </div>
     <br>

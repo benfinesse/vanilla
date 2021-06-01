@@ -40,17 +40,13 @@ trait Mailer{
                             try{
                                 $mail->attach($file);
                             }catch (\Exception $e){
-//                                $err = [];
-//                                array_push($err, ['err'=>$e->getMessage()]);
-//                                session($err);
+                                session(['err'=>$e->getMessage()]);
                             }
                         }
                     }
                 });
             }catch (\Exception $e){
-                $err = [];
-                array_push($err, ['err'=>$e->getMessage()]);
-                session($err);
+                session(['err'=>$e->getMessage()]);
                 //todo - send error to developer
             }
         }else{
