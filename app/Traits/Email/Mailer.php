@@ -40,7 +40,9 @@ trait Mailer{
                             try{
                                 $mail->attach($file);
                             }catch (\Exception $e){
-                                session(['err'=>$e->getMessage()]);
+                                $err = [];
+                                array_push($err, ['err'=>$e->getMessage()]);
+                                session($err);
                             }
                         }
                     }
