@@ -33,10 +33,12 @@ class SendRecordController extends Controller
                 if($count>0){
                     $s = $count>1?'s':'';
                     return redirect()->back()->withMessage("{$count} email{$s} sent successfully.");
+                }else{
+                    return redirect()->back()->withErrors(["Nothing was sent via email."]);
                 }
             }
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors(['No email recipient(s).']);
 
     }
 }
