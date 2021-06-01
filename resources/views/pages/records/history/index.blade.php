@@ -205,8 +205,8 @@
             }
             let elem = `<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="mailModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                <form action="${route}" method="get">
-                                    <input name="record_id" value="${id}" />
+                                <form action="${route}" method="get" style="width: 100%">
+                                    <input type="hidden" name="record_id" value="${id}" />
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLongTitle">Send Email</h5>

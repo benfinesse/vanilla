@@ -15,7 +15,8 @@ class SendRecordController extends Controller
         if(!empty($edata)){
             $count = 0;
             $emails = explode(",", $edata);
-            $record = Record::whereUuid('')->first();
+            $uuid = $request->input('record_id');
+            $record = Record::whereUuid($uuid)->first();
 
             if(!empty($record)){
 
