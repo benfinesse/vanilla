@@ -219,7 +219,7 @@
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label class="form-label" for="price">Email (Recipient)</label>
-                                                        <input type="text" id="price" class="form-control" name="email" placeholder="Email addresses seperated by coma (,)" required autocomplete="off" >
+                                                        <input type="text" id="price" class="form-control" name="emails" placeholder="Email addresses seperated by coma (,)" required autocomplete="off" >
                                                     </div>
                                                 </div>
                                             </div>
