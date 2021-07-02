@@ -14,7 +14,7 @@
         </div>
         @include('layouts.notice')
         @if(!empty($message))
-            <div class="alert alert-info" >
+            <div class="alert alert-info mt-2" >
                 {{ $message }}
                 <a href="#" class="close pull-right" data-dismiss="alert" aria-label="close" >&times;</a>
             </div>
@@ -55,6 +55,8 @@
                                             <tr>
                                                 <th scope="col">Item Name</th>
                                                 <th scope="col">Measure</th>
+                                                <th scope="col">Stock <br> Outside</th>
+                                                <th scope="col">Stock <br> Store</th>
                                                 <th scope="col">Quantity</th>
                                                 <th scope="col">Price</th>
                                                 <th scope="col">Total</th>
@@ -66,6 +68,8 @@
                                                     <tr>
                                                         <td>{{ $item->name }}</td>
                                                         <td>{{ $item->measure }}</td>
+                                                        <td>{{ $item->stock_outside }}</td>
+                                                        <td>{{ $item->stock_store }}</td>
                                                         <td>{{ $item->qty }}</td>
                                                         <td>{{ number_format($item->price) }}</td>
                                                         <td>{{ number_format($item->total) }}</td>

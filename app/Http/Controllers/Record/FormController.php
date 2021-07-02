@@ -55,6 +55,8 @@ class FormController extends Controller
                         $data['record_id'] = $record->uuid;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $measure;
+                        $data['stock_outside'] = $item['stock_outside'];
+                        $data['stock_store'] = $item['stock_store'];
                         $data['name'] = $name;
                         $data['qty'] = floatval($item['qty']);
                         $data['price'] = $price;
@@ -170,13 +172,13 @@ class FormController extends Controller
                             unset($basket[$key]);
 
                         }else{
-                            return response()->json(["key"=>$key, 'basket'=>$basket], 500);
+
                             $logItem['uuid'] = $this->makeUuid();
                             $logItem['log_group_id'] = $log_group_id;
                             $logItem['name'] = $key;
                             $logItem['action_taken'] = "New item '{$key}' added.";
                             $logItem['old_price'] = 0;
-                            $logItem['new_price'] = $val;
+                            $logItem['new_price'] = $price;
                             $logItem['old_qty'] = 0;
                             $logItem['new_qty'] =  $item->qty;
                             $logItem['info'] = "New Item";
@@ -196,6 +198,8 @@ class FormController extends Controller
                         $data['record_id'] = $record_id;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $measure;
+                        $data['stock_outside'] = $item['stock_outside'];
+                        $data['stock_store'] = $item['stock_store'];
                         $data['name'] = $name;
                         $data['qty'] = floatval($item['qty']);
                         $data['price'] = $price;

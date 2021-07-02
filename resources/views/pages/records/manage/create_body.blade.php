@@ -24,6 +24,8 @@
                         <tr>
                             <th scope="col">Item Name</th>
                             <th scope="col">Measure</th>
+                            <th scope="col">Stock <br> Outside</th>
+                            <th scope="col">Stock <br> Store</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
                             <th scope="col">Total</th>
@@ -32,7 +34,7 @@
                         </thead>
                         <tbody class="card_table_content">
                         <tr>
-                            <td class="text-center" colspan="6">
+                            <td class="text-center" colspan="8">
                                 <b>No Items Added</b>
                             </td>
                         </tr>
@@ -97,6 +99,27 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row mt-2">
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="form-label" for="item_stock_outside">Stock Outside</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control p_control item_stock_outside item_val input_sync" id="item_stock_outside">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="form-label" for="item_stock_store">Stock Store</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control p_control item_stock_store item_val input_sync" id="item_stock_store">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-lg-1">
                             <div class="form-group">
                                 <label class="form-label" for="pay-amount-1">Add</label>
@@ -140,8 +163,10 @@
             qty:0,
             price:0,
             measure:"",
-            amount:0
-        }
+            amount:0,
+            stock_outside:0,
+            stock_store:0,
+        };
 
         async function addItem() {
             let fields = $('.item_val');
@@ -155,6 +180,8 @@
                     if(a===2){listObject.price=val}
                     if(a===3){listObject.measure=val}
                     if(a===4){listObject.amount=val}
+                    if(a===5){listObject.stock_outside=val}
+                    if(a===6){listObject.stock_store=val}
                 }else{
                     process = false;
                 }
@@ -166,7 +193,9 @@
                     qty:listObject.qty,
                     price:parseFloat(listObject.price),
                     measure:listObject.measure,
-                    amount:parseFloat(listObject.amount)
+                    amount:parseFloat(listObject.amount),
+                    stock_outside:listObject.stock_outside,
+                    stock_store:listObject.stock_store,
                 });
                 resetListObject();
                 resetFields()
@@ -263,6 +292,8 @@
                         .append(`<tr>
                             <td>${item.name}</td>
                             <td>${item.measure}</td>
+                            <td>${item.stock_outside}</td>
+                            <td>${item.stock_store}</td>
                             <td>${item.qty}</td>
                             <td>${doPrint(item.price)}</td>
                             <td>${doPrint(item.amount)}</td>
@@ -280,11 +311,11 @@
 
                     total += item.amount;
 
-                })
+                });
                 sub_total.text(doPrint(total));
             }else{
                 tbody.append(`<tr>
-                            <td class="text-center" colspan="6">
+                            <td class="text-center" colspan="8">
                                 <b>No Items Added</b>
                             </td>
                         </tr>`);
@@ -310,6 +341,8 @@
             $('.item_price').val(editable.price);
             $('.item_measure').val(editable.measure);
             $('.item_amount').val(editable.amount);
+            $('.item_stock_outside').val(editable.stock_outside);
+            $('.item_stock_store').val(editable.stock_store);
 
         }
 
