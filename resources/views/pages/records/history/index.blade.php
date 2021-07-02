@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="print_element">
+            <div class="print_element ">
                 <h6 class="mb-2">Record Details</h6>
                 <div class="row mt-1">
 
@@ -170,7 +170,7 @@
                     @endforeach
 
                     @if($grand_total>0)
-                        <div class="col-md-6 mb-4 mt-4 half_width">
+                        <div class="col-md-6 mb-4 mt-3 half_width">
                             <div class="card card-bordered">
                                 <div class="card-inner text-center">
                                     <h4>Grand Total: {{ number_format($grand_total) }}</h4>
@@ -182,6 +182,156 @@
                             </div>
                         </div>
                     @endif
+
+                </div>
+            </div>
+
+            <br>
+
+            <a href="#" class="btn btn-white btn-dim btn-outline-primary" onclick="event.preventDefault(); purchaseSlip()"><em class="icon ni ni-printer"></em><span class="d-none d-sm-inline-block">Print Purchase Slip</span></a>
+
+            <div class="purchase_slip " style="display: none">
+                <h6 class="mb-4 mt-4">Purchase Details</h6>
+                <div class=" mt-1">
+
+                    <?php $grand_total = 0; ?>
+                    <?php $grand_true_total = 0; ?>
+                    <?php $page_count = 0; ?>
+                    @foreach($record->groups as $group_rec)
+                        <div class="mb-5 mt-5 {{ $page_count>0?"page-break":"" }}">
+                            <div class="card">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <h6 class="">
+                                            {{ $group_rec->group->name }} Records
+                                        </h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6>
+                                            Date: ............................................................
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th colspan="3" class="text-uppercase text-center">Shopping Budget</th>
+                                            <th colspan="4" class="text-uppercase text-center">Shopping List</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" style="width: 50px">SUP</th>
+                                            <th scope="col">ITEM </th>
+                                            <th scope="col">MEASURE</th>
+                                            <th scope="col">Stock <br> Outside</th>
+                                            <th scope="col">Stock <br> Store</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col">Item</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="card_table_content">
+                                        <?php $total = 0; ?>
+                                        <?php $true_total = 0; ?>
+                                        <?php $table_items = $group_rec->recordItems->count(); ?>
+                                        <?php $solved = 0; ?>
+                                        <?php $gtotal = 0; ?>
+
+                                        @foreach($group_rec->recordItems as $item)
+                                            <?php $ttotal = 0; ?>
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->measure }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <div>
+                                                        {{ $item->qty }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{ number_format($item->price) }}
+                                                    </div>
+                                                </td>
+                                                <td>
+
+                                                    <div>
+                                                        {{ number_format($item->total) }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @if(!empty($item->true_qty))
+                                                        @if($item->true_qty)
+                                                            {{ $item->true_qty }}
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    @if(!empty($item->true_price))
+                                                        @if($item->true_price>0)
+                                                            {{ number_format($item->true_price) }}
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(!empty($item->true_qty) && !empty($item->true_price))
+                                                        <?php $ttotal+= $item->true_qty * $item->true_price; ?>
+                                                        {{ number_format($ttotal) }}
+                                                    @endif
+                                                </td>
+                                            </tr>
+
+                                            <?php $total+=$item->total; ?>
+                                            <?php $gtotal+= $ttotal; ?>
+
+                                            <?php $solved++; ?>
+                                            @if($solved===$table_items)
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <b>SubTotal <br> Cash:</b>
+                                                    </td>
+                                                    <td>
+                                                        <b>{{ number_format($total) }}</b>
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <b>SubTotal <br> Cash:</b>
+                                                    </td>
+                                                    <td>
+                                                        <b>{{ number_format($gtotal) }}</b>
+                                                    </td>
+
+                                                </tr>
+
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                            <?php $page_count++; ?>
+                    @endforeach
 
                 </div>
             </div>
@@ -256,7 +406,39 @@
 
             frameDoc.document.write("<link rel='stylesheet' href='/app/assets/css/dashlite.css'>");
             frameDoc.document.write('<link rel="stylesheet" href="/app/assets/css/theme.css">');
-            frameDoc.document.write('<style>.half_width{width: 50%}</style>');
+            frameDoc.document.write('<style>.half_width{width: 50%}@media print{.page-break  { display:block; page-break-before:always; }}</style>');
+
+
+            //Append the DIV contents.
+            frameDoc.document.write(contents);
+            frameDoc.document.write('</body></html>');
+            frameDoc.document.close();
+            setTimeout(function () {
+                window.frames["frame1"].focus();
+                window.frames["frame1"].print();
+                frame1.remove();
+            }, 500);
+        }
+
+        function purchaseSlip() {
+
+            var contents = $(".purchase_slip").html();
+            var frame1 = $('<iframe />');
+            frame1[0].name = "frame1";
+            frame1.css({ "position": "absolute", "top": "-1000000px" });
+            $("body").append(frame1);
+            var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+            frameDoc.document.open();
+            //Create a new HTML document.
+            frameDoc.document.write('<html><head><title></title>');
+            frameDoc.document.write('</head><body>');
+            //Append the external CSS file.
+
+
+            frameDoc.document.write("<link rel='stylesheet' href='/app/assets/css/dashlite.css'>");
+            frameDoc.document.write('<link rel="stylesheet" href="/app/assets/css/theme.css">');
+            frameDoc.document.write('<style>.half_width{width: 50%}.purchase_slip{display: block}</style>');
+            frameDoc.document.write('<style type="text/css" media="print">@page  {size: landscape} @media print{.page-break{page-break-before: always}}</style>');
 
 
             //Append the DIV contents.

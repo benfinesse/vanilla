@@ -2,7 +2,6 @@
     <table class="table table-tranx table-billing">
         <thead>
         <tr class="tb-tnx-head">
-            <th><span class="d-md-inline-block">#</span></th>
             <th style="min-width: 300px"><span class="d-md-inline-block">Information</span></th>
             <th><span class="d-md-inline-block">Created</span></th>
             <th><span class="d-md-inline-block">Last Update</span></th>
@@ -13,8 +12,7 @@
         <tbody>
         @forelse($records as $record)
             <tr class="tb-tnx-item">
-                <td>{{ $record->id }}</td>
-                <td style="min-width: 300px">{{ $record->title }}</td>
+                <td style="min-width: 300px; font-size: 12px">{{ $record->title }}</td>
                 <td>{{ date('F d, Y', strtotime($record->created_at)) }}</td>
                 <td>{{ date('F d, Y', strtotime($record->updated_at)) }}</td>
                 <td>

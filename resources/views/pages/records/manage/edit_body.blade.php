@@ -360,7 +360,7 @@
 
                         toast('success', '', `${res.message}`);
                         setTimeout(()=>{
-                            window.location = "{{ $referer }}?message=Record Updated Successfully'";
+                            window.location = "{{ str_replace("?message=Record%20Updated%20Successfully", "", $referer) }}?message=Record Updated Successfully";
                         }, 2000)
                     }else{
                         processLoader('hide');

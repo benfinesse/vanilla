@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('custom_css')
+    <style>
+        .changes_panel{
+            display: none;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="nk-block-head nk-block-head-lg">
         <div class="nk-block-between-md g-4">
@@ -52,6 +60,8 @@
                                         <tr>
                                             <th scope="col">Item Name</th>
                                             <th scope="col">Measure</th>
+                                            <th scope="col">Stock <br> Outside</th>
+                                            <th scope="col">Stock <br> Store</th>
                                             <th scope="col">Qty</th>
                                             <th scope="col">Unit Price</th>
                                             <th scope="col">Total</th>
@@ -67,6 +77,8 @@
                                             <tr>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->measure }}</td>
+                                                <td>{{ $item->stock_outside }}</td>
+                                                <td>{{ $item->stock_store }}</td>
                                                 <td>
                                                     <div class="qty_wrapper_{{ $item->uuid }}">
                                                         <div>
@@ -115,10 +127,63 @@
                                     </table>
                                 </div>
                                 <hr>
-                                <h5 class="text-right">
-                                    <?php $grand_total+= $total; ?>
-                                    Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
-                                </h5>
+                                <div class="row">
+                                    <div class="col">
+                                        <button onclick="revealChange('{{ $group_rec->uuid }}_change_panel')" class="btn btn-white btn-dim btn-outline-primary">
+                                            <em class="icon ni ni-histroy"></em>
+                                            <span class="d-none d-sm-inline-block">View Changes</span>
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <h5 class="text-right">
+                                            <?php $grand_total+= $total; ?>
+                                            Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="changes_panel mt-5 {{ $group_rec->uuid }}_change_panel">
+                                    <button onclick="closeElem('{{ $group_rec->uuid }}_change_panel')" class="float-right btn btn-white btn-dim btn-danger"><b>X</b></button>
+                                    @if($group_rec->loggroup->count()>0)
+                                        @foreach($group_rec->loggroup as $loggroup)
+                                            <p>
+                                                Edited by {{ $loggroup->user->names }} on {{ date('F d, Y h:i', strtotime($loggroup->created_at)) }}
+                                            </p>
+                                            <div class="table-responsive mb-5">
+                                                <table class="table table-hover">
+                                                    <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Old Qty</th>
+                                                        <th scope="col">New Qty</th>
+                                                        <th scope="col">Old Price</th>
+                                                        <th scope="col">New Price</th>
+                                                        <th scope="col" style="width: 400px">Action Taken</th>
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody class="card_table_content">
+
+                                                    @foreach($loggroup->logs as $log)
+                                                        <tr>
+                                                            <td>{{ $log->name }}</td>
+                                                            <td>{{ $log->old_qty }}</td>
+                                                            <td>{{ $log->new_qty }}</td>
+                                                            <td>{{ number_format($log->old_price) }}</td>
+                                                            <td>{{ number_format($log->new_price) }}</td>
+                                                            <td>{{ "({$log->info}) ".$log->action_taken }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endforeach
+
+                                    @else
+                                        <p class="text-center"><b>No Change Log</b></p>
+                                    @endif
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -364,6 +429,16 @@
             return val.toLocaleString('en-US', {maximumFractionDigits:2})
         }
 
+        function revealChange(id) {
+            $('.changes_panel').hide();
+            let elem = $(`.${id}`);
+            elem.slideToggle();
+        }
+
+        function closeElem(id) {
+            let elem = $(`.${id}`);
+            elem.slideToggle();
+        }
 
     </script>
 @endsection

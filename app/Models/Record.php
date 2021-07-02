@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Model\LogGroup;
 use Illuminate\Database\Eloquent\Model;
 
 class Record extends Model
@@ -89,5 +90,9 @@ class Record extends Model
             ->where('office_id', $this->office_id)
             ->where('current', true)
             ->first();
+    }
+
+    public function loggroup(){
+        return $this->hasMany(LogGroup::class, 'record_id', 'uuid');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Record;
 
 use App\Http\Controllers\Controller;
+use App\Model\LogGroup;
+use App\Model\LogItem;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\Record;
@@ -83,45 +85,142 @@ class FormController extends Controller
             $dept_id = $request->input('dept_id');
             $group = Group::whereUuid($dept_id)->first();
             if(!empty($group)){
-                $group_record_id = $request->input('group_record_id');
-                $group_record = RecordGroup::whereUuid($group_record_id)->first();
-
-                if(!empty($group_record)){
-                    if($group_record->recordItems->count() > 0){
-                        //delete old record
-                        foreach ($group_record->recordItems as $item){
-                            $item->delete();
-                        }
-                    }
-                }
-
-                $user = $this->loggedInUser();
 
                 $items = $request->input('items');
 
+
                 if(count($items)>0){
 
-                    //create group
+                    $group_record_id = $request->input('group_record_id');
+                    $group_record = RecordGroup::whereUuid($group_record_id)->first();
+
                     DB::beginTransaction();
 
+                    $basket = [];
+                    if(!empty($group_record)){
+                        if(@$group_record->recordItems->count() > 0){
+                            //delete old record
+                            foreach ($group_record->recordItems as $item){
+                                $basket[$item->name] = ['price'=>$item->price,'qty'=>$item->qty];
+                                $item->delete();
+                            }
+                        }
+                    }
+
+                    $user = $this->loggedInUser();
+
+                    //create group
                     $rg_id = $group_record->uuid;
 
+                    $logs = [];
+                    $record_id = $record->uuid;
+                    $log_group_id = $this->makeUuid();
+                    $log_group['uuid'] = $log_group_id;
+                    $log_group['group_id'] = $group_record_id;
+                    $log_group['record_id'] = $record_id;
+                    $log_group['user_id'] = $user->uuid;
+                    LogGroup::create($log_group);
+
+//                    return response()->json($items, 500);
                     foreach ($items as $item){
                         $name = $item['name'];
+                        $price = floatval($item['price']);
+                        $qty = intval($item['qty']);
+                        $key = $name;
+                        //check if name exist in basket
+                        //return response()->json([$basket], 500);
+
+                        if(array_key_exists($key, $basket)){
+
+
+                            $product = $basket[$key];
+                            $msg = "";
+                            $logItem = null;
+                            //return response()->json($product, 500);
+//                            return response()->json($item, 500);
+
+                            if(floatval($product['price']) !== $price){
+                                $oprice = $product['price'];
+                                $nprice = $price;
+                                $msg .= "{$key} price updated from {$oprice} to {$nprice}, ";
+
+                                $logItem['old_price'] = $oprice;
+                                $logItem['new_price'] =  $nprice;
+                            }
+
+                            if(intval($product['qty'])!== $qty){
+                                $oldqty = $product['qty'];
+                                $newqty = $qty;
+                                $msg .= "{$key} quantity updated from {$oldqty} to {$newqty}, ";
+
+                                $logItem['old_qty'] = $oldqty;
+                                $logItem['new_qty'] =  $newqty;
+                            }
+
+                            if(floatval($product['price']) !== $price || intval($product['qty'])!==$qty){
+                                $logItem['uuid'] = $this->makeUuid();
+                                $logItem['log_group_id'] = $log_group_id;
+                                $logItem['name'] = $key;
+                                $logItem['action_taken'] = $msg;
+                                $logItem['info'] = "Update";
+                                LogItem::create($logItem);
+                            }
+
+                            //remove item from basket
+                            unset($basket[$key]);
+
+                        }else{
+                            return response()->json(["key"=>$key, 'basket'=>$basket], 500);
+                            $logItem['uuid'] = $this->makeUuid();
+                            $logItem['log_group_id'] = $log_group_id;
+                            $logItem['name'] = $key;
+                            $logItem['action_taken'] = "New item '{$key}' added.";
+                            $logItem['old_price'] = 0;
+                            $logItem['new_price'] = $val;
+                            $logItem['old_qty'] = 0;
+                            $logItem['new_qty'] =  $item->qty;
+                            $logItem['info'] = "New Item";
+                            LogItem::create($logItem);
+
+                        }
+
+
+
                         //store name if not existing
                         $measure = $item['measure'];
-                        $price = floatval($item['price']);
+
                         $this->attemptNewProduct($name, $group->uuid, $measure, $price);
 
                         $data['uuid'] = $this->makeUuid();
                         $data['user_id'] = $user->uuid;
-                        $data['record_id'] = $record->uuid;
+                        $data['record_id'] = $record_id;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $measure;
                         $data['name'] = $name;
                         $data['qty'] = floatval($item['qty']);
                         $data['price'] = $price;
                         RecordItem::create($data);
+                    }
+
+                    foreach($basket as $key=>$val){
+                        $logItem = null;
+                        $logItem['uuid'] = $this->makeUuid();
+                        $logItem['log_group_id'] = $log_group_id;
+                        $logItem['name'] = $key;
+                        $logItem['old_price'] = $val['price'];
+                        $logItem['new_price'] = 0;
+                        $logItem['old_qty'] = $val['qty'];
+                        $logItem['new_qty'] =  0;
+                        $logItem['action_taken'] = "Item '{$key}' removed.";
+                        $logItem['info'] = "Deleted";
+                        LogItem::create($logItem);
+                        unset($basket[$key]);
+                    }
+
+                    //todo - delete empty log groups
+                    $log_groups = LogGroup::has('logs', '<', 1)->get();
+                    foreach ($log_groups as $lg){
+                        $lg->delete();
                     }
 
                     DB::commit();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Model\LogGroup;
 use Illuminate\Database\Eloquent\Model;
 
 class RecordGroup extends Model
@@ -27,5 +28,9 @@ class RecordGroup extends Model
 
     public function getTotalAttribute(){
 
+    }
+
+    public function loggroup(){
+        return $this->hasMany(LogGroup::class, 'group_id', 'uuid');
     }
 }
