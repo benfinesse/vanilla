@@ -252,8 +252,8 @@
                                                 <td></td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->measure }}</td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{ $item->stock_outside }}</td>
+                                                <td>{{ $item->stock_store }}</td>
                                                 <td>
                                                     <div>
                                                         {{ $item->qty }}
@@ -317,7 +317,7 @@
                                                         <b>SubTotal <br> Cash:</b>
                                                     </td>
                                                     <td>
-                                                        <b>{{ number_format($gtotal) }}</b>
+                                                        <b></b>
                                                     </td>
 
                                                 </tr>

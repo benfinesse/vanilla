@@ -172,17 +172,20 @@ class FormController extends Controller
                             unset($basket[$key]);
 
                         }else{
-
-                            $logItem['uuid'] = $this->makeUuid();
-                            $logItem['log_group_id'] = $log_group_id;
-                            $logItem['name'] = $key;
-                            $logItem['action_taken'] = "New item '{$key}' added.";
-                            $logItem['old_price'] = 0;
-                            $logItem['new_price'] = $price;
-                            $logItem['old_qty'] = 0;
-                            $logItem['new_qty'] =  $item->qty;
-                            $logItem['info'] = "New Item";
-                            LogItem::create($logItem);
+                            try{
+                                $logItem['uuid'] = $this->makeUuid();
+                                $logItem['log_group_id'] = $log_group_id;
+                                $logItem['name'] = $key;
+                                $logItem['action_taken'] = "New item '{$key}' added.";
+                                $logItem['old_price'] = 0;
+                                $logItem['new_price'] = $price;
+                                $logItem['old_qty'] = 0;
+                                $logItem['new_qty'] =  $item['qty'];
+                                $logItem['info'] = "New Item";
+                                LogItem::create($logItem);
+                            }catch (\Exception $err){
+                                return response()->json(["message"=>"failed to save", "item"=>$item],500);
+                            }
 
                         }
 
