@@ -13,8 +13,8 @@
         @forelse($records as $record)
             <tr class="tb-tnx-item">
                 <td style="min-width: 300px; font-size: 12px">{{ $record->title }}</td>
-                <td>{{ date('F d, Y', strtotime($record->created_at)) }}</td>
-                <td>{{ date('F d, Y', strtotime($record->updated_at)) }}</td>
+                <td>{{ date('M d, Y', strtotime($record->created_at)) }}</td>
+                <td>{{ date('M d, Y', strtotime($record->updated_at)) }}</td>
                 <td>
                     <div class="tb-tnx-status">
                         <span class="badge badge-dot badge-{{ $record->statusColor }}">{{ $record->status }}</span>
@@ -31,22 +31,22 @@
                         </a>
 
                         @if($record->ready)
-                            <a href="#" title="Start Process">
+                            <a href="#" title="Start Process" class="ml-2">
                                 <em class="icon ni ni-send" style="font-size: 20px"></em>
                             </a>
                         @endif
 
                     @else
                         @if($record->status!=="completed")
-                            <b> Pending Response </b>
+                            <b style="font-size: 12px"> Pending Response </b>
                             @if($person->isSuperAdmin)
                                 <a href="{{ route('resend.notice', $record->uuid) }}" title="Resend Notice" class="ml-4">
                                     <em class="icon ni ni-send-alt" style="font-size: 20px"></em>
                                 </a>
                             @endif
                         @endif
-                            <a href="{{ route('record.history', $record->uuid) }}" title="List Records" class="ml-4">
-                                <em class="icon ni ni-histroy" style="font-size: 20px"></em>
+                            <a href="{{ route('record.history', $record->uuid) }}" title="List Records" class="ml-4 btn btn-outline-primary btn-sm">
+                                <em class="icon ni ni-histroy mr-2" style="font-size: 20px"></em> View
                             </a>
 
 

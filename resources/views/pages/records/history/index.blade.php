@@ -181,6 +181,25 @@
                                 </div>
                             </div>
                         </div>
+                        @if(empty($record->nextOffice))
+                            @if($record->status!=="completed")
+                                <?php $office = $record->office; ?>
+                                @if(!empty($office))
+                                    @if(!empty($office->isMember))
+                                        <div class="col-md-6 mb-4 mt-3 half_width">
+                                            <div class="card card-bordered">
+                                                <div class="card-inner text-center">
+                                                    <a href="{{ route('record.audit', $record->uuid) }}" class="btn btn-outline-primary">Complete Record</a>
+                                                    <br>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
+
+                            @endif
+                        @endif
                     @endif
 
                 </div>
