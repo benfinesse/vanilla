@@ -8,6 +8,7 @@
             <div class="nk-block-des">
                 <p>Enter email registered to begin password reset.</p>
             </div>
+            @include('layouts.notice')
         </div>
     </div><!-- .nk-block-head -->
     <form method="POST" action="{{ route('password.email') }}">
