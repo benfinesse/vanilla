@@ -16,8 +16,13 @@ class MeasureController extends Controller
      *
 //     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('view_measure')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $measures = Measure::get();
         return view('pages.measure.index')->with([
             'data'=>$measures
@@ -29,8 +34,12 @@ class MeasureController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_measure')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         return view('pages.measure.create');
     }
 
@@ -42,6 +51,10 @@ class MeasureController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_measure')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $request->validate(['name'=>'required']);
         $name = $request->input('name');
         $exist = Measure::where('name', $name)->first();
@@ -103,8 +116,13 @@ class MeasureController extends Controller
         //
     }
 
-    public function delete($uuid)
+    public function delete(Request $request, $uuid)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('delete_measure')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $mea = Measure::whereUuid($uuid)->first();
         if(!empty($mea)){
             $mea->delete();

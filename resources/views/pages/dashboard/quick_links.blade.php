@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="nk-wg1-action">
-                        <a href="#" class="link"><span>Manage Your Account</span> <em class="icon ni ni-chevron-right"></em></a>
+                        <a href="{{ route('account.show', $person->uuid) }}" class="link"><span>Manage Your Account</span> <em class="icon ni ni-chevron-right"></em></a>
                     </div>
                 </div>
             </div>

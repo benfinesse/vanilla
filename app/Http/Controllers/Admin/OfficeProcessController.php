@@ -17,8 +17,13 @@ class OfficeProcessController extends Controller
      *
 //     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('view_processes')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $process = OfficeProcess::orderBy('id','desc')->get();
         return view('pages.process.index')->with([
             'data'=>$process
@@ -30,8 +35,12 @@ class OfficeProcessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_process')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         return view('pages.process.create');
     }
 
@@ -43,6 +52,16 @@ class OfficeProcessController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_process')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
+        $user = $request->user();
+        if(!$user->hasAccess('create_process')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $name = $request->input('name');
         if(!empty($name)){
             $exist = OfficeProcess::where('name', $name)->first();
@@ -79,8 +98,12 @@ class OfficeProcessController extends Controller
      * @param  \App\Models\OfficeProcess  $officeProcess
      * @return \Illuminate\Http\Response
      */
-    public function edit($uuid)
+    public function edit(Request $request, $uuid)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('edit_process')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $process = OfficeProcess::whereUuid($uuid)->first();
         if(!empty($process)){
             return view('pages.process.edit')->with(['process'=>$process]);
@@ -97,6 +120,10 @@ class OfficeProcessController extends Controller
      */
     public function update(Request $request, $uuid)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_process')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $process = OfficeProcess::whereUuid($uuid)->first();
         if(!empty($process)){
             $name = $request->input('name');

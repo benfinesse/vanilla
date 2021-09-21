@@ -16,8 +16,13 @@ class GroupController extends Controller
      *
 //     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('view_groups')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $data = Group::get();
         return view('pages.group.index')->with([
             'data'=>$data
@@ -29,8 +34,12 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_group')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         return view('pages.group.create');
     }
 
@@ -42,6 +51,10 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_group')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
 
         $name = $request->input('name');
         $exist = Group::where('name', $name)->first();
@@ -77,9 +90,12 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function edit(Group $group)
+    public function edit(Request $request, $uuid)
     {
-        //
+        $user = $request->user();
+        if(!$user->hasAccess('edit_groups')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
     }
 
     /**
@@ -89,9 +105,12 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, $uuid)
     {
-        //
+        $user = $request->user();
+        if(!$user->hasAccess('create_group')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
     }
 
     /**
@@ -100,8 +119,12 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(Request $request, $group)
     {
-        //
+
+        $user = $request->user();
+        if(!$user->hasAccess('delete_group')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
     }
 }

@@ -29,10 +29,14 @@ trait Permission{
             case 'records':
                 return 'create_record';
                 break;
-            case 'processes':
-                return 'create_process';
+            case 'view_processes':
+                return 'view_processes';
                 break;
-            case 'measures':
+            case 'view_measure':
+                return 'view_measure';
+                break;
+
+            case 'create_measure':
                 return 'create_measure';
                 break;
             case 'products':
@@ -47,6 +51,56 @@ trait Permission{
             case 'roles':
                 return 'view_roles';
                 break;
+
+            case 'view_processes':
+                return 'view_processes';
+                break;
+
+            case 'create_process':
+                return 'create_process';
+                break;
+
+            case 'edit_process':
+                return 'edit_process';
+                break;
+
+            case 'create_user':
+                return 'create_user';
+                break;
+
+            case 'edit_user':
+                return 'edit_user';
+                break;
+
+            case 'delete_user':
+                return 'delete_user';
+                break;
+
+
+            case 'create_group':
+                return 'create_group';
+                break;
+
+
+            case 'edit_group':
+                return 'edit_group';
+                break;
+
+
+            case 'delete_group':
+                return 'delete_group';
+                break;
+
+
+            case 'view_groups':
+                return 'view_groups';
+                break;
+
+
+            case 'view_record':
+                return 'view_record';
+                break;
+
             default:
                 return '';
         }

@@ -15,9 +15,11 @@
                 <td>{{ $item->user->names }}</td>
                 <td>{{ $item->created_at->diffForHumans() }}</td>
                 <td>
-                    <a href="#" class="text-danger" onclick="deleteItem('{{ route('measure.delete', $item->uuid) }}')">
-                        <em class="icon ni ni-trash-alt"></em>
-                    </a>
+                    @if($person->hasAccess('delete_measure'))
+                        <a href="#" class="text-danger" onclick="deleteItem('{{ route('measure.delete', $item->uuid) }}')">
+                            <em class="icon ni ni-trash-alt"></em>
+                        </a>
+                    @endif
                 </td>
             </tr>
         @empty

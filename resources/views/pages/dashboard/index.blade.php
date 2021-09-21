@@ -11,6 +11,7 @@
                 </div>
             </div>
         </div>
+        @include('layouts.notice')
     </div>
     @include('pages.dashboard.pendings')
     @include('pages.dashboard.quick_links')

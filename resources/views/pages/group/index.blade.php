@@ -8,7 +8,7 @@
             </div>
             <div class="nk-block-head-content">
                 <ul class="nk-block-tools gx-3">
-                    <li><a href="{{ route('group.create') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-file-plus"></em><span><span class="d-none d-sm-inline-block">New</span> Record</span></a></li>
+                    <li><a href="{{ route('group.create') }}" class="btn btn-white btn-dim btn-outline-primary"><em class="icon ni ni-file-plus"></em><span><span class="d-none d-sm-inline-block">New</span> Dept</span></a></li>
                 </ul>
             </div>
         </div>

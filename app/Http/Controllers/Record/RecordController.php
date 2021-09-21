@@ -31,8 +31,12 @@ class RecordController extends Controller
      * Display a listing of the resource.
      *
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('view_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $records = Record::where('active', true)->orderBy('id', 'desc')->paginate(30);
 
         return view('pages.records.index')->with([
@@ -44,8 +48,12 @@ class RecordController extends Controller
      * Show the form for creating a new resource.
      *
      */
-    public function create()
+    public function create(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $measure = Measure::get();
         $processes = OfficeProcess::get();
         return view('pages.records.create')->with([
@@ -56,6 +64,11 @@ class RecordController extends Controller
 
     public function store(Request $request)
     {
+        $user = $request->user();
+        if(!$user->hasAccess('create_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $user = $request->user();
         $process_id = $request->input('process_id');
         $process = OfficeProcess::whereUuid($process_id)->first();

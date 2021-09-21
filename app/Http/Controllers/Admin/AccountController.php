@@ -125,9 +125,14 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $uuid)
     {
-        //
+        $user = $request->user();
+        if($user->uuid !== $uuid){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
+        return view('pages.users.show', compact('user'));
     }
 
 

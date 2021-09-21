@@ -42,7 +42,7 @@
                     <h6 class="overline-title">Administration</h6>
                 </li>
 
-                @if($person->hasAccess('processes'))
+                @if($person->hasAccess('view_processes'))
                     <li class="nk-menu-item">
                         <a href="{{ route('process.index') }}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-send-alt"></em></span>
@@ -51,7 +51,7 @@
                     </li>
                 @endif
 
-                @if($person->hasAccess('measures'))
+                @if($person->hasAccess('view_measure'))
                     <li class="nk-menu-item">
                         <a href="{{ route('measure.index') }}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-list-check"></em></span>

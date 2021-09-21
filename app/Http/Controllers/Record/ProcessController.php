@@ -24,6 +24,10 @@ class ProcessController extends Controller
     }
 
     public function start(Request $request, $record_id){
+        $user = $request->user();
+        if(!$user->hasAccess('create_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $record = Record::whereUuid($record_id)->first();
         if(!empty($record)){
             $office_process = $record->process;
@@ -100,6 +104,10 @@ class ProcessController extends Controller
     }
 
     public function history(Request $request, $record_id){
+        $user = $request->user();
+        if(!$user->hasAccess('view_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
         $record = Record::whereUuid($record_id)
             ->with([
                 'slips'
