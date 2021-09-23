@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Office;
 use App\Models\OfficeMember;
 use App\Models\OfficeProcess;
+use App\Models\OfficeSlip;
 use App\Traits\General\Utility;
 use App\User;
 use Illuminate\Http\Request;
@@ -130,6 +131,13 @@ class OfficeController extends Controller
             foreach ($office_member_anchor as $anchor){
                 $anchor->delete();
             }
+
+            //delete slips
+            $office_slips = OfficeSlip::where('office_id', $office->uuid)->get();
+            foreach ($office_slips as $anchor){
+                $anchor->delete();
+            }
+
             $office->delete();
             return back()->withMessage("One office item deleted");
         }
