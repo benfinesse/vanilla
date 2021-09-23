@@ -45,6 +45,8 @@ class Role extends Model
         'settings',
         'procurement',
         'active',
+        'view_record',
+
     ];
 
     public function getuserCountAttribute(){
