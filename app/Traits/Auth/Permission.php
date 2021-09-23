@@ -29,8 +29,15 @@ trait Permission{
             case 'records':
                 return 'create_record';
                 break;
+
+            case 'create_record':
+                return 'create_record';
+                break;
             case 'view_processes':
                 return 'view_processes';
+                break;
+            case 'delete_process':
+                return 'delete_process';
                 break;
             case 'view_measure':
                 return 'view_measure';
@@ -52,8 +59,8 @@ trait Permission{
                 return 'view_roles';
                 break;
 
-            case 'view_processes':
-                return 'view_processes';
+            case 'delete_record':
+                return 'delete_record';
                 break;
 
             case 'create_process':
@@ -99,6 +106,11 @@ trait Permission{
 
             case 'view_record':
                 return 'view_record';
+                break;
+
+
+            case 'edit_record':
+                return 'edit_record';
                 break;
 
             default:

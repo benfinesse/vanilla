@@ -142,6 +142,11 @@ class RecordController extends Controller
 
     public function editGroupRecord(Request $request, $uuid){
 
+        $user = $request->user();
+        if(!$user->hasAccess('edit_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $refer = $request->header('referer');
 
 
@@ -186,10 +191,26 @@ class RecordController extends Controller
         //
     }
 
-    public function pop($uuid){
+    public function pop(Request $request, $uuid){
+        $user = $request->user();
+        if(!$user->hasAccess('delete_record')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
             if(!$record->completed){
+                $record_id = $record->uuid;
+
+                $office_slips = OfficeSlip::where('record_id', $record_id)->get();
+                foreach ($office_slips as $anchor){
+                    $anchor->delete();
+                }
+
+                $rec_items = RecordItem::where('record_id', $record_id)->get();
+                foreach ($rec_items as $anchor){
+                    $anchor->delete();
+                }
                 $record->delete();
                 return back()->withMessage("One item deleted");
             }else{

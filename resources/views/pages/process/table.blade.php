@@ -20,8 +20,11 @@
                     <a href="{{ route('process.edit', $item->uuid) }}">
                         <em class="icon ni ni-edit mr-2" style="font-size: 20px"></em>
                     </a>
-                    <a href="{{ route('process.list', $item->uuid) }}">
-                        <em class="icon ni ni-setting-alt" style="font-size: 20px"></em>
+                    <a href="{{ route('process.list', $item->uuid) }}" class="btn btn-white btn-dim btn-outline-primary">
+                        <em class="icon ni ni-setting-alt" style="font-size: 20px"></em> Manage
+                    </a>
+                    <a href="#" class="ml-3 mr-2" onclick="deleteItem('{{ route('process.pop', $item->uuid) }}', 'A lot of related records will be deleted if you continue! Type yes if YOU ARE SURE? ')">
+                        <em class="icon ni ni-trash-alt text-danger" style="font-size: 20px"></em>
                     </a>
                 </td>
             </tr>

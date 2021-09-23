@@ -20,6 +20,15 @@ class FormController extends Controller
     use Utility, AuthTrait;
     public function store(Request $request, $uuid){
 
+        $user = $request->user();
+        if(!$user->hasAccess('create_record')){
+            return response()->json([
+                'success'=>false,
+                'message'=>'unauthorised access',
+                'redirect'=>route('dashboard')
+            ]);
+        }
+
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){
             $dept_id = $request->input('dept_id');
@@ -81,6 +90,15 @@ class FormController extends Controller
 
 
     public function update(Request $request, $uuid){
+
+        $user = $request->user();
+        if(!$user->hasAccess('create_record')){
+            return response()->json([
+                'success'=>false,
+                'message'=>'unauthorised access',
+                'redirect'=>route('dashboard')
+            ]);
+        }
 
         $record = Record::whereUuid($uuid)->first();
         if(!empty($record)){

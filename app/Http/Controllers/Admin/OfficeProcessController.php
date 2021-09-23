@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Office;
+use App\Models\OfficeMember;
 use App\Models\OfficeProcess;
+use App\Models\OfficeSlip;
+use App\Models\Record;
+use App\Models\RecordGroup;
+use App\Models\RecordItem;
 use App\Traits\General\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +33,74 @@ class OfficeProcessController extends Controller
         return view('pages.process.index')->with([
             'data'=>$process
         ]);
+    }
+
+    public function popItem(Request $request, $uuid)
+    {
+        $user = $request->user();
+        if(!$user->hasAccess('delete_process')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
+        $process = OfficeProcess::whereUuid($uuid)->first();
+        if(!empty($process)){
+            DB::beginTransaction();
+            $process_id = $process->uuid;
+
+
+
+            //remove office from the process
+            $offices = Office::where('process_id', $process_id)->get();
+            foreach ( $offices as $office){
+                $office_id = $office->uuid;
+
+                //get members hook
+                $office_member_anchor = OfficeMember::where('office_id', $office_id)->get();
+                foreach ($office_member_anchor as $anchor){
+                    $anchor->delete();
+                }
+
+                //delete slips
+                $office_slips = OfficeSlip::where('office_id', $office_id)->get();
+                foreach ($office_slips as $anchor){
+                    $anchor->delete();
+                }
+
+                $records = Record::where('process_id', $process_id)->get();
+                foreach ( $records as $record){
+                    $record_id = $record->uuid;
+
+                    $office_slips = OfficeSlip::where('record_id', $record_id)->get();
+                    foreach ($office_slips as $anchor){
+                        $anchor->delete();
+                    }
+
+                    $rec_items = RecordItem::where('record_id', $record_id)->get();
+                    foreach ($rec_items as $anchor){
+                        $anchor->delete();
+                    }
+
+                    $record->delete();
+                    //delete the record groups related to the record
+                    $rgs = RecordGroup::where('record_id', $record_id)->get();
+                    foreach ($rgs as $rg){
+                        $rg->delete();
+                    }
+
+                }
+
+                $office->delete();
+            }
+            //delete process
+            $process->delete();
+
+            //delete records
+
+
+
+            DB::commit();
+        }
+        return back()->withMessage("One item deleted successfully");
     }
 
     /**

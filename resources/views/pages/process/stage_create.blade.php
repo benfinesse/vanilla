@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="process">Create Process</label>
+                                    <label class="form-label" for="process">Create Office</label>
                                     <div class="form-control-wrap ">
                                         <button type="submit" class="btn btn-primary">Create</button>
                                     </div>

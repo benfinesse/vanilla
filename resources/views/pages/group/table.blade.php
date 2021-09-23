@@ -18,6 +18,10 @@
                     <a href="#">
                         <em class="icon ni ni-edit"></em>
                     </a>
+
+                    <a href="#" onclick="deleteItem('{{ route('group.pop', $item->uuid) }}')" title="List Records" class="ml-4">
+                        <em class="icon ni ni-trash-alt text-danger mr-2" style="font-size: 20px"></em>
+                    </a>
                 </td>
             </tr>
         @empty

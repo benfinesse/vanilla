@@ -127,4 +127,23 @@ class GroupController extends Controller
             return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
         }
     }
+
+    public function pop(Request $request, $uuid)
+    {
+
+        $user = $request->user();
+        if(!$user->hasAccess('delete_group')){
+            return redirect()->route('dashboard')->withErrors(['You do not have access to the requested action']);
+        }
+
+        $group = Group::whereUuid($uuid)->first();
+        if(empty($group)){
+            return back()->withErrors(['Could not complete. Resource not found']);
+        }
+
+        $group->delete();
+        return back()->withMessage("One item deleted successfully");
+
+
+    }
 }

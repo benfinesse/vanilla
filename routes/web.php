@@ -25,6 +25,7 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::resource('product', 'Admin\ProductController');
     Route::get('product/action/delete/{uuid}', 'Admin\ProductController@delete')->name('product.delete');
     Route::resource('group', 'Admin\GroupController');
+    Route::get('group/pop/{uuid}', 'Admin\GroupController@pop')->name('group.pop');
     Route::get('record/manage/{uuid}/{gid}', 'Record\RecordController@manage')->name('record.manage');
     Route::get('record/list/{uuid}', 'Record\RecordController@listItems')->name('record.list');
     Route::post('form/record/store/{uuid}','Record\FormController@store')->name('form.store');
@@ -39,6 +40,7 @@ Route::group(['middleware'=>['auth','access']], function (){
 
     Route::resource('process', 'Admin\OfficeProcessController');
     Route::get('process/list/{uuid}', 'Admin\OfficeProcessController@listItems')->name('process.list');
+    Route::get('process/pop/{uuid}', 'Admin\OfficeProcessController@popItem')->name('process.pop');
     Route::get('process/item/move/{uuid}/{dir}', 'Process\PositionController@tryPositionMove')->name('process.item.direction');
     Route::get('process/action/toggle/verification/{uuid}', 'Admin\OfficeProcessController@toggleVerification')->name('process.toggle.verification');
 

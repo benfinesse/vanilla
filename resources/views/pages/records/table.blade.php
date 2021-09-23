@@ -53,6 +53,12 @@
                                 <em class="icon ni ni-histroy mr-2" style="font-size: 20px"></em> View
                             </a>
 
+                            @if($person->hasAccess('delete_record'))
+                                <a href="#" onclick="deleteItem('{{ route('record.pop', $record->uuid) }}','Type yes to delete but some records may be lost forever! Are you Sure?')" title="Delete Records" class="ml-4">
+                                    <em class="icon ni ni-trash-alt text-danger mr-2" style="font-size: 20px"></em>
+                                </a>
+                            @endif
+
 
                     @endif
 
