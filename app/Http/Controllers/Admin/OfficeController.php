@@ -121,6 +121,15 @@ class OfficeController extends Controller
     public function pop($uuid){
         $office = Office::whereUuid($uuid)->first();
         if(!empty($office)){
+            //DB::statement('SET FOREIGN_KEY_CHECKS=0');
+            //DB::table('offices')->where('uuid', $office->uuid)->delete();
+            //DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+            //get members hook
+            $office_member_anchor = OfficeMember::where('office_id', $office->uuid)->get();
+            foreach ($office_member_anchor as $anchor){
+                $anchor->delete();
+            }
             $office->delete();
             return back()->withMessage("One office item deleted");
         }
