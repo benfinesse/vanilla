@@ -82,7 +82,28 @@ class ProcessService
                 }
                 //else proceed to completion
                 else{
-                    dd("do completion. Contact Support");
+                    return [0, "Could not complete. contact Support"];
+                }
+            }
+            return [0, "Could not complete. contact Support"];
+        }
+        return [0, "No office instance"];
+    }
+
+    public function prevOffice(Office $office, Record $record, $comment){
+
+        if(!empty($office)){
+            $currentSlip = $record->currentOfficeSlip;
+            if(!empty($currentSlip)){
+                $prevOffice = $record->prevOffice;
+                if(!empty($prevOffice)){
+                    $user = $this->loggedInUser();
+                    $this->buildStage($record, $prevOffice, $user, $currentSlip, $comment);
+                    return [1, "Completed"];
+                }
+                //else proceed to completion
+                else{
+                    return [0, "Could not complete. contact Support"];
                 }
             }
             return [0, "Could not complete. contact Support"];

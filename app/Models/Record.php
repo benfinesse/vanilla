@@ -77,7 +77,7 @@ class Record extends Model
     public function getPrevOfficeAttribute(){
         $office = Office::where('uuid', $this->office_id)->where('process_id', $this->process_id)->first();
         if(!empty($office)){
-            $prev = Office::where('process_id', $this->process_id)->where('position','<',$office->position)->orderBy('position','asc')->first();
+            $prev = Office::where('process_id', $this->process_id)->where('position','<',$office->position)->orderBy('position','desc')->first();
             if(!empty($prev)){
                 return $prev;
             }

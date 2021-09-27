@@ -208,10 +208,18 @@
                                         <div class="card card-bordered">
                                             <div class="card-inner text-center">
                                                 <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
+
+                                                @if(!empty($record->prevOffice))
+                                                    <!-- the onclick function is not deleting the item but calling the link with custom warning first -->
+                                                    <a href="#" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev']) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2">
+                                                        <i class="ni ni-back-arrow-fill mr-3"></i> Return to {{ $record->prevOffice->name }}
+                                                    </a>
+                                                @endif
+
                                                 @if(!empty($record->nextOffice))
-                                                    <button class="btn btn-outline-primary">Submit to {{ $record->nextOffice->name }}</button>
+                                                    <button class="btn btn-outline-primary ml-2">Submit to {{ $record->nextOffice->name }} <i class="ni ni-forward-arrow-fill ml-3"></i></button>
                                                 @else
-                                                    <button class="btn btn-outline-primary">Complete and Close Record</button>
+                                                    <button class="btn btn-outline-primary">Complete and Close Record <i class="ni ni-check-round-fill ml-3"></i></button>
                                                 @endif
                                             </div>
                                         </div>
@@ -237,6 +245,13 @@
                                         <div class="card card-bordered">
                                             <div class="card-inner text-center">
                                                 <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
+                                                @if(!empty($record->prevOffice))
+                                                    <!-- the onclick function is not deleting the item but calling the link with custom warning first -->
+                                                    <a href="#" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev']) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2">
+                                                        <i class="ni ni-back-arrow-fill mr-3"></i> Return to {{ $record->prevOffice->name }}
+                                                    </a>
+                                                @endif
+
                                                 @if(!empty($record->nextOffice))
                                                     <button class="btn btn-outline-primary">Submit to {{ $record->nextOffice->name }}</button>
                                                 @else

@@ -71,6 +71,15 @@ class ProcessController extends Controller
                     }
                 }elseif ($dir==='prev'){
                     // todo - handle moving to previous office
+                    $prevOffice = $record->prevOffice;
+                    if(!empty($prevOffice)){
+                        $res = $this->service->prevOffice($office, $record, $comment);
+                        if($res[0]){
+                            return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have returned one item to {$prevOffice->name}.");
+                        }else{
+                            return back()->withErrors($res[1]);
+                        }
+                    }
                 }else{
                     return back()->withErrors(['Could not complete request. refresh and try again']);
                 }

@@ -42,96 +42,99 @@
                     </table>
                 </div>
 
-                <div class="col-12 mb-5">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="msg_field"></div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label class="form-label" for="item_name ">Item Name</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control item_name item_val input_sync" id="item_name" name="item_name" list="products" autocomplete="off">
-                                    <datalist id="products">
-                                        @foreach($products as $product)
-                                            <option data-price="{{ $product->price }}" data-measure="{{ $product->measure }}" value="{{ $product->name }}" >{{ $product->measure }}</option>
-                                        @endforeach
-                                    </datalist>
+                <div class="col-12">
+                    <div class="row input_fields_section">
+                        <div class="col-12 mb-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="msg_field"></div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label class="form-label" for="item_qty">Quantity</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" onkeypress="return numbersOnly(event)" class="form-control p_control item_qty item_val input_sync" id="item_qty">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_name ">Item Name</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control item_name item_val input_sync" id="item_name" name="item_name" list="products" autocomplete="off">
+                                            <datalist id="products">
+                                                @foreach($products as $product)
+                                                    <option data-price="{{ $product->price }}" data-measure="{{ $product->measure }}" value="{{ $product->name }}" >{{ $product->measure }}</option>
+                                                @endforeach
+                                            </datalist>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label class="form-label" for="item_qty">Price</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" onkeypress="return numbersOnly(event)" class="form-control p_control item_price item_val input_sync" id="item_price">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_qty">Quantity</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" onkeypress="return numbersOnly(event)" class="form-control p_control item_qty item_val input_sync" id="item_qty">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label class="form-label" for="item_measure">Measure</label>
-                                <div class="form-control-wrap ">
-                                    <div class="form-control-select">
-                                        <select class="form-control item_measure item_val input_sync" id="item_measure" required>
-                                            @foreach($measures as $measure)
-                                                <option value="{{ $measure->name }}">{{ $measure->name }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_price">Price</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" onkeypress="return numbersOnly(event)" class="form-control p_control item_price item_val input_sync" id="item_price">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_measure">Measure</label>
+                                        <div class="form-control-wrap ">
+                                            <div class="form-control-select">
+                                                <select class="form-control item_measure item_val input_sync" id="item_measure" required>
+                                                    @foreach($measures as $measure)
+                                                        <option value="{{ $measure->name }}">{{ $measure->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_amount">Amount</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control item_amount item_val" id="item_amount" value="0" disabled>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label class="form-label" for="item_amount">Amount</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control item_amount item_val" id="item_amount" value="0" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
+                            <div class="row mt-2">
 
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label class="form-label" for="item_stock_outside">Stock Outside</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control p_control item_stock_outside item_val input_sync" id="item_stock_outside">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_stock_outside">Stock Outside</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control p_control item_stock_outside item_val input_sync" id="item_stock_outside">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label class="form-label" for="item_stock_store">Stock Store</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control p_control item_stock_store item_val input_sync" id="item_stock_store">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item_stock_store">Stock Store</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control p_control item_stock_store item_val input_sync" id="item_stock_store">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="col-lg-1">
-                            <div class="form-group">
-                                <label class="form-label" for="pay-amount-1">Add</label>
-                                <div class="form-control-wrap">
-                                    <button class="btn btn-primary" onclick="event.preventDefault(); addItem()">
-                                        <em class="icon ni ni-plus-c"></em>
-                                    </button>
+                                <div class="col-lg-1">
+                                    <div class="form-group">
+                                        <label class="form-label" for="pay-amount-1">Add</label>
+                                        <div class="form-control-wrap">
+                                            <button class="btn btn-success" onclick="event.preventDefault(); addItem()">
+                                                <em class="icon ni ni-check-c"></em>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-12">
                     <hr>
@@ -154,6 +157,8 @@
     </div>
 </div>
 
+<div class="modal_context"></div>
+
 @section('manage_logic')
     <script>
         "use strict";
@@ -167,6 +172,8 @@
             stock_outside:0,
             stock_store:0,
         };
+        var controlConfig = null;
+        var editPos = null;
 
         async function addItem() {
             let fields = $('.item_val');
@@ -188,15 +195,31 @@
             });
 
             if(process){
-                items.push({
-                    name:listObject.name,
-                    qty:listObject.qty,
-                    price:parseFloat(listObject.price),
-                    measure:listObject.measure,
-                    amount:parseFloat(listObject.amount),
-                    stock_outside:listObject.stock_outside,
-                    stock_store:listObject.stock_store,
-                });
+
+                if(editPos!= null){
+                    items[editPos].name = listObject.name;
+                    items[editPos].qty = listObject.qty;
+                    items[editPos].price = parseFloat(listObject.price);
+                    items[editPos].measure = listObject.measure;
+                    items[editPos].amount = parseFloat(listObject.amount);
+                    items[editPos].stock_outside = listObject.stock_outside;
+                    items[editPos].stock_store = listObject.stock_store;
+                    $("#modal_edit").modal('hide');
+                    resControl();
+                }else{
+                    items.push({
+                        name:listObject.name,
+                        qty:listObject.qty,
+                        price:parseFloat(listObject.price),
+                        measure:listObject.measure,
+                        amount:parseFloat(listObject.amount),
+                        stock_outside:listObject.stock_outside,
+                        stock_store:listObject.stock_store,
+                    });
+                }
+
+
+
                 resetListObject();
                 resetFields()
                 console.log(items);
@@ -215,7 +238,8 @@
             listObject.amount=0;
         }
 
-        $('.item_name').on('keyup', async function (e) {
+        $(document).on('keyup','.item_name', function(event){
+            // $('.item_name').on('keyup', async function (e) {
             var price = 0;
             let measure = null;
             let val = this.value;
@@ -228,7 +252,6 @@
             if(measure!==null){
                 $('.item_measure').val(measure)
             }
-
         });
 
         function resetFields() {
@@ -236,7 +259,8 @@
             $('.item_amount').val("0");
         }
 
-        $('.p_control').on('keyup', function (e) {
+        $(document).on('keyup','.p_control', function(event){
+        // $('.p_control').on('keyup', function (e) {
             let qty = parseFloat($('.item_qty').val());
             let price = parseFloat($('.item_price').val());
             let amount = $('.item_amount');
@@ -330,10 +354,15 @@
 
         async function editItem(pos) {
             let editable = items[pos];
+            console.log(editable);
+            editModal(pos);
 
-            await items.splice(pos, 1);
+            $('#modal_edit').modal('show');
 
-            await reloadTable();
+
+            // await items.splice(pos, 1);
+
+            // await reloadTable();
 
             $('.item_name').val(editable.name);
             $('.item_qty').val(editable.qty);
@@ -504,6 +533,47 @@
             });
 
             console.log(item);
+        }
+
+        function editModal(pos){
+            editPos = pos;
+            let controls = $('.input_fields_section');
+            controlConfig = controls.html();
+            console.log(controlConfig);
+            let modalView =
+                `<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modal_edit" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resControl()">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                <div class="modal-body">
+                                <div class="p-3 modal_context_content">
+                                    <div class="row">
+                                        ${controlConfig}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+            //remove old modal
+            let mcontent =  $('.modal_context');
+            mcontent.children().remove();
+            controls.children().remove();
+            mcontent.append(modalView);
+        }
+
+        async function  resControl() {
+            await $('.input_fields_section').append(controlConfig);
+
+            controlConfig = null;
+            editPos = null;
+
         }
     </script>
 @endsection
