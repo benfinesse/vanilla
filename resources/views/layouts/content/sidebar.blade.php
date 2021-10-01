@@ -67,6 +67,13 @@
                             <span class="nk-menu-text">Product</span>
                         </a>
                     </li>
+
+                    <li class="nk-menu-item">
+                        <a href="{{ route('supplier.index') }}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-truck"></em></span>
+                            <span class="nk-menu-text">Suppliers</span>
+                        </a>
+                    </li>
                 @endif
 
                 @if($person->hasAccess('groups'))

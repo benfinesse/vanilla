@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Record;
 use App\Models\RecordGroup;
 use App\Models\RecordItem;
+use App\Models\Supplier;
 use App\Services\Record\ProcessService;
 use App\Traits\General\Utility;
 use Illuminate\Http\Request;
@@ -96,11 +97,13 @@ class RecordController extends Controller
             if(!empty($group)){
                 $measure = Measure::get();
                 $products = Product::where('group_id', $group->uuid)->get();
+                $suppliers = Supplier::get();
                 return view('pages.records.manage.record')->with([
                     'measures'=>$measure,
                     'dept'=>$group,
                     'record'=>$record,
-                    'products'=>$products
+                    'products'=>$products,
+                    'suppliers'=>$suppliers,
                 ]);
             }
         }
@@ -155,6 +158,7 @@ class RecordController extends Controller
             $measures = Measure::get();
             $group = $groupRec->group;
             $products = Product::where('group_id', $group->uuid)->get();
+            $suppliers = Supplier::get();
             return view('pages.records.manage.edit_record')->with(
                 [
                     'groupRecord'=>$groupRec,
@@ -162,7 +166,8 @@ class RecordController extends Controller
                     'dept'=>$group,
                     'measures'=>$measures,
                     'referer'=>$refer,
-                    'products'=>$products
+                    'products'=>$products,
+                    'suppliers'=>$suppliers,
                 ]
             );
         }

@@ -20,6 +20,7 @@ class CreateRecordItemsTable extends Migration
             $table->uuid('record_id')->nullable();
             $table->uuid('record_group_id')->nullable();
             $table->uuid('measure')->nullable();
+            $table->string('supplier')->nullable();
             $table->float('stock_outside')->nullable();
             $table->float('stock_store')->nullable();
             $table->string('type')->nullable(); //credit //cash

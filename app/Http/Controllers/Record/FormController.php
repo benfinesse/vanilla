@@ -56,6 +56,7 @@ class FormController extends Controller
                         //store name if not existing
 
                         $measure = $item['measure'];
+                        $supply = $item['supplier'];
                         $price = floatval($item['price']);
                         $this->attemptNewProduct($name, $group->uuid, $measure, $price);
 
@@ -64,6 +65,7 @@ class FormController extends Controller
                         $data['record_id'] = $record->uuid;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $measure;
+                        $data['supplier'] = $supply;
                         $data['stock_outside'] = $item['stock_outside'];
                         $data['stock_store'] = $item['stock_store'];
                         $data['name'] = $name;
@@ -92,7 +94,7 @@ class FormController extends Controller
     public function update(Request $request, $uuid){
 
         $user = $request->user();
-        if(!$user->hasAccess('create_record')){
+        if(!$user->hasAccess('edit_record')){
             return response()->json([
                 'success'=>false,
                 'message'=>'unauthorised access',
@@ -211,6 +213,7 @@ class FormController extends Controller
 
                         //store name if not existing
                         $measure = $item['measure'];
+                        $supply = $item['supplier'];
 
                         $this->attemptNewProduct($name, $group->uuid, $measure, $price);
 
@@ -219,6 +222,7 @@ class FormController extends Controller
                         $data['record_id'] = $record_id;
                         $data['record_group_id'] = $rg_id;
                         $data['measure'] = $measure;
+                        $data['supplier'] = $supply;
                         $data['stock_outside'] = $item['stock_outside'];
                         $data['stock_store'] = $item['stock_store'];
                         $data['name'] = $name;

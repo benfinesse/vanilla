@@ -41,6 +41,11 @@ trait RoleList{
             'administration',
             'settings',
             'procurement',
+            'view_supplier',
+            'create_supplier',
+            'edit_supplier',
+            'delete_supplier',
+
         ];
     }
 }

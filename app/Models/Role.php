@@ -46,6 +46,10 @@ class Role extends Model
         'procurement',
         'active',
         'view_record',
+        'view_supplier',
+        'create_supplier',
+        'edit_supplier',
+        'delete_supplier',
 
     ];
 

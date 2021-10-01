@@ -113,6 +113,22 @@ trait Permission{
                 return 'edit_record';
                 break;
 
+            case 'view_supplier':
+                return 'view_supplier';
+                break;
+
+            case 'create_supplier':
+                return 'create_supplier';
+                break;
+
+            case 'edit_supplier':
+                return 'edit_supplier';
+                break;
+
+            case 'delete_supplier':
+                return 'delete_supplier';
+                break;
+
             default:
                 return '';
         }

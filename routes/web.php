@@ -44,6 +44,9 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('process/item/move/{uuid}/{dir}', 'Process\PositionController@tryPositionMove')->name('process.item.direction');
     Route::get('process/action/toggle/verification/{uuid}', 'Admin\OfficeProcessController@toggleVerification')->name('process.toggle.verification');
 
+    Route::resource('supplier', 'Admin\SupplierController');
+    Route::get('supplier/pop/{uuid}', 'Admin\SupplierController@pop')->name('supplier.pop');
+
     Route::get('process/state/create/{uuid}', 'Admin\OfficeController@create')->name('process.stage.create');
     Route::post('process/state/store/{uuid}', 'Admin\OfficeController@store')->name('process.stage.store');
     Route::get('process/item/manage/{uuid}', 'Admin\OfficeController@manage')->name('process.item.manage');

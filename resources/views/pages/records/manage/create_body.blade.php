@@ -20,18 +20,8 @@
 
                 <div class="col-12 table-responsive mb-5">
                     <table class="table table-hover">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Item Name</th>
-                            <th scope="col">Measure</th>
-                            <th scope="col">Stock <br> Outside</th>
-                            <th scope="col">Stock <br> Store</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
+                        @include('components.tables.record_table_head')
+
                         <tbody class="card_table_content">
                         <tr>
                             <td class="text-center" colspan="8">
@@ -102,11 +92,27 @@
                     </div>
                     <div class="row mt-2">
 
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label" for="item_stock_outside">Supplier</label>
+                                <div class="form-control-wrap ">
+                                    <div class="form-control-select">
+                                        <select class="form-control item_supplier item_val input_sync" id="item_supplier" required>
+                                            <option value="" selected disabled="disabled">Select Supplier</option>
+                                            @foreach($suppliers as $supplier)
+                                                <option value="{{ $supplier->name }}">{{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-lg-2">
                             <div class="form-group">
                                 <label class="form-label" for="item_stock_outside">Stock Outside</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control p_control item_stock_outside item_val input_sync" id="item_stock_outside">
+                                    <input type="text" class="form-control p_control item_stock_outside item_val input_sync" id="item_stock_outside" value="0">
                                 </div>
                             </div>
                         </div>
@@ -115,7 +121,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="item_stock_store">Stock Store</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control p_control item_stock_store item_val input_sync" id="item_stock_store">
+                                    <input type="text" class="form-control p_control item_stock_store item_val input_sync" id="item_stock_store" value="0">
                                 </div>
                             </div>
                         </div>
@@ -166,6 +172,7 @@
             amount:0,
             stock_outside:0,
             stock_store:0,
+            supplier:"",
         };
 
         async function addItem() {
@@ -180,8 +187,10 @@
                     if(a===2){listObject.price=val}
                     if(a===3){listObject.measure=val}
                     if(a===4){listObject.amount=val}
-                    if(a===5){listObject.stock_outside=val}
-                    if(a===6){listObject.stock_store=val}
+                    if(a===5){listObject.supplier=val}
+                    if(a===6){listObject.stock_outside=val}
+                    if(a===7){listObject.stock_store=val}
+
                 }else{
                     process = false;
                 }
@@ -196,6 +205,7 @@
                     amount:parseFloat(listObject.amount),
                     stock_outside:listObject.stock_outside,
                     stock_store:listObject.stock_store,
+                    supplier:listObject.supplier,
                 });
                 resetListObject();
                 resetFields()
@@ -290,7 +300,7 @@
                 await items.forEach(function (item, i) {
                     tbody
                         .append(`<tr>
-                            <td>${item.name}</td>
+                            <td>${item.name} <br> <small style="font-size: 10px">${item.supplier}</small></td>
                             <td>${item.measure}</td>
                             <td>${item.stock_outside}</td>
                             <td>${item.stock_store}</td>
@@ -343,6 +353,7 @@
             $('.item_amount').val(editable.amount);
             $('.item_stock_outside').val(editable.stock_outside);
             $('.item_stock_store').val(editable.stock_store);
+            $('.item_supplier').val(editable.supplier);
 
         }
 
@@ -385,6 +396,7 @@
                 },
                 success: function (res) {
                     console.log(res);
+                    console.log("response");
                     //hide loader
 
 

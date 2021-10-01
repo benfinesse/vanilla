@@ -12,6 +12,7 @@ class RecordItem extends Model
         'record_id',
         'record_group_id',
         'measure',
+        'supplier',
         'stock_outside',
         'stock_store',
         'type',

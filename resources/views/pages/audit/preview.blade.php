@@ -58,7 +58,7 @@
                                     <table class="table table-hover">
                                         <thead class="thead-dark">
                                         <tr>
-                                            <th scope="col">Item Name</th>
+                                            <th scope="col">Item Name <br> <small style="font-size: 12px">(supplier)</small></th>
                                             <th scope="col">Measure</th>
                                             <th scope="col">Stock <br> Outside</th>
                                             <th scope="col">Stock <br> Store</th>
@@ -75,7 +75,13 @@
                                         <?php $total = 0; ?>
                                         @foreach($group_rec->recordItems as $item)
                                             <tr>
-                                                <td>{{ $item->name }}</td>
+                                                <td>
+                                                    {{ $item->name }}
+                                                    @if(!empty($item->supplier))
+                                                        <br>
+                                                        <small style="font-size: 10px">{{ $item->supplier }}</small>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $item->measure }}</td>
                                                 <td>{{ $item->stock_outside }}</td>
                                                 <td>{{ $item->stock_store }}</td>
