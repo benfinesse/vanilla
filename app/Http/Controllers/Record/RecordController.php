@@ -97,7 +97,7 @@ class RecordController extends Controller
             if(!empty($group)){
                 $measure = Measure::get();
                 $products = Product::where('group_id', $group->uuid)->get();
-                $suppliers = Supplier::get();
+                $suppliers = Supplier::where('active', true)->get();
                 return view('pages.records.manage.record')->with([
                     'measures'=>$measure,
                     'dept'=>$group,
@@ -158,7 +158,7 @@ class RecordController extends Controller
             $measures = Measure::get();
             $group = $groupRec->group;
             $products = Product::where('group_id', $group->uuid)->get();
-            $suppliers = Supplier::get();
+            $suppliers = Supplier::where('active', true)->get();
             return view('pages.records.manage.edit_record')->with(
                 [
                     'groupRecord'=>$groupRec,

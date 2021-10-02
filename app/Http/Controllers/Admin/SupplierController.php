@@ -168,4 +168,32 @@ class SupplierController extends Controller
         return back()->withErrors(['Could not complete request']);
         //
     }
+
+    public function seedSupply(Request $request){
+        $suppliers = [
+            'Market', 'Sinolat', 'Josien', 'Edhino', 'Prince', 'Bonavee',
+            'Baraka Tarris', 'Jokmani empire', 'Joss coral foods', 'Paper packaging company', 'Zealot Apex Meridian', 'Seafood Hub',
+            'First Todesa', 'Brightways', 'British American Tobacco', 'A.C. Ventures', 'Amasco Divine Favour Inv', 'Banrut Rolls Nigeria LTD',
+            'Felak meat shop', 'China', 'Ansi Global Investment lTD', 'Seafood Cluster', 'The One Spirit Company', 'Khaliyat',
+            'Susan Frozen Foods', 'Zartech', 'Grandex Plus', 'Ledrop', 'Nigerian Bottling Company', 'Prymo',
+            'UTO Mayonaise', 'Mando INV', 'Fan Milk', 'Abbatoir', 'Lois packaging company', 'Salmars Veg Supply',
+            'Earthfreshfoods', 'Valcez international', 'Gauge Nigeria LTD', 'D Wine Bank', 'Enstore', 'Okad Seafood',
+            'Wine House', 'Noble hill wines', 'Malway farms LTD', 'Fish Shop', 'Babangida Muazu', 'Amics stores',
+            'Ub_Hanfari -farmers market', 'Bbq Butchers', 'Hum-so concerns', 'Zurich Ventures', 'Drinks and Foods warehouse (lag)', 'Fresh Veggie Plus',
+            'Paper Cup Factory',
+        ];
+        $count = 0;
+        foreach ($suppliers as $name){
+            $ex = Supplier::where('name', $name)->where('active', true)->first();
+            if(empty($ex)){
+                $data['name'] = $name;
+                $data['uuid'] = $this->makeUuid();
+                $data['active'] = true;
+                $data['user_id'] = $request->user()->uuid;
+                Supplier::create($data);
+                $count++;
+            }
+        }
+        return ["completed {$count} records"];
+    }
 }

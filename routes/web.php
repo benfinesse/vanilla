@@ -46,6 +46,7 @@ Route::group(['middleware'=>['auth','access']], function (){
 
     Route::resource('supplier', 'Admin\SupplierController');
     Route::get('supplier/pop/{uuid}', 'Admin\SupplierController@pop')->name('supplier.pop');
+    Route::get('seed/suppliers', 'Admin\SupplierController@seedSupply');
 
     Route::get('process/state/create/{uuid}', 'Admin\OfficeController@create')->name('process.stage.create');
     Route::post('process/state/store/{uuid}', 'Admin\OfficeController@store')->name('process.stage.store');
