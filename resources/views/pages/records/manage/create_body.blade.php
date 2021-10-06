@@ -100,7 +100,7 @@
                                         <select class="form-control item_supplier item_val input_sync" id="item_supplier" required>
                                             <option value="" selected disabled="disabled">Select Supplier</option>
                                             @foreach($suppliers as $supplier)
-                                                <option value="{{ $supplier->name }}">{{ $supplier->name }}</option>
+                                                <option value="{{ $supplier->name }}" {{ $supplier->name==='Market'?'selected':'' }}>{{ $supplier->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

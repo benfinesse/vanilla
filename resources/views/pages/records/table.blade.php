@@ -43,7 +43,7 @@
                     @else
                         @if($record->status!=="completed")
                             <b style="font-size: 12px"> Pending Response </b>
-                            @if($person->isSuperAdmin)
+                            @if($person->hasAccess('create_record'))
                                 <a href="{{ route('resend.notice', $record->uuid) }}" title="Resend Notice" class="ml-4">
                                     <em class="icon ni ni-send-alt" style="font-size: 20px"></em>
                                 </a>
