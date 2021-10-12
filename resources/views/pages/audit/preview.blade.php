@@ -120,7 +120,7 @@
                                                     </div>
                                                 </td>
                                                 @if($record->office->verifiable)
-                                                    <td class="btn_wrapper">
+                                                    <td class="btn_wrapper btn_wrp_{{$item->uuid}}">
                                                         <a href="#" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); openModal('{{$item->name}}','{{ !empty($item->true_price)?$item->true_price:$item->price }}', '{{ !empty($item->true_qty)?$item->true_qty:$item->qty }}', '{{ $item->uuid }}' )">
                                                             Compliance
                                                         </a>
@@ -293,9 +293,13 @@
 
         function openModal(title, price, qty, uuid){
 
+            console.log("opening dialog");
+
 
 
             let modal_frame = $('.modal_frame');
+
+            console.log('modal length is ',modal_frame.children().length, `showing title ${title}, price ${price}, qty ${qty}`);
 
             if(modal_frame.children().length > 0){
                 modal_frame.children().remove();
@@ -387,7 +391,7 @@
                             updateFields(res.item);
 
                             //replace button
-                            let btn_wrapper = $('.btn_wrapper');
+                            let btn_wrapper = $(`.btn_wrp_${id}`);
                             btn_wrapper.children().remove();
                             btn_wrapper.append(`<a href="#" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); openModal('${title}','${input_price}', '${input_qty}', '${id}' )">Compliance</a>`);
                             setTimeout(()=>{$('#complianceModal .close').click()}, 2000);

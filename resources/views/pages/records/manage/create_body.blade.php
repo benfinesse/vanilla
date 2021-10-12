@@ -196,22 +196,31 @@
                 }
             });
 
-            if(process){
-                items.push({
-                    name:listObject.name,
-                    qty:listObject.qty,
-                    price:parseFloat(listObject.price),
-                    measure:listObject.measure,
-                    amount:parseFloat(listObject.amount),
-                    stock_outside:listObject.stock_outside,
-                    stock_store:listObject.stock_store,
-                    supplier:listObject.supplier,
-                });
-                resetListObject();
-                resetFields()
-                console.log(items);
+            //check if item is already in list
+            let exist = await items.find(o => o.name === listObject.name);
 
-                reloadTable();
+            if(process){
+
+                if(exist == null){
+                    items.push({
+                        name:listObject.name,
+                        qty:listObject.qty,
+                        price:parseFloat(listObject.price),
+                        measure:listObject.measure,
+                        amount:parseFloat(listObject.amount),
+                        stock_outside:listObject.stock_outside,
+                        stock_store:listObject.stock_store,
+                        supplier:listObject.supplier,
+                    });
+                    resetListObject();
+                    resetFields()
+                    console.log(items);
+                    exist = null;
+
+                    await reloadTable();
+                }else{
+                    toast('error', `Item with name '${exist.name}' already added to list`);
+                }
             }else{
                 toast('error', 'one or more required fields might be empty.')
             }
@@ -244,6 +253,9 @@
         function resetFields() {
             $('.item_val').val("");
             $('.item_amount').val("0");
+            $('.item_stock_outside').val("0");
+            $('.item_stock_store').val("0");
+            $('.item_supplier').val("Market");
         }
 
         $('.p_control').on('keyup', function (e) {

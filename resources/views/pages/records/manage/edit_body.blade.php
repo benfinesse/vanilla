@@ -100,7 +100,7 @@
                                                 <select class="form-control item_supplier item_val input_sync" id="item_supplier" required>
                                                     <option value="" selected disabled="disabled">Select Supplier</option>
                                                     @foreach($suppliers as $supplier)
-                                                        <option value="{{ $supplier->name }}">{{ $supplier->name }}</option>
+                                                        <option value="{{ $supplier->name }}" {{ $supplier->name==='Market'?'selected':'' }}>{{ $supplier->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -201,6 +201,9 @@
                 }
             });
 
+            //check if item is already in list
+            let exist = await items.find(o => o.name === listObject.name);
+
             if(process){
 
                 if(editPos!= null){
@@ -213,27 +216,38 @@
                     items[editPos].stock_outside = listObject.stock_outside;
                     items[editPos].stock_store = listObject.stock_store;
                     $("#modal_edit").modal('hide');
-                    resControl();
+                    await resControl();
+
+                    resetListObject();
+                    resetFields()
+                    console.log(items);
+
+                    await reloadTable();
                 }else{
-                    items.push({
-                        name:listObject.name,
-                        qty:listObject.qty,
-                        price:parseFloat(listObject.price),
-                        measure:listObject.measure,
-                        amount:parseFloat(listObject.amount),
-                        supplier: listObject.supplier,
-                        stock_outside:listObject.stock_outside,
-                        stock_store:listObject.stock_store,
-                    });
+
+                    if(exist == null){
+                        items.push({
+                            name:listObject.name,
+                            qty:listObject.qty,
+                            price:parseFloat(listObject.price),
+                            measure:listObject.measure,
+                            amount:parseFloat(listObject.amount),
+                            supplier: listObject.supplier,
+                            stock_outside:listObject.stock_outside,
+                            stock_store:listObject.stock_store,
+                        });
+
+                        resetListObject();
+                        resetFields()
+                        console.log(items);
+                        exist = null;
+
+                        await reloadTable();
+                    }else{
+                        toast('error', `Item with name '${exist.name}' already added to list`);
+                    }
                 }
 
-
-
-                resetListObject();
-                resetFields()
-                console.log(items);
-
-                reloadTable();
             }else{
                 toast('error', 'one or more required fields might be empty.')
             }
@@ -266,6 +280,9 @@
         function resetFields() {
             $('.item_val').val("");
             $('.item_amount').val("0");
+            $('.item_stock_outside').val("0");
+            $('.item_stock_store').val("0");
+            $('.item_supplier').val("Market");
         }
 
         $(document).on('keyup','.p_control', function(event){
