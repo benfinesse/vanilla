@@ -90,3 +90,5 @@ Route::get('dev/test/email/{email}', 'Developer\TestController@email');
 
 Route::get('account/{t}/co/{r}', 'Admin\AccountController@complete')->name('account.complete');
 Route::post('account/finish/{t}/user/{r}', 'Admin\AccountController@completeAccount')->name('complete.account');
+
+Route::get('test-error', 'Error\BugsnagTestController@runtest');
