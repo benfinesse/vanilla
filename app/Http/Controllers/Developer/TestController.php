@@ -36,6 +36,7 @@ class TestController extends Controller
                 })
                 ->where('completed', '!=',true)
                 ->orderBy('id','desc')
+                ->with('slips')
                 ->get();
 
         return $pending;
