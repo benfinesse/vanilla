@@ -36,9 +36,16 @@ class TestController extends Controller
                 })
                 ->where('completed', '!=',true)
                 ->orderBy('id','desc')
-                ->with('slips')
                 ->get();
-
-        return $pending;
+        $output = [];
+        foreach ($pending as $record){
+            array_push($output, [
+                'record'=>$record,
+                'slips'=>$record->slips,
+                'current_slip'=>$record->CurrentOfficeSlip,
+                'current_slip_office'=>!empty($record->CurrentOfficeSlip)?$record->CurrentOfficeSlip->office:'no data found'
+            ]);
+        }
+        return $output;
     }
 }
