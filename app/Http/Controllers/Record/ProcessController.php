@@ -56,45 +56,49 @@ class ProcessController extends Controller
     public function moveOffice(Request $request, $record_id, $dir){
         $comment = $request->input('comment');
         $record = Record::whereUuid($record_id)->first();
-        if(!empty($record)){
-            $office = $record->office;
-            if(!empty($office)){
-                if($dir==='next'){
-                    $nextOffice = $record->nextOffice;
-                    if(!empty($nextOffice)){
-                        //condition to prevent shift from a previous record
-                        if(($office->position+1) === $nextOffice->position){
-                            $res = $this->service->nextOffice($office, $record, $comment);
-                            if($res[0]){
-                                return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
-                            }else{
-                                return back()->withErrors($res[1]);
-                            }
-                        }
-                        return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
+        $coffice_id = $request->input('coffice');
 
-
-                    }
-                }elseif ($dir==='prev'){
-                    // todo - handle moving to previous office
-                    $prevOffice = $record->prevOffice;
-                    if(!empty($prevOffice)){
-                        //conditions to prevent shift and error
-                        if(($office->position -1) === $prevOffice->position){
-                            $res = $this->service->prevOffice($office, $record, $comment);
-                            if($res[0]){
-                                return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have returned one item to {$prevOffice->name}.");
-                            }else{
-                                return back()->withErrors($res[1]);
+        if(!empty($coffice_id)){
+            if(!empty($record)){
+                $office = $record->office;
+                if(!empty($office)){
+                    if($dir==='next'){
+                        $nextOffice = $record->nextOffice;
+                        if(!empty($nextOffice)){
+                            //conditions to prevent shift and error by confirming position and current office id
+                            if(($office->position+1) === $nextOffice->position && $coffice_id === $office->uuid){
+                                $res = $this->service->nextOffice($office, $record, $comment);
+                                if($res[0]){
+                                    return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
+                                }else{
+                                    return back()->withErrors($res[1]);
+                                }
                             }
+                            return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
                         }
-                        return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
+                    }elseif ($dir==='prev'){
+                        // todo - handle moving to previous office
+
+                        $prevOffice = $record->prevOffice;
+                        if(!empty($prevOffice)){
+                            //conditions to prevent shift and error by confirming position and current office id
+                            if(($office->position -1) === $prevOffice->position && $coffice_id === $office->uuid ){
+                                $res = $this->service->prevOffice($office, $record, $comment);
+                                if($res[0]){
+                                    return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have returned one item to {$prevOffice->name}.");
+                                }else{
+                                    return back()->withErrors($res[1]);
+                                }
+                            }
+                            return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
+                        }
+                    }else{
+                        return back()->withErrors(['Could not complete request. refresh and try again']);
                     }
-                }else{
-                    return back()->withErrors(['Could not complete request. refresh and try again']);
                 }
             }
         }
+        return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
     }
 
     public function close(Request $request, $uuid){

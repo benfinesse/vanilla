@@ -198,7 +198,7 @@
                 @if($grand_total>0)
                     @if(!empty($record->nextOffice))
                         <div class="col-12">
-                            <form action="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next']) }}" method="get" id="actionComForm">
+                            <form action="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next','coffice'=>$record->office->uuid]) }}" method="get" id="actionComForm">
                                 <div class="row">
                                     <div class="col-md-6 mb-4 mt-4">
                                         <div class="card card-bordered">
@@ -217,7 +217,7 @@
 
                                                 @if(!empty($record->prevOffice))
                                                     <!-- the onclick function is not deleting the item but calling the link with custom warning first -->
-                                                    <a href="javascript:void(0)" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev']) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2 mb-3">
+                                                    <a href="javascript:void(0)" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev','coffice'=>$record->office->uuid]) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2 mb-3">
                                                         <i class="ni ni-back-arrow-fill mr-3"></i> Return to {{ $record->prevOffice->name }}
                                                     </a>
                                                 @endif
@@ -253,7 +253,7 @@
                                                 <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
                                                 @if(!empty($record->prevOffice))
                                                     <!-- the onclick function is not deleting the item but calling the link with custom warning first -->
-                                                    <a href="javascript:void(0)" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev']) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2 mb-3">
+                                                    <a href="javascript:void(0)" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev','coffice'=>$record->office->uuid]) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2 mb-3">
                                                         <i class="ni ni-back-arrow-fill mr-3"></i> Return to {{ $record->prevOffice->name }}
                                                     </a>
                                                 @endif
