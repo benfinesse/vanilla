@@ -62,23 +62,33 @@ class ProcessController extends Controller
                 if($dir==='next'){
                     $nextOffice = $record->nextOffice;
                     if(!empty($nextOffice)){
-                        $res = $this->service->nextOffice($office, $record, $comment);
-                        if($res[0]){
-                            return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
-                        }else{
-                            return back()->withErrors($res[1]);
+                        //condition to prevent shift from a previous record
+                        if(($office->position+1) === $nextOffice->position){
+                            $res = $this->service->nextOffice($office, $record, $comment);
+                            if($res[0]){
+                                return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
+                            }else{
+                                return back()->withErrors($res[1]);
+                            }
                         }
+                        return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
+
+
                     }
                 }elseif ($dir==='prev'){
                     // todo - handle moving to previous office
                     $prevOffice = $record->prevOffice;
                     if(!empty($prevOffice)){
-                        $res = $this->service->prevOffice($office, $record, $comment);
-                        if($res[0]){
-                            return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have returned one item to {$prevOffice->name}.");
-                        }else{
-                            return back()->withErrors($res[1]);
+                        //conditions to prevent shift and error
+                        if(($office->position -1) === $prevOffice->position){
+                            $res = $this->service->prevOffice($office, $record, $comment);
+                            if($res[0]){
+                                return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have returned one item to {$prevOffice->name}.");
+                            }else{
+                                return back()->withErrors($res[1]);
+                            }
                         }
+                        return redirect()->route('notice.index')->withErrors(["This request may have already been taken care of. Kindly refresh and try again"]);
                     }
                 }else{
                     return back()->withErrors(['Could not complete request. refresh and try again']);
