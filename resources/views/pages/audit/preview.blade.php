@@ -237,6 +237,7 @@
                     @else
                         <div class="col-12">
                             <form action="{{ route('record.close', $record->uuid) }}" method="get" id="actionComForm">
+                                <input type="hidden" name="coffice" value="{{ $record->office->uuid }}">
                                 <div class="row">
                                     <div class="col-md-6 mb-4 mt-4">
                                         <div class="card card-bordered">
