@@ -198,7 +198,8 @@
                 @if($grand_total>0)
                     @if(!empty($record->nextOffice))
                         <div class="col-12">
-                            <form action="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next','coffice'=>$record->office->uuid]) }}" method="get" id="actionComForm">
+                            <form action="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next']) }}" method="get" id="actionComForm">
+                                <input type="hidden" name="coffice" value="{{ $record->office->uuid }}">
                                 <div class="row">
                                     <div class="col-md-6 mb-4 mt-4">
                                         <div class="card card-bordered">
