@@ -528,7 +528,7 @@
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "phenx/php-font-lib": "^0.5.2",
-                "phenx/php-svg-lib": "^0.3.3",
+                "phenx/php-svg-lib": "0.3.3",
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
