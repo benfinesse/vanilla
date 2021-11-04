@@ -263,7 +263,7 @@
                                             <div class="card-inner text-center">
                                                 <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
                                                 <!-- remove below -->
-                                                @include('layouts.trash1content')
+                                                {{--@include('layouts.trash1content')--}}
                                                 <!-- stop remove -->
 
                                                 @if(!empty($record->nextOffice))
