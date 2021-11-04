@@ -8,13 +8,14 @@ use App\Models\OfficeSlip;
 use App\Models\Record;
 use App\Services\Record\ProcessService;
 use App\Traits\Auth\AuthTrait;
+use App\Traits\General\MailAttachment;
 use App\Traits\General\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProcessController extends Controller
 {
-    use Utility, AuthTrait;
+    use Utility, AuthTrait, MailAttachment;
 
     protected $service;
 
@@ -57,6 +58,8 @@ class ProcessController extends Controller
         $comment = $request->input('comment');
         $record = Record::whereUuid($record_id)->first();
         $coffice_id = $request->input('coffice');
+        $approvable = $request->input('approvable');
+
 
         if(!empty($coffice_id)){
             if(!empty($record)){
@@ -67,8 +70,19 @@ class ProcessController extends Controller
                         if(!empty($nextOffice)){
                             //conditions to prevent shift and error by confirming position and current office id
                             if(($office->position+1) === $nextOffice->position && $coffice_id === $office->uuid){
+
+//                                return $this->sendPdfToOfficeMembers($nextOffice, $record);
+
                                 $res = $this->service->nextOffice($office, $record, $comment);
                                 if($res[0]){
+
+                                    //if request has approve, send PDF of record to all mailbox in the next office
+                                    if($approvable==='yes'){
+                                        if(!empty($nextOffice)){
+                                            $this->sendPdfToOfficeMembers($nextOffice, $record);
+                                        }
+                                    }
+
                                     return redirect()->route('notice.index',['type'=>'all'])->withMessage("You have submitted one item to {$nextOffice->name}.");
                                 }else{
                                     return back()->withErrors($res[1]);

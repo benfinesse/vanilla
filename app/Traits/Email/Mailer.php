@@ -29,6 +29,7 @@ trait Mailer{
         // dd($from, $title, $to, $subject, $names, $data, $view,$attachment);
         $live = config('app.is_live');
 
+
         if($live){
             try{
                 $from = config('app.mail.from');
@@ -38,9 +39,10 @@ trait Mailer{
                     if(count($attachment) > 0){
                         foreach ($attachment as $file){
                             try{
-                                $mail->attach($file);
+                                $mail->attachData($file, str_replace(' ', '-',strtolower("{$title}.pdf")));
                             }catch (\Exception $e){
-                                session(['err'=>$e->getMessage()]);
+
+                                session(['err0'=>$e->getMessage()]);
                             }
                         }
                     }

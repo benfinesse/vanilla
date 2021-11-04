@@ -60,8 +60,11 @@
                                     <em class="icon ni ni-trash-alt" style="font-size: 20px"></em>
                                 </a>
 
-                                <a href="{{ route('process.toggle.verification', $item->uuid) }}" class="ml-3 btn shadow btn-sm" title="{{ !empty($item->verifiable)?($item->verifiable?'Enable Audit':'Disable Audit'):'Enable Audit' }}">
-                                    <em class="icon ni {{ !empty($item->verifiable)?($item->verifiable?'text-danger ni-eye-off':' ni-eye-alt'):' ni-eye-alt' }} "></em> </a>
+                                <a href="{{ route('process.toggle.verification', $item->uuid) }}" class="ml-3 btn shadow btn-sm" title="{{ !empty($item->verifiable)?($item->verifiable?'Disable Audit':'Enable Audit'):'Enable Audit' }}">
+                                    <em class="icon ni {{ !empty($item->verifiable)?($item->verifiable?'text-success ni-eye-alt':'ni-eye-off'):'ni-eye-off' }} "></em> </a>
+
+                                <a href="{{ route('process.toggle.approvable', $item->uuid) }}" class="ml-3 btn shadow btn-sm" title="{{ !empty($item->approvable)?($item->approvable?'Disable Final Approval':'Enable Final Approval'):'Enable Final Approval' }}">
+                                    <em class="icon ni {{ !empty($item->approvable)?($item->approvable?'text-success ni-check-round':'ni-alert-circle'):' ni-check-round' }} "></em> </a>
                             </td>
                         </tr>
                     @empty

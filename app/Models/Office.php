@@ -17,7 +17,8 @@ class Office extends Model
         'name',
         'position',
         'active',
-        'verifiable'
+        'verifiable',
+        'approvable'
     ];
 
     public function getMembersAttribute(){

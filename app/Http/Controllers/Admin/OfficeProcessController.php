@@ -260,4 +260,33 @@ class OfficeProcessController extends Controller
         }
         return back()->withErrors(['Resource not found']);
     }
+
+    public function toggleApprovable(Request $request, $uuid){
+
+        $office = Office::whereUuid($uuid)->first();
+        if(!empty($office)){
+            //ensure only this office has this on the process
+            $exist = Office::where('process_id', $office->process_id)->get();
+            if(count($exist)> 0){
+                foreach ($exist as $ofc){
+                    $od['approvable'] = false;
+                    $ofc->update($od);
+                }
+            }
+            $msg = "";
+            if($office->verifiable){
+                $data['approvable'] = false;
+                $msg = "Final Approval removed from {$office->name}";
+            }else{
+                $data['approvable'] = true;
+                $msg = "Final Approval added to {$office->name}";
+            }
+            DB::beginTransaction();
+            $office->update($data);
+            DB::commit();
+
+            return back()->withMessage($msg);
+        }
+        return back()->withErrors(['Resource not found']);
+    }
 }

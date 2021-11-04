@@ -44,6 +44,8 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('process/item/move/{uuid}/{dir}', 'Process\PositionController@tryPositionMove')->name('process.item.direction');
     Route::get('process/action/toggle/verification/{uuid}', 'Admin\OfficeProcessController@toggleVerification')->name('process.toggle.verification');
 
+    Route::get('process/action/toggle/approvable/{uuid}', 'Admin\OfficeProcessController@toggleApprovable')->name('process.toggle.approvable');
+
     Route::resource('supplier', 'Admin\SupplierController');
     Route::get('supplier/pop/{uuid}', 'Admin\SupplierController@pop')->name('supplier.pop');
     Route::get('seed/suppliers', 'Admin\SupplierController@seedSupply');

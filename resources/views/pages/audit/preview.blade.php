@@ -198,8 +198,13 @@
                 @if($grand_total>0)
                     @if(!empty($record->nextOffice))
                         <div class="col-12">
+                            <?php
+                                $approvable_state = @$record->office->approvable?"yes":"no";
+                            ?>
                             <form action="{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'next']) }}" method="get" id="actionComForm">
                                 <input type="hidden" name="coffice" value="{{ $record->office->uuid }}">
+                                <input type="hidden" name="approvable" value="{{ $approvable_state }}">
+
                                 <div class="row">
                                     <div class="col-md-6 mb-4 mt-4">
                                         <div class="card card-bordered">
@@ -224,7 +229,11 @@
                                                 @endif
 
                                                 @if(!empty($record->nextOffice))
-                                                    <a href="javascript:void(0)" class="btn btn-outline-primary ml-2 mb-3" onclick="verifyAction('actionComForm', 'Approve','{{ $record->nextOffice->name }}')"> Approve <i class="ni ni-forward-arrow-fill ml-3"></i></a>
+                                                    @if($record->office->approvable)
+                                                        <a href="javascript:void(0)" class="btn btn-outline-primary ml-2 mb-3" onclick="verifyAction('actionComForm', 'final_approve','{{ $record->nextOffice->name }}')"> Approve <i class="ni ni-check-round ml-3"></i></a>
+                                                    @else
+                                                        <a href="javascript:void(0)" class="btn btn-outline-primary ml-2 mb-3" onclick="verifyAction('actionComForm', 'Approve','{{ $record->nextOffice->name }}')"> Approve <i class="ni ni-forward-arrow-fill ml-3"></i></a>
+                                                    @endif
                                                 @else
                                                     <a href="javascript:void(0)" class="btn btn-outline-primary ml-2 mb-3" onclick="verifyAction('actionComForm','Complete', 'Complete and Close')"> Complete and Close Record <i class="ni ni-check-round-fill ml-3"></i></a>
                                                 @endif
@@ -253,12 +262,9 @@
                                         <div class="card card-bordered">
                                             <div class="card-inner text-center">
                                                 <h4 class="">Grand Total: {{ number_format($grand_total) }}</h4>
-                                                @if(!empty($record->prevOffice))
-                                                    <!-- the onclick function is not deleting the item but calling the link with custom warning first -->
-                                                    <a href="javascript:void(0)" onclick="deleteItem('{{ route('record.process.next_office', ['record_id'=>$record->uuid,'dir'=>'prev','coffice'=>$record->office->uuid]) }}', 'Are you sure you want to submit to previous office? type yes to proceed.')" class="btn btn-dark mr-2 mb-3">
-                                                        <i class="ni ni-back-arrow-fill mr-3"></i> Return to {{ $record->prevOffice->name }}
-                                                    </a>
-                                                @endif
+                                                <!-- remove below -->
+                                                {{--@include('layouts.trash1content')--}}
+                                                <!-- stop remove -->
 
                                                 @if(!empty($record->nextOffice))
                                                     <a href="javascript:void(0)" class="btn btn-outline-primary ml-2 mb-3" onclick="verifyAction('actionComForm', 'Approve', '{{ $record->nextOffice->name }}')"> Approve <i class="ni ni-forward-arrow-fill ml-3"></i></a>
@@ -475,13 +481,26 @@
                 modal_frame.children().remove();
             }
 
-            let intro = action==='Approve'?`Your approval will send this request to : ${office}. Continue?`:"Completing this will prevent further changes. Continue?";
+            let intro = "";
+            let title = "Approve";
+            let btn_title = "Approve";
+            if(action==='Approve'){
+                intro = `Your approval will send this request to : ${office}. Continue?`;
+            }else if(action==='final_approve'){
+                intro = "Final Approval. Do you wish to continue?"
+                title = "Final Approval"
+                btn_title = "Approve";
+            }else{
+                intro = "Completing this will prevent further changes. Continue?";
+                btn_title = "Complete";
+                title = "Complete";
+            }
 
             let elem = `<div class="modal fade" id="approvalModal" tabindex="-1" role="dialog" aria-labelledby="approvalModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">${action}</h5>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">${title}</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -490,7 +509,7 @@
                                         <div class="text-center">
                                             <h5>${intro}</h5>
                                             <br>
-                                            <a href="javascript:void(0)" onclick="submitForm('${id}');" class="btn btn-primary">${action}</a>
+                                            <a href="javascript:void(0)" onclick="submitForm('${id}');" class="btn btn-primary">${btn_title}</a>
 
                                             <button onclick="" class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close">Cancle</button>
                                         </div>
