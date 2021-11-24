@@ -94,3 +94,5 @@ Route::get('account/{t}/co/{r}', 'Admin\AccountController@complete')->name('acco
 Route::post('account/finish/{t}/user/{r}', 'Admin\AccountController@completeAccount')->name('complete.account');
 
 Route::get('test/pending/{id}', 'Developer\TestController@pending');
+
+Route::get('refresh-csrf', 'Admin\AccountController@refreshCsrf');

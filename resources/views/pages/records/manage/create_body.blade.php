@@ -164,6 +164,7 @@
     <script>
         "use strict";
         let items = [];
+        let _token = '';
         let listObject = {
             name:"",
             qty:0,
@@ -392,8 +393,16 @@
             }
         }
 
+        setInterval(refreshToken, 3600000); // 1 hour
+
+        function refreshToken(){
+            $.get('refresh-csrf').done(function(data){
+                _token = data; // the new token
+            });
+        }
+
         function processForm(date) {
-            let _token   = $('meta[name="csrf-token"]').attr('content');
+            _token   = $('meta[name="csrf-token"]').attr('content');
             let slip_custom_id = $('.slip_custom_id').val();
             let invoice_date = $('.invoice_date').val();
             let dept_id = "{{ $dept->uuid }}";

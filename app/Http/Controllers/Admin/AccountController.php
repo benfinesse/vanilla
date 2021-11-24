@@ -235,4 +235,8 @@ class AccountController extends Controller
 
         return redirect()->route('login')->withMessage("Failed to process request. Retry from admin.");
     }
+
+    public function refreshCsrf(){
+        return csrf_token();
+    }
 }
