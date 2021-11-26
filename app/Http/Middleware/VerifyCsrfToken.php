@@ -20,5 +20,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+        "form/record/store/*",
+        "form/record/update/*"
     ];
 }
