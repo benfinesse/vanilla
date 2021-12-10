@@ -77,6 +77,12 @@
             </div>
 
             <div class="print_element ">
+                @if(!empty($record->fund_source))
+                    <h6 style="color: forestgreen;">Source: <b>{{ $record->fund_source }}</b></h6>
+                    <hr>
+                @endif
+
+
                 <h6 class="mb-2">Record Details</h6>
                 <div class="row mt-1">
 
