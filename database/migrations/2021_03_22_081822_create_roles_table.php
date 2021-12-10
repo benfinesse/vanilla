@@ -55,6 +55,7 @@ class CreateRolesTable extends Migration
             $table->boolean('create_supplier')->nullable();
             $table->boolean('edit_supplier')->nullable();
             $table->boolean('delete_supplier')->nullable();
+            $table->boolean('fund_source')->nullable();
             $table->boolean('active')->nullable();
             $table->timestamps();
 

@@ -72,6 +72,14 @@ class ProcessController extends Controller
                             if(($office->position+1) === $nextOffice->position && $coffice_id === $office->uuid){
 
 //                                return $this->sendPdfToOfficeMembers($nextOffice, $record);
+                                //if request has fund source, update office source
+                                $fundSource = $request->input('fund_source');
+                                if(!empty($fundSource)){
+                                    DB::beginTransaction();
+                                    $fsdata['fund_source'] = $fundSource;
+                                    $record->update($fsdata);
+                                    DB::commit();
+                                }
 
                                 $res = $this->service->nextOffice($office, $record, $comment);
                                 if($res[0]){
@@ -119,11 +127,34 @@ class ProcessController extends Controller
         $user = $this->loggedInUser();
         $comment = $request->input('comment');
         $record = Record::whereUuid($uuid)->first();
+
         if(!empty($record)){
+            //update all pending compliance
+            $groups = $record->groups;
+            DB::beginTransaction();
+            foreach ($groups as $group){
+
+                foreach($group->recordItems as $item){
+                    $itemData = null;
+                    if(empty($item->true_qty)){
+                        $itemData['true_qty'] = $item->qty;
+                    }
+                    if(empty($item->true_price)){
+                        $itemData['true_price'] = $item->price;
+                    }
+                    if(!empty($itemData)){
+                        $item->update($itemData);
+                    }
+
+                }
+            }
+
             $record_data['completed'] = true;
+            $date = date("M d, Y");
+            $record_data['title'] = "Completed by {$user->names} on {$date}.";
             $currentOfficeSlip = $record->currentOfficeSlip;
 
-            DB::beginTransaction();
+
             //update current slip
             if(!empty($currentOfficeSlip)){
                 $os['comment'] = empty($comment)?"Approved by {$user->names}":$comment;

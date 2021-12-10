@@ -16,6 +16,7 @@ class Record extends Model
         'completed',
         'active',
         'title',
+        'fund_source'
     ];
 
     public function getstatusColorAttribute(){

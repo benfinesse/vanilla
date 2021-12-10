@@ -2,8 +2,8 @@
     <table class="table table-tranx table-billing">
         <thead>
         <tr class="tb-tnx-head">
-            <th style="min-width: 300px"><span class="d-md-inline-block">Information</span></th>
             <th><span class="d-md-inline-block">Created</span></th>
+            <th style="min-width: 300px"><span class="d-md-inline-block">Information</span></th>
             <th><span class="d-md-inline-block">Last Update</span></th>
             <th><span class="d-md-inline-block">Status</span></th>
             <th style="min-width: 300px"><span class="d-md-inline-block">Action</span></th>
@@ -12,8 +12,8 @@
         <tbody>
         @forelse($records as $record)
             <tr class="tb-tnx-item">
-                <td style="min-width: 300px; font-size: 12px">{{ $record->title }}</td>
                 <td>{{ date('M d, Y', strtotime($record->created_at)) }}</td>
+                <td style="min-width: 300px; font-size: 12px">{{ $record->title }}</td>
                 <td>{{ date('M d, Y', strtotime($record->updated_at)) }}</td>
                 <td>
                     <div class="tb-tnx-status">

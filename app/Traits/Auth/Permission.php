@@ -129,6 +129,10 @@ trait Permission{
                 return 'delete_supplier';
                 break;
 
+            case 'fund_source':
+                return 'fund_source';
+                break;
+
             default:
                 return '';
         }

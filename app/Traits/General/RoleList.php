@@ -45,6 +45,7 @@ trait RoleList{
             'create_supplier',
             'edit_supplier',
             'delete_supplier',
+            'fund_source',
 
         ];
     }

@@ -127,9 +127,12 @@ class ProcessService
         $os['user_id_2'] = $user->uuid;
         $oldSlip->update($os);
 
+        $day = date("M d, Y");
+
         //update record
         $record_data['office_id'] = $office->uuid;
         $record_data['stage'] = $office->position;
+        $record_data['title'] = "{$user->names} moved file from {$oldSlip->office->name} to {$office->name} on {$day}";
         $record->update($record_data);
         $dname = $record->process->name;
         $title = "New request for {$dname}.";

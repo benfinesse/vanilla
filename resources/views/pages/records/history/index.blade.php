@@ -167,11 +167,23 @@
                                         <?php $grand_true_total+= $true_total; ?>
 
                                         Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
-                                        @if($true_total>0)
-                                            <br>
-                                            <small> True Total {{ number_format($true_total) }}</small>
-                                        @endif
+
                                     </h5>
+                                    @if($true_total>0)
+                                        <br>
+                                        <h5 class="text-right mb-0"><small> Compliance Total {{ number_format($true_total) }}</small></h5>
+
+                                        <h5 class="text-right mb-0 mt-0">
+                                            @if($total === $true_total)
+
+                                            @elseif($total > $true_total)
+                                                Change of {{ number_format($total - $true_total) }}
+                                            @else
+                                                Excess of {{ number_format($true_total - $total) }}
+                                            @endif
+                                        </h5>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -184,8 +196,20 @@
                                     <h4>Grand Total: {{ number_format($grand_total) }}</h4>
                                     @if($grand_true_total>0)
 
-                                        <p class="mt-2"> Final Total {{ number_format($grand_true_total) }}</p>
+                                        <p class="mt-2"> Actual Total {{ number_format($grand_true_total) }}</p>
+
+                                        <h6>
+                                            @if($grand_total === $grand_true_total)
+
+                                            @elseif($grand_total > $grand_true_total)
+                                                Change of {{ number_format($grand_total - $grand_true_total) }}
+                                            @else
+                                                Excess of {{ number_format($grand_true_total - $grand_total) }}
+                                            @endif
+                                        </h6>
                                     @endif
+
+
                                 </div>
                             </div>
                         </div>

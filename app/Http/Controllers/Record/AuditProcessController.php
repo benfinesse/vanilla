@@ -14,6 +14,20 @@ class AuditProcessController extends Controller
         $msg = $request->input('message');
         $user = $request->user();
         $record = Record::whereUuid($uuid)->first();
+        $sources = [
+          "Safe Deposit",
+          "Zenith Bank",
+          "GT Bank",
+          "Sterling Bank",
+          "Keystone Bank",
+          "Access Bank",
+          "Imprest - Zenith",
+          "Eco Bank",
+          "U.S.D",
+          "Heritage Bank",
+          "UBA",
+          "Cash Drawer (for Vanilla)",
+        ];
         if(!empty($record)){
             if($record->completed){
                 return redirect()->route('record.history', $record->uuid)->withMessage("Record completed already.");
@@ -27,7 +41,8 @@ class AuditProcessController extends Controller
                     if($office->isMember){
                         return view('pages.audit.preview')->with([
                             'record'=>$record,
-                            'message'=>$msg
+                            'message'=>$msg,
+                            'sources'=>$sources
                         ]);
                     }else{
                         return redirect()->route('notice.index', ['type'=>'all'])->withErrors(['You do not have valid access to the resource.']);

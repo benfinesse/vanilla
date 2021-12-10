@@ -32,6 +32,7 @@
         <div class="nk-block">
             <h5>Office: <b>{{ $record->office->name }}</b></h5>
             <h6>Process: <b>{{ $record->process->name }}</b></h6>
+            <h6 style="color: forestgreen;">Source: <b>{{ !empty($record->fund_source)?$record->fund_source:'Not Updated' }}</b></h6>
 
             <div class="row">
 
@@ -206,6 +207,23 @@
                                 <input type="hidden" name="approvable" value="{{ $approvable_state }}">
 
                                 <div class="row">
+                                    @if($person->hasAccess('fund_source'))
+                                        <div class="col-12 mb-4 mt-4">
+                                            <div class="card card-bordered">
+                                                <div class="card-inner">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="first_name">Fund Source</label>
+                                                        <select name="fund_source" class="form-control" id="" required>
+                                                            @foreach($sources as $source)
+                                                                <option value="{{ $source }}" {{ $record->fund_source===$source?'selected':'' }}>{{ $source }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <div class="col-md-6 mb-4 mt-4">
                                         <div class="card card-bordered">
                                             <div class="card-inner">

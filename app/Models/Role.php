@@ -50,6 +50,7 @@ class Role extends Model
         'create_supplier',
         'edit_supplier',
         'delete_supplier',
+        'fund_source',
 
     ];
 

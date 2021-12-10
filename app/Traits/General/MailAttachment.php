@@ -17,14 +17,19 @@ trait MailAttachment{
 
 //        return view("pdf.printable")->with($pdfData);
 
-        $pdf = PDF::loadView("pdf.printable", $pdfData)->setPaper('a4', 'landscape');
+       try{
+           $pdf = PDF::loadView("pdf.printable", $pdfData)->setPaper('a4', 'landscape');
 
-        foreach ($office->members as $member){
-            $data = [
-                'info'=>"Find attachment for approved document"
-            ];
-            $this->sendMail("", "Vanilla Purchase Attachment",$member->email,"Approved Attachment","from vanilla",$data, "emails.send_attachment", [$pdf->output()]);
-        }
+           foreach ($office->members as $member){
+               $data = [
+                   'info'=>"Find attachment for approved document"
+               ];
+               $this->sendMail("", "Vanilla Purchase Attachment",$member->email,"Approved Attachment","from vanilla",$data, "emails.send_attachment", [$pdf->output()]);
+           }
+       }catch (\Exception $err){
+           //send error notice
+
+       }
 
 //        return view("pdf.printable")->with($pdfData);
     }
