@@ -77,7 +77,7 @@
                                         <tbody class="card_table_content">
                                         <?php $total = 0; ?>
                                         @foreach($group_rec->recordItems as $item)
-                                            <tr style="{{ $item->excluded?'color: #d3d3d3':'' }}" >
+                                            <tr style="{{ $item->excluded?'color: #e9e9e9':'' }}" >
                                                 <td>
                                                     @if($item->excluded)
                                                         <s>{{ $item->name }}</s>

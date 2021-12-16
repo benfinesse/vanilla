@@ -319,32 +319,87 @@
 
                                         @foreach($group_rec->recordItems as $item)
                                             <?php $ttotal = 0; ?>
-                                            <tr>
-                                                <td>{{ $item->supplier }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->measure }}</td>
-                                                <td>{{ $item->stock_outside }}</td>
-                                                <td>{{ $item->stock_store }}</td>
+                                            <tr style="{{ $item->excluded?'color: #e9e9e9':'' }}" >
+
+                                                <td>
+                                                    @if($item->excluded)
+                                                        <s>{{ $item->supplier }}</s>
+                                                    @else
+                                                        {{ $item->supplier }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($item->excluded)
+                                                        <s>{{ $item->name }}</s>
+                                                    @else
+                                                        {{ $item->name }}
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    @if($item->excluded)
+                                                        <s>{{ $item->measure }}</s>
+                                                    @else
+                                                        {{ $item->measure }}
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    @if($item->excluded)
+                                                        <s>{{ $item->stock_outside }}</s>
+                                                    @else
+                                                        {{ $item->stock_outside }}
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    @if($item->excluded)
+                                                        <s>{{ $item->stock_store }}</s>
+                                                    @else
+                                                        {{ $item->stock_store }}
+                                                    @endif
+
+                                                </td>
                                                 <td>
                                                     <div>
-                                                        {{ $item->qty }}
+                                                        @if($item->excluded)
+                                                            <s>{{ $item->qty }}</s>
+                                                        @else
+                                                            {{ $item->qty }}
+                                                        @endif
+
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ number_format($item->price) }}
+                                                        @if($item->excluded)
+                                                            <s>{{ number_format($item->price) }}</s>
+                                                        @else
+                                                            {{ number_format($item->price) }}
+                                                        @endif
+
                                                     </div>
                                                 </td>
                                                 <td>
 
                                                     <div>
-                                                        {{ number_format($item->total) }}
+                                                        @if($item->excluded)
+                                                            <s>{{ number_format($item->total) }}</s>
+                                                        @else
+                                                            {{ number_format($item->total) }}
+                                                        @endif
+
                                                     </div>
                                                 </td>
                                                 <td>
                                                     @if(!empty($item->true_qty))
                                                         @if($item->true_qty)
-                                                            {{ $item->true_qty }}
+                                                            @if($item->excluded)
+                                                                <s>{{ $item->true_qty }}</s>
+                                                            @else
+                                                                {{ $item->true_qty }}
+                                                            @endif
+
                                                         @endif
                                                     @endif
                                                 </td>
@@ -352,20 +407,34 @@
                                                 <td>
                                                     @if(!empty($item->true_price))
                                                         @if($item->true_price>0)
-                                                            {{ number_format($item->true_price) }}
+                                                            @if($item->excluded)
+                                                                <s>{{ number_format($item->true_price) }}</s>
+                                                            @else
+                                                                {{ number_format($item->true_price) }}
+                                                            @endif
+
                                                         @endif
                                                     @endif
                                                 </td>
                                                 <td>
                                                     @if(!empty($item->true_qty) && !empty($item->true_price))
                                                         <?php $ttotal+= $item->true_qty * $item->true_price; ?>
-                                                        {{ number_format($ttotal) }}
+                                                            @if($item->excluded)
+                                                                <s>{{ number_format($ttotal) }}</s>
+                                                            @else
+                                                                {{ number_format($ttotal) }}
+                                                            @endif
+
                                                     @endif
                                                 </td>
                                             </tr>
 
-                                            <?php $total+=$item->total; ?>
-                                            <?php $gtotal+= $ttotal; ?>
+                                            @if($item->excluded)
+                                            @else
+                                                <?php $total+=$item->total; ?>
+                                                <?php $gtotal+= $ttotal; ?>
+                                            @endif
+
 
                                             <?php $solved++; ?>
                                             @if($solved===$table_items)
