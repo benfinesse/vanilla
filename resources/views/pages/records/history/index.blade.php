@@ -76,6 +76,9 @@
                 </div>
             </div>
 
+            <?php $cash_change = 0; ?>
+            <?php $cash_balance = 0; ?>
+
             <div class="print_element ">
                 @if(!empty($record->fund_source))
                     <h6 style="color: forestgreen;">Source: <b>{{ $record->fund_source }}</b></h6>
@@ -88,6 +91,7 @@
 
                     <?php $grand_total = 0; ?>
                     <?php $grand_true_total = 0; ?>
+
                     @foreach($record->groups as $group_rec)
                         <div class="col-md-12 mb-5 ">
                             <div class="card card-bordered">
@@ -183,8 +187,10 @@
                                             @if($total === $true_total)
 
                                             @elseif($total > $true_total)
+                                                <?php $cash_change += ($total - $true_total)?>
                                                 Change of {{ number_format($total - $true_total) }}
                                             @else
+                                                <?php $cash_balance += ($true_total - $total)?>
                                                 Excess of {{ number_format($true_total - $total) }}
                                             @endif
                                         </h5>
@@ -199,18 +205,23 @@
                         <div class="col-md-6 mb-4 mt-3 half_width">
                             <div class="card card-bordered">
                                 <div class="card-inner text-center">
-                                    <h4>Grand Total: {{ number_format($grand_total) }}</h4>
+                                    <h4>Cash Required: <span>N</span>{{ number_format($grand_total) }}</h4>
                                     @if($grand_true_total>0)
 
-                                        <p class="mt-2"> Actual Total {{ number_format($grand_true_total) }}</p>
+                                        <h4 class="mt-2 text-success"> Cash Spent: <span>N</span>{{ number_format($grand_true_total) }}</h4>
+                                        <hr>
+                                        <h6>Excess Cash Spent: N{{ $cash_balance }}</h6>
+                                        <h6>Total Change Available: N{{ $cash_change }}</h6>
+
 
                                         <h6>
-                                            @if($grand_total === $grand_true_total)
+                                            Final Balance / Change:
+                                            @if($cash_balance === $cash_change)
 
-                                            @elseif($grand_total > $grand_true_total)
-                                                Change of {{ number_format($grand_total - $grand_true_total) }}
+                                            @elseif($cash_change > $cash_balance)
+                                                {{ number_format($cash_change - $cash_balance) }}
                                             @else
-                                                Excess of {{ number_format($grand_true_total - $grand_total) }}
+                                                 {{ number_format($cash_balance - $cash_change) }}
                                             @endif
                                         </h6>
                                     @endif
