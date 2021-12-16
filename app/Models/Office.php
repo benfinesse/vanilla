@@ -18,7 +18,8 @@ class Office extends Model
         'position',
         'active',
         'verifiable',
-        'approvable'
+        'approvable',
+        'funds',
     ];
 
     public function getMembersAttribute(){

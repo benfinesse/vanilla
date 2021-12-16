@@ -64,7 +64,12 @@
                                     <em class="icon ni {{ !empty($item->verifiable)?($item->verifiable?'text-success ni-eye-alt':'ni-eye-off'):'ni-eye-off' }} "></em> </a>
 
                                 <a href="{{ route('process.toggle.approvable', $item->uuid) }}" class="ml-3 btn shadow btn-sm" title="{{ !empty($item->approvable)?($item->approvable?'Disable Final Approval':'Enable Final Approval'):'Enable Final Approval' }}">
-                                    <em class="icon ni {{ !empty($item->approvable)?($item->approvable?'text-success ni-check-round':'ni-alert-circle'):' ni-check-round' }} "></em> </a>
+                                    <em class="icon ni {{ !empty($item->approvable)?($item->approvable?'text-success ni-check-round':'ni-alert-circle'):' ni-check-round' }} "></em>
+                                </a>
+
+                                <a href="{{ route('process.toggle.funds', $item->uuid) }}" class="ml-3 btn shadow btn-sm" title="{{ !empty($item->funds)?($item->funds?'Disable Fund Approval':'Enable Fund Approval'):'Enable Fund Approval' }}">
+                                    <em class="icon ni {{ !empty($item->funds)?($item->funds?'text-success ni-check-round':'ni-alert-circle'):' ni-check-round' }} "></em>
+                                </a>
                             </td>
                         </tr>
                     @empty

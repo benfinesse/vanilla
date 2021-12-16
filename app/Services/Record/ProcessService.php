@@ -78,6 +78,23 @@ class ProcessService
                 if(!empty($nextOffice)){
                     $user = $this->loggedInUser();
                     $this->buildStage($record, $nextOffice, $user, $currentSlip, $comment);
+                    if($office->funds){
+                        //send notice to email list
+                        $lists = [
+                            "Fina"=>"fina@vanilla-abuja.com",
+                            "Sonia"=>"sonia@vanilla-abuja.com",
+                            "Edoro"=>"eabebe@vanilla-abuja.com",
+                        ];
+
+                        foreach ($lists as $name=>$email){
+                            $data = [
+                                'link'=>route('record.history', $record->uuid),
+                                'body_message'=>"A new record has been approved. Click the link below to view details.",
+                                "name"=>$name,
+                            ];
+                            $this->sendMail('', "Vanilla Restaurant", $email, "New Record Approved", $name, $data, 'emails.quick_message');
+                        }
+                    }
                     return [1, "Completed"];
                 }
                 //else proceed to completion
@@ -141,5 +158,6 @@ class ProcessService
 
         DB::commit();
         $this->sendOfficeNotice($office, $url, $message, $title);
+
     }
 }

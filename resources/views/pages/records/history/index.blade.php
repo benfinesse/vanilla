@@ -80,9 +80,11 @@
             <?php $cash_balance = 0; ?>
 
             <div class="print_element ">
-                @if(!empty($record->fund_source))
-                    <h6 style="color: forestgreen;">Source: <b>{{ $record->fund_source }}</b></h6>
+                @if(!empty($record->fund_source) && !empty($record->amount_approved))
+                    <h6 style="color: #124712;">Source: <b>{{ $record->fund_source }}</b></h6>
+                    <h6 style="color: forestgreen;">Amount Approved: N <b>{{ number_format($record->amount_approved) }}</b></h6>
                     <hr>
+                    <br>
                 @endif
 
 
@@ -124,49 +126,53 @@
                                             <?php $total = 0; ?>
                                             <?php $true_total = 0; ?>
                                             @foreach($group_rec->recordItems as $item)
-                                                <tr>
-                                                    <td>
-                                                        {{ $item->name }}
-                                                        @if(!empty($item->supplier))
-                                                            <br>
-                                                            <small style="font-size: 10px">{{ $item->supplier }}</small>
-                                                        @endif
+                                                @if($item->excluded)
+
+                                                @else
+                                                    <tr>
+                                                        <td>
+                                                            {{ $item->name }}
+                                                            @if(!empty($item->supplier))
+                                                                <br>
+                                                                <small style="font-size: 10px">{{ $item->supplier }}</small>
+                                                            @endif
 
 
-                                                    </td>
-                                                    <td>{{ $item->measure }}</td>
-                                                    <td>
-                                                        <div>
-                                                            {{ $item->qty }}
-                                                            @if(!empty($item->true_qty))
-                                                                @if($item->true_qty>0)
-                                                                    <span class="true_qty_{{ $item->uuid }} fs-9px text-muted"> | {{ $item->true_qty }}</span>
+                                                        </td>
+                                                        <td>{{ $item->measure }}</td>
+                                                        <td>
+                                                            <div>
+                                                                {{ $item->qty }}
+                                                                @if(!empty($item->true_qty))
+                                                                    @if($item->true_qty>0)
+                                                                        <span class="true_qty_{{ $item->uuid }} fs-9px text-muted"> | {{ $item->true_qty }}</span>
+                                                                    @endif
                                                                 @endif
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ number_format($item->price) }}
-                                                            @if(!empty($item->true_price))
-                                                                @if($item->true_price>0)
-                                                                    <span class="true_price_{{ $item->uuid }} fs-9px text-muted"> | {{ number_format($item->true_price) }}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                {{ number_format($item->price) }}
+                                                                @if(!empty($item->true_price))
+                                                                    @if($item->true_price>0)
+                                                                        <span class="true_price_{{ $item->uuid }} fs-9px text-muted"> | {{ number_format($item->true_price) }}</span>
+                                                                    @endif
                                                                 @endif
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <td>
+                                                            </div>
+                                                        </td>
+                                                        <td>
 
-                                                        <div>
-                                                            {{ number_format($item->total) }}
-                                                            @if(!empty($item->true_price) && !empty($item->true_qty))
-                                                                <span class="true_total_{{ $item->uuid }} fs-9px text-muted"> | {{ number_format(floatval($item->true_price) * floatval($item->true_qty)) }}</span>
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <?php $total+=$item->total; ?>
-                                                    <?php $true_total+=!empty($item->true_qty)?$item->true_qty*$item->true_price:0; ?>
-                                                </tr>
+                                                            <div>
+                                                                {{ number_format($item->total) }}
+                                                                @if(!empty($item->true_price) && !empty($item->true_qty))
+                                                                    <span class="true_total_{{ $item->uuid }} fs-9px text-muted"> | {{ number_format(floatval($item->true_price) * floatval($item->true_qty)) }}</span>
+                                                                @endif
+                                                            </div>
+                                                        </td>
+                                                        <?php $total+=$item->total; ?>
+                                                        <?php $true_total+=!empty($item->true_qty)?$item->true_qty*$item->true_price:0; ?>
+                                                    </tr>
+                                                @endif
                                             @endforeach
                                             </tbody>
                                         </table>
@@ -205,27 +211,21 @@
                         <div class="col-md-6 mb-4 mt-3 half_width">
                             <div class="card card-bordered">
                                 <div class="card-inner text-center">
+                                    @if(!empty($record->amount_approved))
+                                        <h4>Cash Issued: <span>N</span>{{ number_format($record->amount_approved) }}</h4>
+                                        <hr>
+                                    @endif
                                     <h4>Total Cash Required: <span>N</span>{{ number_format($grand_total) }}</h4>
                                     @if($grand_true_total>0)
 
                                         <h4 class="mt-2 text-success">Total Cash Spent: <span>N</span>{{ number_format($grand_true_total) }}</h4>
-                                    {{--
-                                        <hr>
-                                        <h6>Excess Cash Spent: N{{ number_format($cash_balance) }}</h6>
-                                        <h6>Total Change Available: N{{ number_format($cash_change) }}</h6>
+
+                                        @if(!empty($record->amount_approved))
+                                            <?php $approved_amount = $record->amount_approved; ?>
+                                            <h6>Change : <span>N</span>{{ number_format($approved_amount - $grand_true_total) }}</h6>
+                                        @endif
 
 
-                                        <h6>
-                                            Final Balance / Change:
-                                            @if($cash_balance === $cash_change)
-
-                                            @elseif($cash_change > $cash_balance)
-                                                {{ number_format($cash_change - $cash_balance) }}
-                                            @else
-                                                 {{ number_format($cash_change - $cash_balance ) }}
-                                            @endif
-                                        </h6>
-                                    --}}
 
                                     @endif
 

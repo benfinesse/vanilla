@@ -38,6 +38,27 @@ class ItemController extends Controller
         return response()->json(['success'=>false, 'message'=>'Resource not found', 'bdata'=>$request->all()]);
     }
 
+    public function toggleAvailability(Request $request){
+        $uuid = $request->input('item_id');
+        $recordItem = RecordItem::whereUuid($uuid)->first();
+
+        if(!empty($recordItem)){
+            if($recordItem->excluded){
+                $data['excluded'] = false;
+                $msg = "One line excluded from request. Totals Updated";
+            }else{
+                $data['excluded'] = true;
+                $msg = "One line included to request. Totals Updated";
+            }
+            DB::beginTransaction();
+            $recordItem->update($data);
+            DB::commit();
+
+            return back()->withMessage($msg);
+        }
+        return redirect()->route('home')->withErrors("Resource not found.");
+    }
+
     public function attemptUpdate($name, $price, $rgid){
         $rg = RecordGroup::where('uuid', $rgid)->first();
         if(!empty($rg)){

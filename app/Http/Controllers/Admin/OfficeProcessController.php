@@ -289,4 +289,33 @@ class OfficeProcessController extends Controller
         }
         return back()->withErrors(['Resource not found']);
     }
+
+    public function toggleFundable(Request $request, $uuid){
+
+        $office = Office::whereUuid($uuid)->first();
+        if(!empty($office)){
+            //ensure only this office has this on the process
+            $exist = Office::where('process_id', $office->process_id)->get();
+            if(count($exist)> 0){
+                foreach ($exist as $ofc){
+                    $od['funds'] = false;
+                    $ofc->update($od);
+                }
+            }
+            $msg = "";
+            if($office->funds){
+                $data['funds'] = false;
+                $msg = "Funds Approval removed from {$office->name}";
+            }else{
+                $data['funds'] = true;
+                $msg = "Funds Approval added to {$office->name}";
+            }
+            DB::beginTransaction();
+            $office->update($data);
+            DB::commit();
+
+            return back()->withMessage($msg);
+        }
+        return back()->withErrors(['Resource not found']);
+    }
 }

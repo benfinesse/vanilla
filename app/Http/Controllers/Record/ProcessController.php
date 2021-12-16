@@ -71,15 +71,25 @@ class ProcessController extends Controller
                             //conditions to prevent shift and error by confirming position and current office id
                             if(($office->position+1) === $nextOffice->position && $coffice_id === $office->uuid){
 
-//                                return $this->sendPdfToOfficeMembers($nextOffice, $record);
-                                //if request has fund source, update office source
-                                $fundSource = $request->input('fund_source');
-                                if(!empty($fundSource)){
+                                if($office->funds){
+                                    $fundSource = $request->input('fund_source');
+                                    $amount_approved = $request->input('amount_approved');
+                                    if(empty($fundSource)){
+                                        return back()->withErrors(["PLEASE SELECT SOURCE OF FUNDS"]);
+                                    }
+                                    if(empty($amount_approved)){
+                                        return back()->withErrors(["PLEASE SELECT AMOUNT APPROVED"]);
+                                    }
                                     DB::beginTransaction();
                                     $fsdata['fund_source'] = $fundSource;
+                                    $fsdata['amount_approved'] = $amount_approved;
                                     $record->update($fsdata);
                                     DB::commit();
                                 }
+
+//                                return $this->sendPdfToOfficeMembers($nextOffice, $record);
+                                //if request has fund source, update office source
+
 
                                 $res = $this->service->nextOffice($office, $record, $comment);
                                 if($res[0]){

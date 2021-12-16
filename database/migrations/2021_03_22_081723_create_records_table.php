@@ -24,6 +24,7 @@ class CreateRecordsTable extends Migration
             $table->boolean('active')->nullable();
             $table->string('title')->nullable();
             $table->string('fund_source')->nullable();
+            $table->float('amount_approved')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('uuid')->on('users');

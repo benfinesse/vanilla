@@ -23,6 +23,7 @@ class CreateOfficesTable extends Migration
             $table->boolean('active')->nullable();
             $table->boolean('verifiable')->nullable();
             $table->boolean('approvable')->nullable();
+            $table->boolean('funds')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('uuid')->on('users');

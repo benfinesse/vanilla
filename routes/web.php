@@ -33,6 +33,7 @@ Route::group(['middleware'=>['auth','access']], function (){
 
     //update items compliance
     Route::post('update/record/item','Record\ItemController@compliance')->name('item.inject');
+    Route::get('update/record/toggle/availability/item','Record\ItemController@toggleAvailability')->name('item.toggle.availability');
 
 
     //AUDIT ROUTES
@@ -45,6 +46,8 @@ Route::group(['middleware'=>['auth','access']], function (){
     Route::get('process/action/toggle/verification/{uuid}', 'Admin\OfficeProcessController@toggleVerification')->name('process.toggle.verification');
 
     Route::get('process/action/toggle/approvable/{uuid}', 'Admin\OfficeProcessController@toggleApprovable')->name('process.toggle.approvable');
+
+    Route::get('process/action/toggle/funds/{uuid}', 'Admin\OfficeProcessController@toggleFundable')->name('process.toggle.funds');
 
     Route::resource('supplier', 'Admin\SupplierController');
     Route::get('supplier/pop/{uuid}', 'Admin\SupplierController@pop')->name('supplier.pop');
