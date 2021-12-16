@@ -205,10 +205,10 @@
                         <div class="col-md-6 mb-4 mt-3 half_width">
                             <div class="card card-bordered">
                                 <div class="card-inner text-center">
-                                    <h4>Cash Required: <span>N</span>{{ number_format($grand_total) }}</h4>
+                                    <h4>Total Cash Required: <span>N</span>{{ number_format($grand_total) }}</h4>
                                     @if($grand_true_total>0)
 
-                                        <h4 class="mt-2 text-success"> Cash Spent: <span>N</span>{{ number_format($grand_true_total) }}</h4>
+                                        <h4 class="mt-2 text-success">Total Cash Spent: <span>N</span>{{ number_format($grand_true_total) }}</h4>
                                         <hr>
                                         <h6>Excess Cash Spent: N{{ number_format($cash_balance) }}</h6>
                                         <h6>Total Change Available: N{{ number_format($cash_change) }}</h6>
