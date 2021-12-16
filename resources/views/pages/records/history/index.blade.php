@@ -176,12 +176,12 @@
                                         <?php $grand_total+= $total; ?>
                                         <?php $grand_true_total+= $true_total; ?>
 
-                                        Sub Total: <span class="sub_total">{{ number_format($total) }}</span>
+                                        Cash Required: <span class="sub_total">{{ number_format($total) }}</span>
 
                                     </h5>
                                     @if($true_total>0)
                                         <br>
-                                        <h5 class="text-right mb-0"><small> Compliance Total {{ number_format($true_total) }}</small></h5>
+                                        <h5 class="text-right mb-0"><small>  Compliance / Cash Spent: {{ number_format($true_total) }}</small></h5>
 
                                         <h5 class="text-right mb-0 mt-0">
                                             @if($total === $true_total)
