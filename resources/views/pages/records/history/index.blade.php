@@ -210,8 +210,8 @@
 
                                         <h4 class="mt-2 text-success"> Cash Spent: <span>N</span>{{ number_format($grand_true_total) }}</h4>
                                         <hr>
-                                        <h6>Excess Cash Spent: N{{ $cash_balance }}</h6>
-                                        <h6>Total Change Available: N{{ $cash_change }}</h6>
+                                        <h6>Excess Cash Spent: N{{ number_format($cash_balance) }}</h6>
+                                        <h6>Total Change Available: N{{ number_format($cash_change) }}</h6>
 
 
                                         <h6>
@@ -221,7 +221,7 @@
                                             @elseif($cash_change > $cash_balance)
                                                 {{ number_format($cash_change - $cash_balance) }}
                                             @else
-                                                 {{ number_format($cash_balance - $cash_change) }}
+                                                 {{ number_format($cash_change - $cash_balance ) }}
                                             @endif
                                         </h6>
                                     @endif
