@@ -74,12 +74,18 @@ class ProcessController extends Controller
                                 if($office->funds){
                                     $fundSource = $request->input('fund_source');
                                     $amount_approved = $request->input('amount_approved');
+
                                     if(empty($fundSource)){
                                         return back()->withErrors(["PLEASE SELECT SOURCE OF FUNDS"]);
                                     }
                                     if(empty($amount_approved)){
                                         return back()->withErrors(["PLEASE SELECT AMOUNT APPROVED"]);
                                     }
+                                    //ensure that amount approved is numbers
+                                    if(!is_numeric($amount_approved)){
+                                        return back()->withErrors(["PLEASE ENTER ONLY NUMBERS IN AMOUNT FIELD"])->withInput();
+                                    }
+
                                     DB::beginTransaction();
                                     $fsdata['fund_source'] = $fundSource;
                                     $fsdata['amount_approved'] = $amount_approved;

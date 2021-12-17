@@ -294,7 +294,7 @@
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label" for="amount_approved">Approved Amount (required)</label>
+                                                                    <label class="form-label" for="amount_approved">Approved Amount (required - numbers only)</label>
                                                                     <input id="amount_approved" required class="form-control" onkeypress="return numbersOnly(event)" name="amount_approved" value="{{ $record->amount_approved }}" placeholder="ENTER AMOUNT APPROVED" autocomplete="off" />
                                                                 </div>
                                                             </div>
